@@ -3,14 +3,17 @@ package cn.stylefeng.guns.sys.modular.system.controller;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.enums.CommonStatus;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.sys.core.enums.CodeExpressEnum;
 import cn.stylefeng.guns.sys.modular.system.entity.Partner;
 import cn.stylefeng.guns.sys.modular.system.entity.Position;
 import cn.stylefeng.guns.sys.modular.system.model.params.PartnerParam;
+import cn.stylefeng.guns.sys.modular.system.service.CodeService;
 import cn.stylefeng.guns.sys.modular.system.service.PartnerService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.exception.RequestEmptyException;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import cn.stylefeng.roses.kernel.model.response.SuccessResponseData;
+import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +37,9 @@ public class PartnerController extends BaseController {
 
     @Autowired
     private PartnerService partnerService;
+
+    @Autowired
+    private CodeService codeService;
 
     /**
      * 跳转到主页面
@@ -78,12 +84,20 @@ public class PartnerController extends BaseController {
     @ResponseBody
     public ResponseData addItem(PartnerParam partnerParam) {
 
+        String code=this.codeService.generateCode(
+                CodeExpressEnum.partnerCode, null);
+        if (Strings.isNullOrEmpty(code))
+        {
+            return ResponseData.error("供应商编码为空");
+        }
+
         partnerParam.setCreateUser(LoginContextHolder.getContext().getUser().getUsername());
         partnerParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
         partnerParam.setCreateTime(new Date());
         partnerParam.setUpdateTime(new Date());
         partnerParam.setStatus(1);
-        partnerParam.setPartnerCode("aa");
+        partnerParam.setPartnerCode(code);
+        partnerParam.setYn(1);
         this.partnerService.add(partnerParam);
         return ResponseData.success();
     }
@@ -136,7 +150,16 @@ public class PartnerController extends BaseController {
     @RequestMapping("/delete")
     @ResponseBody
     public ResponseData delete(PartnerParam partnerParam) {
-        this.partnerService.delete(partnerParam);
+       // this.partnerService.delete(partnerParam);
+
+        Partner partner = this.partnerService.getById(partnerParam.getId());
+        if (partner == null) {
+            throw new RequestEmptyException();
+        }
+        partner.setYn(0);
+        partner.setUpdateTime(new Date());
+        partner.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        this.partnerService.updateById(partner);
         return ResponseData.success();
     }
 

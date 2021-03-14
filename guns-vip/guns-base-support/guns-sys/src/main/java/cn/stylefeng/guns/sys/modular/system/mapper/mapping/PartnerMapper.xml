@@ -27,25 +27,25 @@
     <select id="customList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.PartnerResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.PartnerParam">
         select
         <include refid="Base_Column_List"/>
-        from partner where 1 = 1
+        from partner where 1 = 1 AND yn=1
     </select>
 
     <select id="customMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.PartnerParam">
         select
         <include refid="Base_Column_List"/>
-        from partner where 1 = 1
+        from partner where 1 = 1 AND yn=1
     </select>
 
     <select id="customPageList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.PartnerResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.PartnerParam">
         select
         <include refid="Base_Column_List"/>
-        from partner where 1 = 1
+        from partner where 1 = 1 AND yn=1
     </select>
 
     <select id="customPageMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.PartnerParam">
         select
         <include refid="Base_Column_List"/>
-        from partner where 1 = 1
+        from partner where 1 = 1 AND yn=1
     </select>
 
 </mapper>
