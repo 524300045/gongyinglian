@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.sys.modular.system.mapper.CategoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.sys.modular.system.entity.Category">
+        <id column="id" property="id" />
+        <result column="category_code" property="categoryCode" />
+        <result column="category_name" property="categoryName" />
+        <result column="parent_code" property="parentCode" />
+        <result column="status" property="status" />
+        <result column="level" property="level" />
+        <result column="priority" property="priority" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="yn" property="yn" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS "id", category_code AS "categoryCode", category_name AS "categoryName", parent_code AS "parentCode", status AS "status", level AS "level", priority AS "priority", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime", yn AS "yn"
+    </sql>
+
+
+    <select id="customList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.CategoryResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.CategoryParam">
+        select
+        <include refid="Base_Column_List"/>
+        from category where yn=1
+    </select>
+
+    <select id="customMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.CategoryParam">
+        select
+        <include refid="Base_Column_List"/>
+        from category where yn=1
+    </select>
+
+    <select id="customPageList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.CategoryResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.CategoryParam">
+        select
+        <include refid="Base_Column_List"/>
+        from category where yn=1
+    </select>
+
+    <select id="customPageMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.CategoryParam">
+        select
+        <include refid="Base_Column_List"/>
+        from category where yn=1
+    </select>
+
+    <select id="layuiTree" resultType="cn.stylefeng.guns.base.pojo.node.LayuiTreeNode">
+		select category_code AS id, parent_code as "pid", category_name as title,
+		(
+		CASE
+		WHEN (parent_code ='' OR parent_code IS NULL OR parent_code='0') THEN
+		'true'
+		ELSE
+		'false'
+		END
+		) as "spread" from category where yn=1
+	</select>
+
+    <select id="tree" resultType="cn.stylefeng.guns.base.pojo.node.ZTreeNode">
+		select category_code AS id, parent_code as "pId", category_name as name,
+		(
+		CASE
+		WHEN (parent_code ='' OR parent_code IS NULL OR parent_code='0') THEN
+		'true'
+		ELSE
+		'false'
+		END
+		) as "open" from category where yn=1
+	</select>
+
+    <select id="selectCategoryByCode" resultMap="BaseResultMap" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.CategoryParam">
+        select
+        <include refid="Base_Column_List"/>
+        from category where yn=1 and category_code=#{categoryCode,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

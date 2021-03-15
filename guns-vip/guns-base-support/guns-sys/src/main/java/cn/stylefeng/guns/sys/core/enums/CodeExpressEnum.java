@@ -5,7 +5,7 @@ import java.util.Map;
 
 public enum CodeExpressEnum {
     partnerCode("partner", "G,^6#", Boolean.FALSE ,"供应商编码"),
-
+    categoryCode("category", "1,^4#", Boolean.FALSE ,"分类编码"),
     ;
 
     /**

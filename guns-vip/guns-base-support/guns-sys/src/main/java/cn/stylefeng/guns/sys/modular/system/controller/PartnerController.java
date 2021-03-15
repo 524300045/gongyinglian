@@ -127,7 +127,7 @@ public class PartnerController extends BaseController {
     public ResponseData changeStatus(@RequestParam("id") Long id,
                                      @RequestParam("status") Integer status) {
 
-        Partner partner = this.partnerService.getById(id);
+         Partner partner = this.partnerService.getById(id);
         if (partner == null) {
             throw new RequestEmptyException();
         }
