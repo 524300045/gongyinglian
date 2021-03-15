@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.sys.modular.system.goods.mapper.GoodsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.sys.modular.system.entity.Goods">
+        <id column="id" property="id" />
+        <result column="sku_code" property="skuCode" />
+        <result column="goods_name" property="goodsName" />
+        <result column="category_code" property="categoryCode" />
+        <result column="category_name" property="categoryName" />
+        <result column="two_category_code" property="twoCategoryCode" />
+        <result column="two_category_name" property="twoCategoryName" />
+        <result column="status" property="status" />
+        <result column="goods_model" property="goodsModel" />
+        <result column="goods_brand" property="goodsBrand" />
+        <result column="weight" property="weight" />
+        <result column="unit_name" property="unitName" />
+        <result column="unit_code" property="unitCode" />
+        <result column="is_fresh" property="isFresh" />
+        <result column="weighed" property="weighed" />
+        <result column="product_type" property="productType" />
+        <result column="price" property="price" />
+        <result column="tax_rate" property="taxRate" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="yn" property="yn" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS "id", sku_code AS "skuCode", goods_name AS "goodsName", category_code AS "categoryCode", category_name AS "categoryName", two_category_code AS "twoCategoryCode", two_category_name AS "twoCategoryName", status AS "status", goods_model AS "goodsModel", goods_brand AS "goodsBrand", weight AS "weight", unit_name AS "unitName", unit_code AS "unitCode", is_fresh AS "isFresh", weighed AS "weighed", product_type AS "productType", price AS "price", tax_rate AS "taxRate", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime", yn AS "yn"
+    </sql>
+
+
+    <select id="customList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.GoodsResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.GoodsParam">
+        select
+        <include refid="Base_Column_List"/>
+        from goods where 1 = 1
+    </select>
+
+    <select id="customMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.GoodsParam">
+        select
+        <include refid="Base_Column_List"/>
+        from goods where 1 = 1
+    </select>
+
+    <select id="customPageList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.GoodsResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.GoodsParam">
+        select
+        <include refid="Base_Column_List"/>
+        from goods where 1 = 1
+    </select>
+
+    <select id="customPageMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.GoodsParam">
+        select
+        <include refid="Base_Column_List"/>
+        from goods where 1 = 1
+    </select>
+
+</mapper>
