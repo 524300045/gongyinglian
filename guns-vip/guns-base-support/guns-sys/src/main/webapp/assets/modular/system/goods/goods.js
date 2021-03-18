@@ -117,6 +117,14 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
         window.location.href = Feng.ctxPath + '/goods/edit?id=' + data.id
     };
 
+    Goods.onEditCategory = function (data) {
+        func.open({
+            title: '编辑商品',
+            content: Feng.ctxPath + "/goods/edit?id=" + data.id,
+            tableId: Goods.tableId
+        });
+    };
+
     /**
      * 导出excel按钮
      */
@@ -182,7 +190,8 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
         var layEvent = obj.event;
 
         if (layEvent === 'edit') {
-            Goods.jumpEditPage(data);
+          //  Goods.jumpEditPage(data);
+            Goods.onEditCategory(data);
         } else if (layEvent === 'delete') {
             Goods.onDeleteItem(data);
         }

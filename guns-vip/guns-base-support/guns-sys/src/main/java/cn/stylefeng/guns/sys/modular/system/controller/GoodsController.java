@@ -131,6 +131,27 @@ public class GoodsController extends BaseController {
     @RequestMapping("/editItem")
     @ResponseBody
     public ResponseData editItem(GoodsParam goodsParam) {
+
+
+        CategoryParam categoryParam=new CategoryParam();
+        categoryParam.setCategoryCode(goodsParam.getTwoCategoryCode());
+        Category twoCategory=categoryService.selectCategoryByCode(categoryParam);
+        if (twoCategory==null)
+            return ResponseData.error("查询不到分类信息");
+
+        if (Strings.isNullOrEmpty(twoCategory.getParentCode())||twoCategory.getParentCode().equals("0"))
+        {
+            return ResponseData.error("只能选择末级分类");
+        }
+        CategoryParam categoryParamTwo=new CategoryParam();
+        categoryParamTwo.setCategoryCode(twoCategory.getParentCode());
+
+        Category category=categoryService.selectCategoryByCode(categoryParamTwo);
+
+        goodsParam.setCategoryCode(category.getCategoryCode());
+        goodsParam.setCategoryName(category.getCategoryName());
+        goodsParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        goodsParam.setUpdateTime(new Date());
         this.goodsService.update(goodsParam);
         return ResponseData.success();
     }
@@ -144,7 +165,10 @@ public class GoodsController extends BaseController {
     @RequestMapping("/delete")
     @ResponseBody
     public ResponseData delete(GoodsParam goodsParam) {
-        this.goodsService.delete(goodsParam);
+        goodsParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        goodsParam.setUpdateTime(new Date());
+        goodsParam.setYn(0);
+        this.goodsService.update(goodsParam);
         return ResponseData.success();
     }
 
