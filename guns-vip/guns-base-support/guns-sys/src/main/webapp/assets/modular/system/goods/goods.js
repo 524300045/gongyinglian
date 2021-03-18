@@ -17,30 +17,65 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
      */
     Goods.initColumn = function () {
         return [[
-            {type: 'checkbox'},
+
             {field: 'id', hide: true, title: ''},
             {field: 'skuCode', sort: true, title: '编码'},
-            {field: 'goodsName', sort: true, title: '分类名称'},
-            {field: 'categoryCode', sort: true, title: '一级分类编码'},
-            {field: 'categoryName', sort: true, title: '一级分类名称'},
-            {field: 'twoCategoryCode', sort: true, title: '二级分类编码'},
-            {field: 'twoCategoryName', sort: true, title: '二级分类名称'},
-            {field: 'status', sort: true, title: '0:停用 1:启用'},
+            {field: 'goodsName', sort: true, title: '商品名称'},
+
+            {
+                field: 'categoryName', align: "center", title: '分类', templet: function (d) {
+
+                        return d.categoryName+"--"+d.twoCategoryName;
+
+                }
+            },
+            {
+                field: 'status', align: "center", title: '状态', templet: function (d) {
+                    if (d.status ===1) {
+                        return "启用";
+                    } else {
+                        return "禁用";
+                    }
+                }
+            },
             {field: 'goodsModel', sort: true, title: '规格型号'},
             {field: 'goodsBrand', sort: true, title: '品牌'},
             {field: 'weight', sort: true, title: '重量'},
             {field: 'unitName', sort: true, title: '单位名称'},
-            {field: 'unitCode', sort: true, title: '单位编码'},
-            {field: 'isFresh', sort: true, title: '是否生鲜 0:否 1:是'},
-            {field: 'weighed', sort: true, title: '是否称重 0:否 1:是'},
-            {field: 'productType', sort: true, title: '商品类型 0:成品 1：半成品 2：原料'},
+            {
+                field: 'isFresh', align: "center", title: '是否生鲜', templet: function (d) {
+                    if (d.isFresh ===1) {
+                        return "是";
+                    } else {
+                        return "否";
+                    }
+                }
+            },
+            {
+                field: 'weighed', align: "center", title: '是否称重', templet: function (d) {
+                    if (d.weighed ===1) {
+                        return "是";
+                    } else {
+                        return "否";
+                    }
+                }
+            },
+            {
+                field: 'productType', align: "center", title: '商品类型', templet: function (d) {
+                    if (d.productType ===0) {
+                        return "成品";
+                    }
+                    else if (d.productType ===1)
+                    {
+                        return "半成品";
+                    }
+                    else {
+                        return "原料";
+                    }
+                }
+            },
             {field: 'price', sort: true, title: '价格'},
             {field: 'taxRate', sort: true, title: '税率'},
-            {field: 'createUser', sort: true, title: '创建人'},
-            {field: 'createTime', sort: true, title: '创建时间'},
-            {field: 'updateUser', sort: true, title: '更新人'},
-            {field: 'updateTime', sort: true, title: '更新时间'},
-            {field: 'yn', sort: true, title: ''},
             {align: 'center', toolbar: '#tableBar', title: '操作'}
         ]];
     };
@@ -62,6 +97,15 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
      */
     Goods.jumpAddPage = function () {
         window.location.href = Feng.ctxPath + '/goods/add'
+    };
+
+    Goods.openAddGoods = function () {
+        func.open({
+            title: '添加商品',
+            content: Feng.ctxPath + '/goods/add',
+            tableId: Goods.tableId
+
+        });
     };
 
     /**
@@ -122,7 +166,8 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
     // 添加按钮点击事件
     $('#btnAdd').click(function () {
 
-    Goods.jumpAddPage();
+   // Goods.jumpAddPage();
+        Goods.openAddGoods();
 
     });
 

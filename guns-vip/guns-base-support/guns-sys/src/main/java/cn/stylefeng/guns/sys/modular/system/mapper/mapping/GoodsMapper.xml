@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.stylefeng.guns.sys.modular.system.goods.mapper.GoodsMapper">
+<mapper namespace="cn.stylefeng.guns.sys.modular.system.mapper.GoodsMapper">
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.stylefeng.guns.sys.modular.system.entity.Goods">
@@ -38,25 +38,25 @@
     <select id="customList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.GoodsResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.GoodsParam">
         select
         <include refid="Base_Column_List"/>
-        from goods where 1 = 1
+        from goods where  yn= 1
     </select>
 
     <select id="customMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.GoodsParam">
         select
         <include refid="Base_Column_List"/>
-        from goods where 1 = 1
+        from goods where  yn= 1
     </select>
 
     <select id="customPageList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.GoodsResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.GoodsParam">
         select
         <include refid="Base_Column_List"/>
-        from goods where 1 = 1
+        from goods where yn= 1
     </select>
 
     <select id="customPageMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.GoodsParam">
         select
         <include refid="Base_Column_List"/>
-        from goods where 1 = 1
+        from goods where  yn= 1
     </select>
 
 </mapper>

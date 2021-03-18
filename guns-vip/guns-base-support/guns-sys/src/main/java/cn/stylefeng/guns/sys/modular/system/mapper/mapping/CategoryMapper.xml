@@ -74,7 +74,7 @@
 
     <select id="selectCategoryByCode" resultMap="BaseResultMap" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.CategoryParam">
         select
-        <include refid="Base_Column_List"/>
+        *
         from category where yn=1 and category_code=#{categoryCode,jdbcType=VARCHAR}
     </select>
 
