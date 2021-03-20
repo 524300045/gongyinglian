@@ -34,6 +34,15 @@ public class PartnerGoodsServiceImpl extends ServiceImpl<PartnerGoodsMapper, Par
     }
 
     @Override
+    public void addBatch(List<PartnerGoodsParam> paramList)
+    {
+        for (PartnerGoodsParam param:paramList)
+        {
+            add(param);
+        }
+    }
+
+    @Override
     public void delete(PartnerGoodsParam param){
         this.removeById(getKey(param));
     }
@@ -48,7 +57,12 @@ public class PartnerGoodsServiceImpl extends ServiceImpl<PartnerGoodsMapper, Par
 
     @Override
     public PartnerGoodsResult findBySpec(PartnerGoodsParam param){
-        return null;
+        List<PartnerGoodsResult> partnerGoodsResultList=this.baseMapper.customList(param);
+        if (partnerGoodsResultList==null||partnerGoodsResultList.size()==0)
+        {
+            return null;
+        }
+        return partnerGoodsResultList.get(0);
     }
 
     @Override

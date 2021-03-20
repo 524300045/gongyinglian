@@ -17,15 +17,14 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
      */
     PartnerGoods.initColumn = function () {
         return [[
-            {type: 'checkbox'},
             {field: 'id', hide: true, title: ''},
             {field: 'partnerCode', sort: true, title: '供应商编码'},
-            {field: 'skuCode', sort: true, title: '商品编码'},
-            {field: 'createUser', sort: true, title: '创建人'},
-            {field: 'createTime', sort: true, title: '创建时间'},
-            {field: 'updateUser', sort: true, title: '更新人'},
-            {field: 'updateTime', sort: true, title: '更新时间'},
-            {field: 'yn', sort: true, title: ''},
+            {field: 'partnerName', sort: true, title: '供应商名称'},
+            {field: 'skuCode', sort: false, title: '商品编码'},
+            {field: 'goodsName', sort: false, title: '商品名称'},
+            {field: 'twoCategoryName', sort: false, title: '分类'},
+            {field: 'goodsModel', sort: false, title: '规格'},
+            {field: 'unitName', sort: false, title: '单位'},
             {align: 'center', toolbar: '#tableBar', title: '操作'}
         ]];
     };

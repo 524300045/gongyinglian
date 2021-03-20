@@ -1,15 +1,28 @@
 package cn.stylefeng.guns.sys.modular.system.controller;
 
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.base.db.entity.DatabaseInfo;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.sys.modular.system.entity.Partner;
 import cn.stylefeng.guns.sys.modular.system.entity.PartnerGoods;
 import cn.stylefeng.guns.sys.modular.system.model.params.PartnerGoodsParam;
+import cn.stylefeng.guns.sys.modular.system.model.result.PartnerGoodsResult;
 import cn.stylefeng.guns.sys.modular.system.service.PartnerGoodsService;
+import cn.stylefeng.guns.sys.modular.system.service.PartnerService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -26,6 +39,9 @@ public class PartnerGoodsController extends BaseController {
 
     @Autowired
     private PartnerGoodsService partnerGoodsService;
+
+    @Autowired
+    private PartnerService partnerService;
 
     /**
      * 跳转到主页面
@@ -45,7 +61,11 @@ public class PartnerGoodsController extends BaseController {
      * @Date 2021-03-18
      */
     @RequestMapping("/add")
-    public String add() {
+    public String add(Model model) {
+
+        List<Partner> partnerList=partnerService.list();
+
+        model.addAttribute("partners", partnerList);
         return PREFIX + "/partnerGoods_add.html";
     }
 
@@ -68,8 +88,41 @@ public class PartnerGoodsController extends BaseController {
      */
     @RequestMapping("/addItem")
     @ResponseBody
-    public ResponseData addItem(PartnerGoodsParam partnerGoodsParam) {
-        this.partnerGoodsService.add(partnerGoodsParam);
+    public ResponseData addItem(@RequestBody PartnerGoodsParam partnerGoodsParam) {
+
+        if (Strings.isNullOrEmpty(partnerGoodsParam.getPartnerCode()))
+        {
+            return ResponseData.error("请选择供应商");
+        }
+
+        List<PartnerGoodsParam> partnerGoodsParams=new ArrayList<>();
+
+        String[] skuCodes=partnerGoodsParam.getSkuCode().split(",");
+        for (String item:skuCodes)
+        {
+            PartnerGoodsParam partnerParam=new PartnerGoodsParam();
+            partnerParam.setPartnerCode(partnerGoodsParam.getPartnerCode());
+            partnerParam.setSkuCode(item);
+            partnerParam.setYn(1);
+            PartnerGoodsResult partnerGoodsResult=partnerGoodsService.findBySpec(partnerParam);
+            if (partnerGoodsResult!=null)
+                 continue;
+
+            PartnerGoodsParam addParam=new PartnerGoodsParam();
+            addParam.setPartnerCode(partnerGoodsParam.getPartnerCode());
+            addParam.setSkuCode(item);
+            addParam.setCreateTime(new Date());
+            addParam.setUpdateTime(new Date());
+            addParam.setCreateUser(LoginContextHolder.getContext().getUser().getUsername());
+            addParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+            partnerGoodsParams.add(addParam);
+        }
+
+        if (partnerGoodsParams.size()>0)
+        {
+            this.partnerGoodsService.addBatch(partnerGoodsParams);
+        }
+
         return ResponseData.success();
     }
 
@@ -95,7 +148,10 @@ public class PartnerGoodsController extends BaseController {
     @RequestMapping("/delete")
     @ResponseBody
     public ResponseData delete(PartnerGoodsParam partnerGoodsParam) {
-        this.partnerGoodsService.delete(partnerGoodsParam);
+        partnerGoodsParam.setYn(0);
+        partnerGoodsParam.setUpdateTime(new Date());
+        partnerGoodsParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        this.partnerGoodsService.update(partnerGoodsParam);
         return ResponseData.success();
     }
 

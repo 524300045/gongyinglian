@@ -23,25 +23,44 @@
     <select id="customList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.PartnerGoodsResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.PartnerGoodsParam">
         select
         <include refid="Base_Column_List"/>
-        from partner_goods where 1 = 1
+        from partner_goods
+        where <include refid="sqlWhere"/>
     </select>
 
     <select id="customMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.PartnerGoodsParam">
         select
         <include refid="Base_Column_List"/>
-        from partner_goods where 1 = 1
+        from partner_goods where  yn=1
     </select>
 
     <select id="customPageList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.PartnerGoodsResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.PartnerGoodsParam">
-        select
-        <include refid="Base_Column_List"/>
-        from partner_goods where 1 = 1
+      SELECT p.partner_code,p.partner_name,
+      pg.id,
+      g.sku_code,g.goods_name,g.category_name,g.two_category_name,
+g.goods_model,g.unit_name
+ FROM partner_goods pg INNER JOIN  partner p
+ON pg.partner_code=p.partner_code
+INNER JOIN  goods g ON g.sku_code=pg.sku_code
+WHERE pg.yn=1 AND p.yn=1 AND  g.yn=1
+
     </select>
 
     <select id="customPageMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.PartnerGoodsParam">
         select
         <include refid="Base_Column_List"/>
-        from partner_goods where 1 = 1
+        from partner_goods where  yn=1
     </select>
+
+
+    <sql id="sqlWhere">
+        yn=1
+        <if test="paramCondition.partnerCode!= null">
+               and  partner_code = #{paramCondition.partnerCode,jdbcType=VARCHAR}
+            </if>
+
+        <if test="paramCondition.skuCode!= null">
+            and  sku_code = #{paramCondition.skuCode,jdbcType=VARCHAR}
+        </if>
+    </sql>
 
 </mapper>

@@ -1,40 +1,43 @@
 @layout("/common/_form.html",{js:["/assets/modular/system/partnerGoods/partnerGoods_add.js"],css:["/assets/expand/module/formSelects/formSelects-v4.css"]}){
 
-<form class="layui-form" id="partnerGoodsForm" lay-filter="partnerGoodsForm">
-    <div class="layui-fluid" style="padding-bottom: 75px;">
-        <div class="layui-card">
-            <div class="layui-card-header">基本信息</div>
-            <div class="layui-card-body">
-                <div class="layui-form-item layui-row">
-                    <input name="id" type="hidden"/>
+<div class="layui-body-header">
+    <span class="layui-body-header-title">商品表管理</span>
+</div>
 
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label">供应商编码<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="partnerCode" name="partnerCode" placeholder="请输入供应商编码" type="text" class="layui-input" lay-verify="required" required/>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-form toolbar">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <input id="roleName" class="layui-input" type="text" placeholder="商品名称"/>
+                            </div>
+                            <div class="layui-inline">
+                                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+                                <button id="cancel" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>返回</button>
+
+                                <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;保存&emsp;</button>
+
+                            </div>
+
+                                <div class="layui-inline">
+                                    <input type="hidden" name="skuCode" id="skuCode">
+                                <select id="partnerCode" name="partnerCode" lay-filter="partnerCode">
+                                    <option value="">请选择供应商</option>
+                                    @for(item in partners!){
+                                    <option value="${item.partnerCode}">${item.partnerName}</option>
+                                    @}
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label">商品编码<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="skuCode" name="skuCode" placeholder="请输入商品编码" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label"><span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="yn" name="yn" placeholder="请输入" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
+                    <table class="layui-table" id="goodsTable" lay-filter="goodsTable"></table>
                 </div>
             </div>
         </div>
     </div>
-    <div class="form-group-bottom text-center">
-        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
-        <button type="reset" class="layui-btn layui-btn-primary" id="cancel">&emsp;取消&emsp;</button>
-    </div>
-
-</form>
+</div>
 
 @}

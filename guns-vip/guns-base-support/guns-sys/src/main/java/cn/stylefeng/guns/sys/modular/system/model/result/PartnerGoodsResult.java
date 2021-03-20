@@ -26,10 +26,52 @@ public class PartnerGoodsResult implements Serializable {
      */
     private String partnerCode;
 
+    private String partnerName;
+
     /**
      * 商品编码
      */
     private String skuCode;
+
+
+    private String goodsName;
+
+    /**
+     * 一级分类编码
+     */
+    private String categoryCode;
+
+    /**
+     * 一级分类名称
+     */
+    private String categoryName;
+
+    /**
+     * 二级分类编码
+     */
+    private String twoCategoryCode;
+
+    /**
+     * 二级分类名称
+     */
+    private String twoCategoryName;
+
+    /**
+     * 规格型号
+     */
+    private String goodsModel;
+
+    /**
+     * 品牌
+     */
+    private String goodsBrand;
+
+
+
+    /**
+     * 单位名称
+     */
+    private String unitName;
 
     /**
      * 创建人

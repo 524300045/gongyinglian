@@ -26,6 +26,8 @@ public interface PartnerGoodsService extends IService<PartnerGoods> {
      */
     void add(PartnerGoodsParam param);
 
+    void addBatch(List<PartnerGoodsParam> paramList);
+
     /**
      * 删除
      *
