@@ -30,53 +30,32 @@ layui.use(['form', 'admin','table','ax','laydate','upload','formSelects'], funct
     var laydate = layui.laydate;
     var table = layui.table;
 
-    var GoodsTable = {
-        tableId: "goodsTable"
-    };
 
     var DetailTable = {
         tableId: "detailTable"
     };
 
-    /**
-     * 初始化表格的列
-     */
-    GoodsTable.initColumn = function () {
-        return [[
-
-            {field: 'skuCode', sort: true, title: '仓库编码'},
-            {field: 'goodsName', sort: true, title: '仓库名称'},
-            {field: 'goodsModel', sort: true, title: '规格'},
-            {field: 'unitName', sort: true, title: '单位'},
-            {align: 'center', toolbar: '#tableBar', title: '操作'}
-        ]];
-    };
 
     DetailTable.initColumn = function () {
         return [[
 
-            {field: 'skuCode', sort: true, title: '仓库编码'},
-            {field: 'goodsName', sort: true, title: '仓库名称'},
+            {field: 'skuCode', sort: true, title: '商品编码'},
+            {field: 'goodsName', sort: true, title: '商品名称'},
             {field: 'goodsModel', sort: true, title: '规格'},
             {field: 'unitName', sort: true, title: '单位'},
             {align: 'center', toolbar: '#tableBar', title: '操作'}
         ]];
     };
+
+    var data=new Array();
+
 
     //渲染时间选择框
     laydate.render({
         elem: '#arrivalDate'
     });
 
-// 渲染表格
-    var goodsTableResult = table.render({
-        elem: '#' + GoodsTable.tableId,
-        url: Feng.ctxPath + '/pmsOrderPurchaseDetail/list',
-        page: false,
-        height: "full-158",
-        cellMinWidth: 100,
-        cols: GoodsTable.initColumn()
-    });
+
 
     // 渲染表格
     var detailTableResult = table.render({
@@ -84,7 +63,8 @@ layui.use(['form', 'admin','table','ax','laydate','upload','formSelects'], funct
         page: false,
         height: "full-158",
         cellMinWidth: 100,
-        cols: DetailTable.initColumn()
+        cols: DetailTable.initColumn(),
+        data:data
     });
 
 
@@ -125,7 +105,13 @@ layui.use(['form', 'admin','table','ax','laydate','upload','formSelects'], funct
                 // var row = $(layero).find("layui-layer-iframe")[0].contentWindow.callbackdata();
                 //可以使用ajax请求对数据进行进一步处理
                 console.log(row)
+                data.push(row);
                 layer.close(index);
+                alert(data.length);
+
+                table.reload("detailTable", {
+                    data : data,
+                })
             }
         });
     });
@@ -145,8 +131,6 @@ layui.use(['form', 'admin','table','ax','laydate','upload','formSelects'], funct
         return false;
     });
 
-    $('#cancel').click(function(){
-        window.location.href = Feng.ctxPath + '/pmsOrderPurchaseDetail'
-    });
+
 
 });
