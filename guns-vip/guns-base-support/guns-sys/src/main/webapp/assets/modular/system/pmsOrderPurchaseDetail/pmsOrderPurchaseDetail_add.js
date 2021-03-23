@@ -31,8 +31,25 @@ layui.use(['form', 'admin','table','ax','laydate','upload','formSelects'], funct
     var table = layui.table;
 
 
+    var GoodsTable = {
+        tableId: "goodsTable"
+    };
+
+
+
     var DetailTable = {
         tableId: "detailTable"
+    };
+
+    GoodsTable.initColumn = function () {
+        return [[
+
+            {field: 'skuCode', sort: true, title: '商品编码'},
+            {field: 'goodsName', sort: true, title: '商品名称'},
+            {field: 'goodsModel', sort: true, title: '规格'},
+            {field: 'unitName', sort: true, title: '单位'},
+            {align: 'center', toolbar: '#tableBar', title: '操作'}
+        ]];
     };
 
 
@@ -56,6 +73,15 @@ layui.use(['form', 'admin','table','ax','laydate','upload','formSelects'], funct
     });
 
 
+
+    var goodsTableResult = table.render({
+        elem: '#' + GoodsTable.tableId,
+        page: false,
+        height: "full-158",
+        cellMinWidth: 100,
+        cols: GoodsTable.initColumn(),
+        data:[]
+    });
 
     // 渲染表格
     var detailTableResult = table.render({
