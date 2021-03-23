@@ -17,7 +17,7 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
      */
     SelectGoods.initColumn = function () {
         return [[
-
+            {type:'radio'},
             {field: 'id', hide: true, title: ''},
             {field: 'skuCode', sort: true, title: '编码'},
             {field: 'goodsName', sort: true, title: '商品名称'},
@@ -33,7 +33,7 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
             {field: 'unitName', sort: true, title: '单位名称'},
             {field: 'price', sort: true, title: '价格'},
             {field: 'taxRate', sort: true, title: '税率'},
-            {align: 'center', toolbar: '#tableBar', title: '操作'}
+           // {align: 'center', toolbar: '#tableBar', title: '操作'}
         ]];
     };
 
@@ -50,6 +50,12 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
     };
 
 
+    table.on('row(goodsTable)',function(obj){
+        var data = obj.data;
+        rowData = data;
+        //标注选中样式
+        obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+    });
 
 
     // 渲染表格
@@ -86,3 +92,7 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
         }
     });
 });
+
+var callbackdata = function () {
+    return rowData;
+}

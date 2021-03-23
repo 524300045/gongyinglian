@@ -98,7 +98,8 @@ layui.use(['form', 'admin','table','ax','laydate','upload','formSelects'], funct
             shadeClose: true,
             closeBtn:2,
             area: ['1000px', '600px'],
-            content: Feng.ctxPath + '/pmsOrderPurchaseDetail/selectGoods?formName='+ formName + "&formId=" + formId,
+            btn: ['确认选择', '关闭'],
+        content: Feng.ctxPath + '/pmsOrderPurchaseDetail/selectGoods?formName='+ formName + "&formId=" + formId,
             // success: function(layero, index){
             //     console.log("1");
             //     var body = layer.getChildFrame('body', index);
@@ -106,11 +107,25 @@ layui.use(['form', 'admin','table','ax','laydate','upload','formSelects'], funct
             //     console.log(body.html()) //得到iframe页的body内容
             //
             // }
-            end: function () {
-                console.log(PmsOrderPurchaseDetailInfoDlg.data.goodsName)
-                var body = layer.getChildFrame('body', index);
-                var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
-                console.log(body.html()) //得到iframe页的body内容
+            // end: function () {
+            //     alert(2);
+            //     console.log(PmsOrderPurchaseDetailInfoDlg.data.goodsName)
+            //     var body = layer.getChildFrame('body', index);
+            //     var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+            //     console.log(body.html()) //得到iframe页的body内容
+            // }
+            yes : function(index,layero) {
+                // alert(1111);
+                // $(layero).find("input").each(function(i, v) {
+                //     alert($(v).text());
+                // });
+                // layer.close(index);
+                 var row = $(layero).find('iframe')[0].contentWindow.callbackdata();
+               // layer.alert("get:"+row);
+                // var row = $(layero).find("layui-layer-iframe")[0].contentWindow.callbackdata();
+                //可以使用ajax请求对数据进行进一步处理
+                console.log(row)
+                layer.close(index);
             }
         });
     });
