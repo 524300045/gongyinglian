@@ -1,88 +1,74 @@
 @layout("/common/_form.html",{js:["/assets/modular/system/pmsOrderPurchaseDetail/pmsOrderPurchaseDetail_add.js"],css:["/assets/expand/module/formSelects/formSelects-v4.css"]}){
 
-<form class="layui-form" id="pmsOrderPurchaseDetailForm" lay-filter="pmsOrderPurchaseDetailForm">
-    <div class="layui-fluid" style="padding-bottom: 75px;">
-        <div class="layui-card">
-            <div class="layui-card-header">基本信息</div>
-            <div class="layui-card-body">
-                <div class="layui-form-item layui-row">
-                    <input name="id" type="hidden"/>
+<div class="layui-body-header">
+    <span class="layui-body-header-title">采购订单新增</span>
+</div>
 
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label">采购订单编码<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="orderNo" name="orderNo" placeholder="请输入采购订单编码" type="text" class="layui-input" lay-verify="required" required/>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-form toolbar">
+
+                        <div class="layui-form-item">
+
+                                <div class="layui-inline">
+
+                                    <input type="hidden" name="warehouseName" id="warehouseName">
+                                    <select id="warehouseCode" name="warehouseCode" lay-filter="warehouseCode">
+                                        <option value="">仓库</option>
+                                        @for(item in warelist!){
+                                        <option value="${item.warehouseCode}">${item.warehouseName}</option>
+                                        @}
+                                    </select>
+                                </div>
+                            <div class="layui-inline">
+
+                                <input type="hidden" name="skuCode" id="skuCode">
+                                <select id="partnerCode" name="partnerCode" lay-filter="partnerCode">
+                                    <option value="">请选择供应商</option>
+                                    @for(item in partners!){
+                                    <option value="${item.partnerCode}">${item.partnerName}</option>
+                                    @}
+                                </select>
+                            </div>
+                            <div class="layui-inline">
+                                <input id="arrivalDate" class="layui-input" type="text" placeholder="到货日期"/>
+                            </div>
+
+                            <div class="layui-inline">
+                                <input id="remark" class="layui-input" type="text" placeholder="请输入备注" />
+                            </div>
+
+                            <div class="layui-inline">
+
+                                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>提交</button>
+
+                                <button id="btnGoods" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>选择商品</button>
+
+                            </div>
                         </div>
                     </div>
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label">仓库编码<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="skuCode" name="skuCode" placeholder="请输入仓库编码" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label">仓库名称<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="goodsName" name="goodsName" placeholder="请输入仓库名称" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label">规格<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="goodsModel" name="goodsModel" placeholder="请输入规格" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label">单位<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="unitName" name="unitName" placeholder="请输入单位" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label">0:否 1:是<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="isFresh" name="isFresh" placeholder="请输入0:否 1:是" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label">计划量<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="planNum" name="planNum" placeholder="请输入计划量" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label">收货量<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="realityNum" name="realityNum" placeholder="请输入收货量" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label">税率<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="taxRate" name="taxRate" placeholder="请输入税率" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label">单价<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="taxPrice" name="taxPrice" placeholder="请输入单价" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label"><span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="yn" name="yn" placeholder="请输入" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
+<!--                    <table class="layui-table" id="pmsOrderPurchaseDetailTable" lay-filter="pmsOrderPurchaseDetailTable"></table>-->
                 </div>
             </div>
         </div>
     </div>
-    <div class="form-group-bottom text-center">
-        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
-        <button type="reset" class="layui-btn layui-btn-primary" id="cancel">&emsp;取消&emsp;</button>
-    </div>
 
-</form>
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm6 layui-col-md6 layui-col-lg6">
+
+                    <table class="layui-table" id="goodsTable" lay-filter="goodsTable"></table>
+
+        </div>
+
+        <div class="layui-col-sm6 layui-col-md6 layui-col-lg6">
+
+            <table class="layui-table" id="detailTable" lay-filter="detailTable"></table>
+
+        </div>
+    </div>
+</div>
 
 @}

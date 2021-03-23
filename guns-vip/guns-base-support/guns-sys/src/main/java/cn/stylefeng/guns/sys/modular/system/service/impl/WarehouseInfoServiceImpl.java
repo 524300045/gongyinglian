@@ -53,7 +53,7 @@ public class WarehouseInfoServiceImpl extends ServiceImpl<WarehouseInfoMapper, W
 
     @Override
     public List<WarehouseInfoResult> findListBySpec(WarehouseInfoParam param){
-        return null;
+        return this.baseMapper.customList(param);
     }
 
     @Override

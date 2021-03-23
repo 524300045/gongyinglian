@@ -53,7 +53,7 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerMapper, Partner> impl
 
     @Override
     public List<PartnerResult> findListBySpec(PartnerParam param){
-        return null;
+        return this.baseMapper.customList(param);
     }
 
     @Override
