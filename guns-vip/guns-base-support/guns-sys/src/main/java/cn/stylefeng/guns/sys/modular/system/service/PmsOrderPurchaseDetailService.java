@@ -3,6 +3,7 @@ package cn.stylefeng.guns.sys.modular.system.service;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.PmsOrderPurchaseDetail;
 import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseDetailParam;
+import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseParam;
 import cn.stylefeng.guns.sys.modular.system.model.result.PmsOrderPurchaseDetailResult;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -65,5 +66,8 @@ public interface PmsOrderPurchaseDetailService extends IService<PmsOrderPurchase
      * @Date 2021-03-22
      */
      LayuiPageInfo findPageBySpec(PmsOrderPurchaseDetailParam param);
+
+    public boolean savePmsPurchase(PmsOrderPurchaseParam pmsOrderPurchaseParam,
+                                   List<PmsOrderPurchaseDetailParam> pmsOrderPurchaseDetailParams);
 
 }

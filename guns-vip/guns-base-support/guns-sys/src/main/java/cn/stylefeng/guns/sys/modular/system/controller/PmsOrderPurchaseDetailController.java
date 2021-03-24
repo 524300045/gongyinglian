@@ -1,23 +1,25 @@
 package cn.stylefeng.guns.sys.modular.system.controller;
 
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.sys.core.enums.CodeExpressEnum;
 import cn.stylefeng.guns.sys.modular.system.entity.Partner;
+import cn.stylefeng.guns.sys.modular.system.entity.PmsOrderPurchase;
 import cn.stylefeng.guns.sys.modular.system.entity.PmsOrderPurchaseDetail;
 import cn.stylefeng.guns.sys.modular.system.entity.WarehouseInfo;
-import cn.stylefeng.guns.sys.modular.system.model.params.GoodsParam;
-import cn.stylefeng.guns.sys.modular.system.model.params.PartnerParam;
-import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseDetailParam;
-import cn.stylefeng.guns.sys.modular.system.model.params.WarehouseInfoParam;
+import cn.stylefeng.guns.sys.modular.system.enums.PmsPurchaseStatus;
+import cn.stylefeng.guns.sys.modular.system.model.params.*;
+import cn.stylefeng.guns.sys.modular.system.model.result.GoodsResult;
 import cn.stylefeng.guns.sys.modular.system.model.result.PartnerResult;
 import cn.stylefeng.guns.sys.modular.system.model.result.WarehouseInfoResult;
-import cn.stylefeng.guns.sys.modular.system.service.GoodsService;
-import cn.stylefeng.guns.sys.modular.system.service.PartnerService;
-import cn.stylefeng.guns.sys.modular.system.service.PmsOrderPurchaseDetailService;
-import cn.stylefeng.guns.sys.modular.system.service.WarehouseInfoService;
+import cn.stylefeng.guns.sys.modular.system.service.*;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.RequestEmptyException;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,8 +28,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLDecoder;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -53,6 +59,12 @@ public class PmsOrderPurchaseDetailController extends BaseController {
 
     @Autowired
     private GoodsService goodsService;
+
+    @Autowired
+    private PartnerGoodsService partnerGoodsService;
+
+    @Autowired
+    private CodeService codeService;
 
     /**
      * 跳转到主页面
@@ -192,6 +204,85 @@ public class PmsOrderPurchaseDetailController extends BaseController {
         }
         return PREFIX + "/selectGoods.html";
     }
+
+
+    /**
+     * 查询列表
+     *
+     * @author zx
+     * @Date 2021-03-18
+     */
+    @ResponseBody
+    @RequestMapping("/partnergoodslist")
+    public LayuiPageInfo partnerGoodsList(PartnerGoodsParam partnerGoodsParam) {
+        if (Strings.isNullOrEmpty(partnerGoodsParam.getPartnerCode()))
+        {
+            return  LayuiPageFactory.createPageInfo(null);
+        }
+        return this.partnerGoodsService.findPageBySpec(partnerGoodsParam);
+    }
+
+
+    @RequestMapping("/addItemDetail")
+    @ResponseBody
+    public ResponseData addItemDetail(@RequestParam("partnerCode") String partnerCode,
+                                      @RequestParam("partnerName") String partnerName,
+                                      @RequestParam("warehouseCode") String warehouseCode,
+                                      @RequestParam("warehouseName") String warehouseName,
+                                      @RequestParam("arrivalDate") Date arrivalDate,
+                                      @RequestParam("detailStr") String detailStr,
+                                      @RequestParam("remark") String remark
+    ) {
+
+       List<PmsOrderPurchaseDetailParam>  pmsOrderPurchaseDetailParamList=JSONObject.parseArray(detailStr,PmsOrderPurchaseDetailParam.class);
+
+       if (pmsOrderPurchaseDetailParamList==null||pmsOrderPurchaseDetailParamList.size()==0)
+       {
+           return ResponseData.error("没有商品明细");
+       }
+        Map<String, String> replaceMap = new HashMap<String, String>();
+        replaceMap.put("warehouseId", warehouseCode);
+        String orderNo = this.codeService.generateCode(CodeExpressEnum.billnoPurchase, replaceMap);
+
+        if (Strings.isNullOrEmpty(orderNo))
+        {
+            return ResponseData.error("采购单号为空");
+        }
+
+        for (PmsOrderPurchaseDetailParam pmsOrderPurchaseDetailParam:pmsOrderPurchaseDetailParamList)
+        {
+            GoodsResult goodsResult=goodsService.getGoodsBySkuCode(pmsOrderPurchaseDetailParam.getSkuCode());
+            pmsOrderPurchaseDetailParam.setGoodsModel(goodsResult.getGoodsModel());
+            pmsOrderPurchaseDetailParam.setUnitName(goodsResult.getUnitName());
+            pmsOrderPurchaseDetailParam.setRealityNum(new BigDecimal(0));
+            pmsOrderPurchaseDetailParam.setTaxRate(goodsResult.getTaxRate());
+            pmsOrderPurchaseDetailParam.setCreateUser(LoginContextHolder.getContext().getUser().getUsername());
+            pmsOrderPurchaseDetailParam.setCreateTime(new Date());
+            pmsOrderPurchaseDetailParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+            pmsOrderPurchaseDetailParam.setUpdateTime(new Date());
+            pmsOrderPurchaseDetailParam.setIsFresh(goodsResult.getIsFresh());
+            pmsOrderPurchaseDetailParam.setYn(1);
+        }
+
+        PmsOrderPurchaseParam pmsOrderPurchaseParam=new PmsOrderPurchaseParam();
+        pmsOrderPurchaseParam.setOrderNo(orderNo);
+        pmsOrderPurchaseParam.setWarehouseCode(warehouseCode);
+        pmsOrderPurchaseParam.setPartnerCode(partnerCode);
+        pmsOrderPurchaseParam.setArrivalDate(arrivalDate);
+        pmsOrderPurchaseParam.setRemark(remark);
+        pmsOrderPurchaseParam.setCreateUser(LoginContextHolder.getContext().getUser().getUsername());
+        pmsOrderPurchaseParam.setCreateTime(new Date());
+        pmsOrderPurchaseParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        pmsOrderPurchaseParam.setUpdateTime(new Date());
+        pmsOrderPurchaseParam.setOrderState(PmsPurchaseStatus.NEW.getStatusValue());
+        pmsOrderPurchaseParam.setWarehouseName(warehouseName);
+        pmsOrderPurchaseParam.setPartnerName(partnerName);
+        pmsOrderPurchaseParam.setYn(1);
+        pmsOrderPurchaseDetailService.savePmsPurchase(pmsOrderPurchaseParam,pmsOrderPurchaseDetailParamList);
+        return ResponseData.success();
+    }
+
+
 
 }
 

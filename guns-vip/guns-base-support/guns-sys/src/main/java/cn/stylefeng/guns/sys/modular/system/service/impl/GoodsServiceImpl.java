@@ -81,4 +81,16 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         return entity;
     }
 
+    @Override
+    public GoodsResult getGoodsBySkuCode(String skuCode) {
+        GoodsParam goodsParam=new GoodsParam();
+        goodsParam.setYn(1);
+        goodsParam.setSkuCode(skuCode);
+        List<GoodsResult> goodsResultList=this.baseMapper.customList(goodsParam);
+        if (goodsResultList!=null&&goodsResultList.size()>0)
+        {
+            return goodsResultList.get(0);
+        }
+        return null;
+    }
 }

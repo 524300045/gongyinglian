@@ -66,4 +66,6 @@ public interface GoodsService extends IService<Goods> {
      */
      LayuiPageInfo findPageBySpec(GoodsParam param);
 
+    GoodsResult getGoodsBySkuCode(String skuCode);
+
 }

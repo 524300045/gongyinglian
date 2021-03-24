@@ -59,9 +59,9 @@
 
                             <div class="layui-inline">
 
-                                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>提交</button>
+                                <button id="btnSumbit" class="layui-btn icon-btn" lay-filter="btnSubmit" lay-submit><i class="layui-icon">&#xe654;</i>提交</button>
 
-                                <button id="btnGoods" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>选择商品</button>
+                               <!-- <button id="btnGoods" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>选择商品</button>-->
 
                             </div>
                         </div>
@@ -114,4 +114,22 @@
     </div>
 </div>
 
+<script type="text/html" id="goodsTableBar">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">选择</a>
+
+</script>
+
+<script type="text/html" id="detailTableBar">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+
+</script>
+
+<script type="text/html" id="planNumTemplet">
+    <input id="planNum" class="layui-input" type="text" placeholder="采购数量"  />
+
+</script>
+<script type="text/html" id="taxPriceTemplet">
+    <input id="taxPrice" class="layui-input" type="text" placeholder="采购价格"  />
+
+</script>
 @}

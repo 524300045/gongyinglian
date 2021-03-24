@@ -5,12 +5,15 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.PmsOrderPurchaseDetail;
 import cn.stylefeng.guns.sys.modular.system.mapper.PmsOrderPurchaseDetailMapper;
 import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseDetailParam;
+import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseParam;
 import cn.stylefeng.guns.sys.modular.system.model.result.PmsOrderPurchaseDetailResult;
 import  cn.stylefeng.guns.sys.modular.system.service.PmsOrderPurchaseDetailService;
+import cn.stylefeng.guns.sys.modular.system.service.PmsOrderPurchaseService;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -26,6 +29,9 @@ import java.util.List;
  */
 @Service
 public class PmsOrderPurchaseDetailServiceImpl extends ServiceImpl<PmsOrderPurchaseDetailMapper, PmsOrderPurchaseDetail> implements PmsOrderPurchaseDetailService {
+
+    @Autowired
+    private PmsOrderPurchaseService pmsOrderPurchaseService;
 
     @Override
     public void add(PmsOrderPurchaseDetailParam param){
@@ -79,6 +85,18 @@ public class PmsOrderPurchaseDetailServiceImpl extends ServiceImpl<PmsOrderPurch
         PmsOrderPurchaseDetail entity = new PmsOrderPurchaseDetail();
         ToolUtil.copyProperties(param, entity);
         return entity;
+    }
+
+    public boolean savePmsPurchase(PmsOrderPurchaseParam pmsOrderPurchaseParam,
+                                   List<PmsOrderPurchaseDetailParam> pmsOrderPurchaseDetailParams)
+    {
+        pmsOrderPurchaseService.add(pmsOrderPurchaseParam);
+        for (PmsOrderPurchaseDetailParam pmsOrderPurchaseDetailParam:pmsOrderPurchaseDetailParams)
+        {
+            pmsOrderPurchaseDetailParam.setOrderNo(pmsOrderPurchaseParam.getOrderNo());
+            add(pmsOrderPurchaseDetailParam);
+        }
+        return true;
     }
 
 }

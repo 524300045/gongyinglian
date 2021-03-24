@@ -32,6 +32,8 @@ public class PartnerGoodsParam implements Serializable, BaseValidatingParam {
      */
     private String skuCode;
 
+    private String goodsName;
+
     /**
      * 创建人
      */
@@ -53,6 +55,9 @@ public class PartnerGoodsParam implements Serializable, BaseValidatingParam {
     private Date updateTime;
 
     private Integer yn;
+
+
+
 
     @Override
     public String checkParam() {
