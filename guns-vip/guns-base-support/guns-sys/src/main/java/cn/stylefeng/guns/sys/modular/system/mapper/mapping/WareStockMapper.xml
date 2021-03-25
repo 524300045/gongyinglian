@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.sys.modular.system.mapper.WareStockMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.sys.modular.system.entity.WareStock">
+        <id column="id" property="id" />
+        <result column="warehouse_code" property="warehouseCode" />
+        <result column="warehouse_name" property="warehouseName" />
+        <result column="sku_code" property="skuCode" />
+        <result column="goods_name" property="goodsName" />
+        <result column="goods_model" property="goodsModel" />
+        <result column="unit_name" property="unitName" />
+        <result column="real_stock" property="realStock" />
+        <result column="for_order_stock" property="forOrderStock" />
+        <result column="occupy_stock" property="occupyStock" />
+        <result column="lock_stock" property="lockStock" />
+        <result column="broken_stock" property="brokenStock" />
+        <result column="onway_stock" property="onwayStock" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="yn" property="yn" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS "id", warehouse_code AS "warehouseCode", warehouse_name AS "warehouseName", sku_code AS "skuCode", goods_name AS "goodsName", goods_model AS "goodsModel", unit_name AS "unitName", real_stock AS "realStock", for_order_stock AS "forOrderStock", occupy_stock AS "occupyStock", lock_stock AS "lockStock", broken_stock AS "brokenStock", onway_stock AS "onwayStock", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime", yn AS "yn"
+    </sql>
+
+
+    <select id="customList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.WareStockResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.WareStockParam">
+        select
+        <include refid="Base_Column_List"/>
+        from ware_stock where 1 = 1
+    </select>
+
+    <select id="customMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.WareStockParam">
+        select
+        <include refid="Base_Column_List"/>
+        from ware_stock where 1 = 1
+    </select>
+
+    <select id="customPageList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.WareStockResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.WareStockParam">
+        select
+        <include refid="Base_Column_List"/>
+        from ware_stock where 1 = 1
+    </select>
+
+    <select id="customPageMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.WareStockParam">
+        select
+        <include refid="Base_Column_List"/>
+        from ware_stock where 1 = 1
+    </select>
+
+</mapper>

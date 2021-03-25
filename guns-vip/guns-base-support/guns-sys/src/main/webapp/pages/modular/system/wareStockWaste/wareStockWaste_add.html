@@ -1,0 +1,112 @@
+@layout("/common/_form.html",{js:["/assets/wareStockWaste/wareStockWaste/wareStockWaste_add.js"],css:["/assets/expand/module/formSelects/formSelects-v4.css"]}){
+
+<form class="layui-form" id="wareStockWasteForm" lay-filter="wareStockWasteForm">
+    <div class="layui-fluid" style="padding-bottom: 75px;">
+        <div class="layui-card">
+            <div class="layui-card-header">基本信息</div>
+            <div class="layui-card-body">
+                <div class="layui-form-item layui-row">
+                    <input name="id" type="hidden"/>
+
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">仓库编码<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input id="warehouseCode" name="warehouseCode" placeholder="请输入仓库编码" type="text" class="layui-input" lay-verify="required" required/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">仓库名称<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input id="warehouseName" name="warehouseName" placeholder="请输入仓库名称" type="text" class="layui-input" lay-verify="required" required/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">商品编码<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input id="skuCode" name="skuCode" placeholder="请输入商品编码" type="text" class="layui-input" lay-verify="required" required/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">商品名称<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input id="goodsName" name="goodsName" placeholder="请输入商品名称" type="text" class="layui-input" lay-verify="required" required/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">规格<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input id="goodsModel" name="goodsModel" placeholder="请输入规格" type="text" class="layui-input" lay-verify="required" required/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">单位<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input id="unitName" name="unitName" placeholder="请输入单位" type="text" class="layui-input" lay-verify="required" required/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">关联单号<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input id="businessNo" name="businessNo" placeholder="请输入关联单号" type="text" class="layui-input" lay-verify="required" required/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">0:减 1:加<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input id="direction" name="direction" placeholder="请输入0:减 1:加" type="text" class="layui-input" lay-verify="required" required/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">变动数量<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input id="amount" name="amount" placeholder="请输入变动数量" type="text" class="layui-input" lay-verify="required" required/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">变动后数量<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input id="balanceAmount" name="balanceAmount" placeholder="请输入变动后数量" type="text" class="layui-input" lay-verify="required" required/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">流水类型<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input id="type" name="type" placeholder="请输入流水类型" type="text" class="layui-input" lay-verify="required" required/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">业务类型<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input id="businessType" name="businessType" placeholder="请输入业务类型" type="text" class="layui-input" lay-verify="required" required/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">操作类型<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input id="operationType" name="operationType" placeholder="请输入操作类型" type="text" class="layui-input" lay-verify="required" required/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label"><span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input id="remark" name="remark" placeholder="请输入" type="text" class="layui-input" lay-verify="required" required/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label"><span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input id="yn" name="yn" placeholder="请输入" type="text" class="layui-input" lay-verify="required" required/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group-bottom text-center">
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
+        <button type="reset" class="layui-btn layui-btn-primary" id="cancel">&emsp;取消&emsp;</button>
+    </div>
+
+</form>
+
+@}

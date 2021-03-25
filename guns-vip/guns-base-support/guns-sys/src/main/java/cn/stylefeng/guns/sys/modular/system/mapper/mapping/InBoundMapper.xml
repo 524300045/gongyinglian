@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.sys.modular.system.mapper.InBoundMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.sys.modular.system.entity.InBound">
+        <id column="id" property="id" />
+        <result column="warehouse_code" property="warehouseCode" />
+        <result column="warehouse_name" property="warehouseName" />
+        <result column="inbound_task_code" property="inboundTaskCode" />
+        <result column="order_no" property="orderNo" />
+        <result column="partner_code" property="partnerCode" />
+        <result column="partner_name" property="partnerName" />
+        <result column="order_type" property="orderType" />
+        <result column="order_state" property="orderState" />
+        <result column="remark" property="remark" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="yn" property="yn" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS "id", warehouse_code AS "warehouseCode", warehouse_name AS "warehouseName", inbound_task_code AS "inboundTaskCode", order_no AS "orderNo", partner_code AS "partnerCode", partner_name AS "partnerName", order_type AS "orderType", order_state AS "orderState", remark AS "remark", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime", yn AS "yn"
+    </sql>
+
+
+    <select id="customList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.InBoundResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.InBoundParam">
+        select
+        <include refid="Base_Column_List"/>
+        from in_bound where 1 = 1
+    </select>
+
+    <select id="customMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.InBoundParam">
+        select
+        <include refid="Base_Column_List"/>
+        from in_bound where 1 = 1
+    </select>
+
+    <select id="customPageList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.InBoundResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.InBoundParam">
+        select
+        <include refid="Base_Column_List"/>
+        from in_bound where 1 = 1
+    </select>
+
+    <select id="customPageMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.InBoundParam">
+        select
+        <include refid="Base_Column_List"/>
+        from in_bound where 1 = 1
+    </select>
+
+</mapper>
