@@ -43,7 +43,7 @@
     <select id="customPageList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.PmsOrderPurchaseDetailResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseDetailParam">
         select
         <include refid="Base_Column_List"/>
-        from pms_order_purchase_detail where 1 = 1
+        from pms_order_purchase_detail  where <include refid="sqlWhere"/>
     </select>
 
     <select id="customPageMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseDetailParam">
@@ -51,5 +51,14 @@
         <include refid="Base_Column_List"/>
         from pms_order_purchase_detail where 1 = 1
     </select>
+
+    <sql id="sqlWhere">
+        yn=1
+        <if test="paramCondition.orderNo!= null">
+            and  order_no = #{paramCondition.orderNo,jdbcType=VARCHAR}
+        </if>
+
+
+    </sql>
 
 </mapper>

@@ -84,6 +84,11 @@ public class PmsOrderPurchaseParam implements Serializable, BaseValidatingParam 
 
     private Integer yn;
 
+    private String cancelUser;
+
+    private String auditUser;
+
+
     @Override
     public String checkParam() {
         return null;

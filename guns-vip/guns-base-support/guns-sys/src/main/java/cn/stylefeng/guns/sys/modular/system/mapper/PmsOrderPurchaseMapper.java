@@ -53,4 +53,8 @@ public interface PmsOrderPurchaseMapper extends BaseMapper<PmsOrderPurchase> {
      */
     Page<Map<String, Object>> customPageMapList(@Param("page") Page page, @Param("paramCondition") PmsOrderPurchaseParam paramCondition);
 
+    int updateCancel(PmsOrderPurchaseParam pmsOrderPurchaseParam);
+
+    int updateAudit(PmsOrderPurchaseParam pmsOrderPurchaseParam);
+
 }

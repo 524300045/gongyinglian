@@ -81,4 +81,21 @@ public class PmsOrderPurchaseServiceImpl extends ServiceImpl<PmsOrderPurchaseMap
         return entity;
     }
 
+    @Override
+    public boolean updateCancel(PmsOrderPurchaseParam pmsOrderPurchaseParam) {
+       int o=this.baseMapper.updateCancel(pmsOrderPurchaseParam);
+       if (o>0)
+       {
+           return  true;
+       }
+        return false;
+    }
+
+    @Override
+    public boolean updateAudit(PmsOrderPurchaseParam pmsOrderPurchaseParam) {
+        int o=this.baseMapper.updateAudit(pmsOrderPurchaseParam);
+        if (o>0)
+            return true;
+        return false;
+    }
 }

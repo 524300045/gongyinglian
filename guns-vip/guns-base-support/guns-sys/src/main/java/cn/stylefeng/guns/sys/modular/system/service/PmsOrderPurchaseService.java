@@ -66,4 +66,8 @@ public interface PmsOrderPurchaseService extends IService<PmsOrderPurchase> {
      */
      LayuiPageInfo findPageBySpec(PmsOrderPurchaseParam param);
 
+    boolean updateCancel(PmsOrderPurchaseParam pmsOrderPurchaseParam);
+
+    boolean updateAudit(PmsOrderPurchaseParam pmsOrderPurchaseParam);
+
 }

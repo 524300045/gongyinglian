@@ -1,7 +1,9 @@
 package cn.stylefeng.guns.sys.modular.system.controller;
 
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.PmsOrderPurchase;
+import cn.stylefeng.guns.sys.modular.system.enums.PmsPurchaseStatusEnum;
 import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseParam;
 import cn.stylefeng.guns.sys.modular.system.service.PmsOrderPurchaseService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
@@ -122,6 +124,32 @@ public class PmsOrderPurchaseController extends BaseController {
     @RequestMapping("/list")
     public LayuiPageInfo list(PmsOrderPurchaseParam pmsOrderPurchaseParam) {
         return this.pmsOrderPurchaseService.findPageBySpec(pmsOrderPurchaseParam);
+    }
+
+    /**
+     * 审核接口
+     *
+     * @author zx
+     * @Date 2021-03-22
+     */
+    @RequestMapping("/audit")
+    @ResponseBody
+    public ResponseData audit(PmsOrderPurchaseParam pmsOrderPurchaseParam) {
+        pmsOrderPurchaseParam.setOrderState(PmsPurchaseStatusEnum.AUDIT.getStatusValue());
+        pmsOrderPurchaseParam.setAuditUser(LoginContextHolder.getContext().getUser().getUsername());
+        pmsOrderPurchaseParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        this.pmsOrderPurchaseService.updateAudit(pmsOrderPurchaseParam);
+        return ResponseData.success();
+    }
+
+    @RequestMapping("/cancel")
+    @ResponseBody
+    public ResponseData cancel(PmsOrderPurchaseParam pmsOrderPurchaseParam) {
+        pmsOrderPurchaseParam.setOrderState(PmsPurchaseStatusEnum.CANCEL.getStatusValue());
+        pmsOrderPurchaseParam.setCancelUser(LoginContextHolder.getContext().getUser().getUsername());
+        pmsOrderPurchaseParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        this.pmsOrderPurchaseService.updateCancel(pmsOrderPurchaseParam);
+        return ResponseData.success();
     }
 
 }

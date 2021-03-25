@@ -58,7 +58,7 @@ layui.use(['form', 'admin','table','ax','laydate','upload','formSelects'], funct
             {field: 'skuCode', sort: true, title: '商品编码'},
             {field: 'goodsName', sort: true, title: '商品名称'},
             {field: 'goodsModel', sort: true, title: '规格'},
-            {field: 'planNum',title: '采购数量', minWidth:100, align:"left",edit: 'number',style: 'outline: 1px solid #e6e6e6;outline-offset: -5px;'},
+            {field: 'planNum',title: '采购数量', minWidth:100, align:"left",edit: 'text',style: 'outline: 1px solid #e6e6e6;outline-offset: -5px;',event:"dataCol"},
             {field: 'taxPrice',title: '价格', minWidth:100, align:"left",edit: 'text',style: 'outline: 1px solid #e6e6e6;outline-offset: -5px;'},
             {field: 'unitName', sort: true, title: '单位'},
             {align: 'center', toolbar: '#detailTableBar', title: '操作'}
@@ -284,6 +284,10 @@ layui.use(['form', 'admin','table','ax','laydate','upload','formSelects'], funct
             if (data.code==200)
             {
                 Feng.success("添加成功！");
+                rowData=[];
+                table.reload("detailTable", {
+                    data : rowData,
+                })
             }
             else
             {
@@ -321,13 +325,59 @@ layui.use(['form', 'admin','table','ax','laydate','upload','formSelects'], funct
         }
     });
 
-    table.on('tool(' + DetailTable.tableId + ')', function(obj){
+    table.on('edit(' + DetailTable.tableId + ')', function(obj){
         console.log(obj);
-        if (obj.event =="dataCol"){
+        //console.log(obj.event)
+        if (obj.field =="planNum"){
             //dataCol=obj;
             // $("table input").attr("type","number");
             // $("table input").attr("step","0.1");
-            console.log(obj);
+           // console.log(obj);
+            var value = obj.value;
+            console.log(value);
+            if (value==""||isNaN(value))
+            {
+                console.log("非数字");
+              obj.data.planNum="";
+                obj.update(obj.data);
+                layer.msg("采购数量只能输入数字!");
+                table.reload("detailTable");
+            }
+            else
+            {
+                for (var i=0;i<rowData.length;i++)
+                {
+                    if (obj.data.skuCode==rowData[i].skuCode)
+                    {
+                        rowData[i].planNum=value;
+                    }
+                }
+            }
+        }
+        if (obj.field =="taxPrice")
+        {
+            var value = obj.value;
+            console.log(value);
+            if (value==""||isNaN(value))
+            {
+                console.log("非数字");
+                obj.data.planNum="";
+                obj.update(obj.data);
+                layer.msg("价格只能输入数字!");
+                table.reload("detailTable", {
+                    data : rowData,
+                })
+            }
+            else
+            {
+                for (var i=0;i<rowData.length;i++)
+                {
+                    if (obj.data.skuCode==rowData[i].skuCode)
+                    {
+                        rowData[i].taxPrice=value;
+                    }
+                }
+            }
         }
     })
 

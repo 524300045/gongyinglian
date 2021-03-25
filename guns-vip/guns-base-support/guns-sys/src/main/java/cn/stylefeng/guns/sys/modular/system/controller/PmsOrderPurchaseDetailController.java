@@ -4,11 +4,8 @@ import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.core.enums.CodeExpressEnum;
-import cn.stylefeng.guns.sys.modular.system.entity.Partner;
-import cn.stylefeng.guns.sys.modular.system.entity.PmsOrderPurchase;
 import cn.stylefeng.guns.sys.modular.system.entity.PmsOrderPurchaseDetail;
-import cn.stylefeng.guns.sys.modular.system.entity.WarehouseInfo;
-import cn.stylefeng.guns.sys.modular.system.enums.PmsPurchaseStatus;
+import cn.stylefeng.guns.sys.modular.system.enums.PmsPurchaseStatusEnum;
 import cn.stylefeng.guns.sys.modular.system.model.params.*;
 import cn.stylefeng.guns.sys.modular.system.model.result.GoodsResult;
 import cn.stylefeng.guns.sys.modular.system.model.result.PartnerResult;
@@ -274,12 +271,28 @@ public class PmsOrderPurchaseDetailController extends BaseController {
         pmsOrderPurchaseParam.setCreateTime(new Date());
         pmsOrderPurchaseParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
         pmsOrderPurchaseParam.setUpdateTime(new Date());
-        pmsOrderPurchaseParam.setOrderState(PmsPurchaseStatus.NEW.getStatusValue());
+        pmsOrderPurchaseParam.setOrderState(PmsPurchaseStatusEnum.NEW.getStatusValue());
         pmsOrderPurchaseParam.setWarehouseName(warehouseName);
         pmsOrderPurchaseParam.setPartnerName(partnerName);
         pmsOrderPurchaseParam.setYn(1);
         pmsOrderPurchaseDetailService.savePmsPurchase(pmsOrderPurchaseParam,pmsOrderPurchaseDetailParamList);
         return ResponseData.success();
+    }
+
+
+
+    @RequestMapping("viewDetail")
+    public String viewDetail(
+                              Model model) {
+        return PREFIX + "/viewDetail.html";
+    }
+
+    @ResponseBody
+    @RequestMapping("/detaillist")
+    public LayuiPageInfo detailList(@RequestParam("orderNo") String orderNo) {
+        PmsOrderPurchaseDetailParam pmsOrderPurchaseDetailParam=new PmsOrderPurchaseDetailParam();
+        pmsOrderPurchaseDetailParam.setOrderNo(orderNo);
+        return this.pmsOrderPurchaseDetailService.findPageBySpec(pmsOrderPurchaseDetailParam);
     }
 
 

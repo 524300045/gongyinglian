@@ -50,4 +50,26 @@
         from pms_order_purchase where 1 = 1
     </select>
 
+    <update id="updateCancel" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseParam">
+    update pms_order_purchase
+    set
+    order_state=#{orderState,jdbcType=INTEGER},
+     cancel_time =now(),
+      cancel_user = #{cancelUser,jdbcType=VARCHAR},
+            update_user = #{updateUser,jdbcType=VARCHAR},
+      update_time =now()
+    where order_no = #{orderNo,jdbcType=VARCHAR}
+  </update>
+
+    <update id="updateAudit" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseParam">
+    update pms_order_purchase
+    set
+      order_state=#{orderState,jdbcType=INTEGER},
+     audit_time =now(),
+      audit_user = #{auditUser,jdbcType=VARCHAR},
+            update_user = #{updateUser,jdbcType=VARCHAR},
+      update_time =now()
+    where order_no = #{orderNo,jdbcType=VARCHAR}
+  </update>
+
 </mapper>
