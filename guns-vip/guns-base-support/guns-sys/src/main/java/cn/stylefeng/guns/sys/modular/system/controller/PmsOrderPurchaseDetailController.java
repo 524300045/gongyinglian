@@ -295,6 +295,23 @@ public class PmsOrderPurchaseDetailController extends BaseController {
         return this.pmsOrderPurchaseDetailService.findPageBySpec(pmsOrderPurchaseDetailParam);
     }
 
+    /**
+     * 采购单入库
+     * @return
+     */
+    @RequestMapping("/detailInbound")
+    public String detailInbound() {
+        return PREFIX + "/pmsOrderPurchaseDetailInbound.html";
+    }
+
+
+
+
+    @ResponseBody
+    @RequestMapping("/detailList")
+    public LayuiPageInfo detailList(PmsOrderPurchaseDetailParam pmsOrderPurchaseDetailParam) {
+        return this.pmsOrderPurchaseDetailService.selectPageInfo(pmsOrderPurchaseDetailParam);
+    }
 
 
 }

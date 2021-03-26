@@ -22,6 +22,30 @@
         <result column="yn" property="yn" />
     </resultMap>
 
+
+    <resultMap id="DetailResultMap" type="cn.stylefeng.guns.sys.modular.system.model.result.PmsOrderPurchaseDetailInboundResult">
+        <id column="id" property="id" />
+        <result column="warehouse_code" property="warehouseCode" />
+        <result column="warehouse_name" property="warehouseName" />
+        <result column="partner_code" property="partnerCode" />
+        <result column="partner_name" property="partnerName" />
+        <result column="order_no" property="orderNo" />
+        <result column="sku_code" property="skuCode" />
+        <result column="goods_name" property="goodsName" />
+        <result column="goods_model" property="goodsModel" />
+        <result column="unit_name" property="unitName" />
+        <result column="is_fresh" property="isFresh" />
+        <result column="plan_num" property="planNum" />
+        <result column="reality_num" property="realityNum" />
+        <result column="tax_rate" property="taxRate" />
+        <result column="tax_price" property="taxPrice" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="yn" property="yn" />
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id AS "id", order_no AS "orderNo", sku_code AS "skuCode", goods_name AS "goodsName", goods_model AS "goodsModel", unit_name AS "unitName", is_fresh AS "isFresh", plan_num AS "planNum", reality_num AS "realityNum", tax_rate AS "taxRate", tax_price AS "taxPrice", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime", yn AS "yn"
@@ -60,5 +84,16 @@
 
 
     </sql>
+
+
+    <select id="selectPageList" resultMap="DetailResultMap"
+            parameterType="cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseDetailParam">
+       SELECT popd.*,p.warehouse_name,p.partner_name,
+ p.warehouse_code,p.partner_code
+ FROM pms_order_purchase_detail popd INNER JOIN  pms_order_purchase p
+ON popd.order_no=p.order_no
+WHERE popd.yn=1 AND p.yn=1
+
+    </select>
 
 </mapper>

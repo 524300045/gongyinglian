@@ -2,6 +2,7 @@ package cn.stylefeng.guns.sys.modular.system.mapper;
 
 import cn.stylefeng.guns.sys.modular.system.entity.PmsOrderPurchaseDetail;
 import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseDetailParam;
+import cn.stylefeng.guns.sys.modular.system.model.result.PmsOrderPurchaseDetailInboundResult;
 import cn.stylefeng.guns.sys.modular.system.model.result.PmsOrderPurchaseDetailResult;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -52,5 +53,7 @@ public interface PmsOrderPurchaseDetailMapper extends BaseMapper<PmsOrderPurchas
      * @Date 2021-03-22
      */
     Page<Map<String, Object>> customPageMapList(@Param("page") Page page, @Param("paramCondition") PmsOrderPurchaseDetailParam paramCondition);
+
+    Page<PmsOrderPurchaseDetailInboundResult> selectPageList(@Param("page") Page page, @Param("paramCondition") PmsOrderPurchaseDetailParam paramCondition);
 
 }

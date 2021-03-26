@@ -6,6 +6,7 @@ import cn.stylefeng.guns.sys.modular.system.entity.PmsOrderPurchaseDetail;
 import cn.stylefeng.guns.sys.modular.system.mapper.PmsOrderPurchaseDetailMapper;
 import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseDetailParam;
 import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseParam;
+import cn.stylefeng.guns.sys.modular.system.model.result.PmsOrderPurchaseDetailInboundResult;
 import cn.stylefeng.guns.sys.modular.system.model.result.PmsOrderPurchaseDetailResult;
 import  cn.stylefeng.guns.sys.modular.system.service.PmsOrderPurchaseDetailService;
 import cn.stylefeng.guns.sys.modular.system.service.PmsOrderPurchaseService;
@@ -28,7 +29,8 @@ import java.util.List;
  * @since 2021-03-22
  */
 @Service
-public class PmsOrderPurchaseDetailServiceImpl extends ServiceImpl<PmsOrderPurchaseDetailMapper, PmsOrderPurchaseDetail> implements PmsOrderPurchaseDetailService {
+public class PmsOrderPurchaseDetailServiceImpl extends ServiceImpl<PmsOrderPurchaseDetailMapper, PmsOrderPurchaseDetail>
+        implements PmsOrderPurchaseDetailService {
 
     @Autowired
     private PmsOrderPurchaseService pmsOrderPurchaseService;
@@ -98,5 +100,13 @@ public class PmsOrderPurchaseDetailServiceImpl extends ServiceImpl<PmsOrderPurch
         }
         return true;
     }
+
+    @Override
+    public LayuiPageInfo selectPageInfo(PmsOrderPurchaseDetailParam param){
+        Page pageContext = getPageContext();
+        IPage page = this.baseMapper.selectPageList(pageContext, param);
+        return LayuiPageFactory.createPageInfo(page);
+    }
+
 
 }

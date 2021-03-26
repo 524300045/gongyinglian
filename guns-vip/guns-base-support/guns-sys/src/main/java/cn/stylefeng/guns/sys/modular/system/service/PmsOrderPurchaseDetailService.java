@@ -67,7 +67,11 @@ public interface PmsOrderPurchaseDetailService extends IService<PmsOrderPurchase
      */
      LayuiPageInfo findPageBySpec(PmsOrderPurchaseDetailParam param);
 
-    public boolean savePmsPurchase(PmsOrderPurchaseParam pmsOrderPurchaseParam,
+     boolean savePmsPurchase(PmsOrderPurchaseParam pmsOrderPurchaseParam,
                                    List<PmsOrderPurchaseDetailParam> pmsOrderPurchaseDetailParams);
+
+       LayuiPageInfo selectPageInfo(PmsOrderPurchaseDetailParam param);
+
+
 
 }

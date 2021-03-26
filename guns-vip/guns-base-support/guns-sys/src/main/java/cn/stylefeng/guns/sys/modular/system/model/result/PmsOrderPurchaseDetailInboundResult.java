@@ -1,10 +1,10 @@
-package cn.stylefeng.guns.sys.modular.system.model.params;
+package cn.stylefeng.guns.sys.modular.system.model.result;
 
 import lombok.Data;
-import cn.stylefeng.roses.kernel.model.validator.BaseValidatingParam;
-import java.util.Date;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <p>
@@ -15,7 +15,7 @@ import java.math.BigDecimal;
  * @since 2021-03-22
  */
 @Data
-public class PmsOrderPurchaseDetailParam implements Serializable, BaseValidatingParam {
+public class PmsOrderPurchaseDetailInboundResult implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -94,15 +94,12 @@ public class PmsOrderPurchaseDetailParam implements Serializable, BaseValidating
 
     private Integer yn;
 
-    private String partnerCode;
-
     private String warehouseCode;
 
+    private String warehouseName;
 
+    private String partnerCode;
 
-    @Override
-    public String checkParam() {
-        return null;
-    }
+    private String partnerName;
 
 }
