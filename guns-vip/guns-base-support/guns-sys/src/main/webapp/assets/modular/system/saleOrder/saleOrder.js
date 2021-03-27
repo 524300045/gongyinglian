@@ -9,7 +9,7 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
      * 销售订单表管理
      */
     var SaleOrder = {
-        tableId: "detailTable"
+        tableId: "saleOrderTable"
     };
 
     /**
@@ -17,36 +17,56 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
      */
     SaleOrder.initColumn = function () {
         return [[
-            {type: 'checkbox'},
+
             {field: 'id', hide: true, title: ''},
-            {field: 'orderNo', sort: true, title: '采购订单编码'},
-            {field: 'warehouseCode', sort: true, title: '仓库编码'},
+            {align: 'center',width: 200,  title: '操作'
+                , templet: function (d)
+                {
+                    if (d.orderState ===0) {
+                        return '<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">审核</a>' +
+                            '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">取消</a>'+
+                            '<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="view">查看</a>'
+                            ;
+                    }
+                    return "<a class=\"layui-btn layui-btn-warm layui-btn-xs\" lay-event=\"view\">查看</a> ";
+                }},
+            {field: 'orderNo', sort: true, title: '订单'},
             {field: 'warehouseName', sort: true, title: '仓库名称'},
-            {field: 'orderState', sort: true, title: '状态0:新建 10:已审核  30:已发货'},
-            {field: 'totalAmount', sort: true, title: '订单总金额'},
-            {field: 'provinceCode', sort: true, title: '省'},
-            {field: 'provinceName', sort: true, title: '省'},
-            {field: 'cityCode', sort: true, title: '市编码'},
-            {field: 'cityName', sort: true, title: '市'},
-            {field: 'areaCode', sort: true, title: '区编码'},
-            {field: 'areaName', sort: true, title: '区'},
-            {field: 'receiverName', sort: true, title: '收货人姓名'},
+            {field: 'orderState', sort: true, title: '状态', templet: function (d)
+                {
+                    if (d.orderState ===0) {
+                        return "新建";
+                    }
+                    else  if (d.orderState ===-10)
+                    {
+                        return "已取消";
+                    }
+                    else  if (d.orderState ===10)
+                    {
+                        return "已审核";
+                    }
+                    else  if (d.orderState ===30)
+                    {
+                        return "已发运";
+                    }
+                    else
+                    {
+                        return  "";
+                    }
+                }},
+            {field: 'totalAmount', sort: true, title: '金额'},
+            {field: 'receiverName', sort: true, title: '收货人'},
             {field: 'receiverPhone', sort: true, title: '电话'},
             {field: 'address', sort: true, title: '地址'},
+            {field: 'deliveryDate', sort: true, title: '发货日期'},
             {field: 'auditUser', sort: true, title: '审核人'},
             {field: 'auditTime', sort: true, title: '审核时间'},
             {field: 'cancelUser', sort: true, title: '取消人'},
             {field: 'cancelTime', sort: true, title: '取消时间'},
-            {field: 'deliveryTime', sort: true, title: '出库时间'},
+            {field: 'deliveryTime', sort: true, title: '发运时间'},
             {field: 'deliveryUser', sort: true, title: '发运人'},
-            {field: 'deliveryDate', sort: true, title: '发货日期'},
-            {field: 'remark', sort: true, title: '备注'},
-            {field: 'createUser', sort: true, title: '创建人'},
-            {field: 'createTime', sort: true, title: '创建时间'},
-            {field: 'updateUser', sort: true, title: '更新人'},
-            {field: 'updateTime', sort: true, title: '更新时间'},
-            {field: 'yn', sort: true, title: ''},
-            {align: 'center', toolbar: '#tableBar', title: '操作'}
+            {field: 'remark', sort: true, title: '备注'}
+
         ]];
     };
 
