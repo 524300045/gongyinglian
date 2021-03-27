@@ -5,6 +5,7 @@ layui.use(['table', 'admin', 'ax', 'func','laydate'], function () {
     var admin = layui.admin;
     var func = layui.func;
     var laydate = layui.laydate;
+    var form = layui.form;
     /**
      * 销售订单明细管理
      */
@@ -128,6 +129,90 @@ layui.use(['table', 'admin', 'ax', 'func','laydate'], function () {
         });
     });
 
+
+    $('#btnSave').click(function () {
+
+        var  tableDatas=table.cache[SaleOrderDetail.tableId];
+        console.log(tableDatas);
+        if (tableDatas.length==0)
+        {
+            Feng.error("请选择商品");
+            return;
+        }
+
+
+        if ($("#warehouseCode").val()=="")
+        {
+            Feng.error("请选择仓库");
+            return;
+        }
+
+        if ($("#deliveryDate").val()=="")
+        {
+            Feng.error("请选择发货日期");
+            return;
+        }
+
+        if ($("#receiverName").val()=="")
+        {
+            Feng.error("请输入姓名");
+            return;
+        }
+        if ($("#address").val()=="")
+        {
+            Feng.error("请输入地址");
+            return;
+        }
+
+        var msg='';
+        for (var i=0;i<tableDatas.length;i++)
+        {
+            if (tableDatas[i].planNum==""||tableDatas[i].taxPrice=="")
+            {
+                msg=msg+tableDatas[i].skuCode+"未填写数量和价格,<br/>";
+            }
+        }
+        if (msg!="")
+        {
+            Feng.error(msg);
+            return;
+        }
+
+        var ajax = new $ax(Feng.ctxPath + "/saleOrder/addOrderDetail", function (data) {
+            if (data.code==200)
+            {
+                Feng.success("创建成功！");
+                rowData=[];
+                table.reload("detailTable", {
+                    data : [],
+                })
+            }
+            else
+            {
+                Feng.error("添加失败！" + data.message)
+            }
+        }, function (data) {
+            Feng.error("添加失败！" + data.responseJSON.message)
+        });
+
+        ajax.set("receiverName",$("#receiverName").val());
+        ajax.set("receiverPhone",$("#receiverPhone").val());
+        ajax.set("address",$("#address").val());
+        ajax.set("warehouseCode",$("#warehouseCode").val());
+        ajax.set("warehouseName",$("#warehouseCode").find("option:selected").text());
+        ajax.set("deliveryDate",$("#deliveryDate").val());
+        ajax.set("detailStr",JSON.stringify(tableDatas));
+        ajax.set("remark",$("#remark").val());
+        ajax.start();
+
+        return false;
+    });
+
+    //表单提交事件
+    form.on('submit(btnSubmit)', function (data) {
+
+
+    });
 
 
     /**

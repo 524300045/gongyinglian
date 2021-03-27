@@ -2,6 +2,7 @@ package cn.stylefeng.guns.sys.modular.system.service;
 
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.SaleOrder;
+import cn.stylefeng.guns.sys.modular.system.model.params.SaleOrderDetailParam;
 import cn.stylefeng.guns.sys.modular.system.model.params.SaleOrderParam;
 import cn.stylefeng.guns.sys.modular.system.model.result.SaleOrderResult;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -65,5 +66,7 @@ public interface SaleOrderService extends IService<SaleOrder> {
      * @Date 2021-03-27
      */
      LayuiPageInfo findPageBySpec(SaleOrderParam param);
+
+     boolean addOrder(SaleOrderParam saleOrderParam, List<SaleOrderDetailParam> saleOrderDetailParamList);
 
 }

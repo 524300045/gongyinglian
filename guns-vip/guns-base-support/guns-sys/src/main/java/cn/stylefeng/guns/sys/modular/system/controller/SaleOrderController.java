@@ -1,21 +1,34 @@
 package cn.stylefeng.guns.sys.modular.system.controller;
 
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.sys.core.enums.CodeExpressEnum;
 import cn.stylefeng.guns.sys.modular.system.entity.SaleOrder;
+import cn.stylefeng.guns.sys.modular.system.enums.SaleOrderStatusEnum;
+import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseDetailParam;
+import cn.stylefeng.guns.sys.modular.system.model.params.SaleOrderDetailParam;
 import cn.stylefeng.guns.sys.modular.system.model.params.SaleOrderParam;
 import cn.stylefeng.guns.sys.modular.system.model.params.WarehouseInfoParam;
 import cn.stylefeng.guns.sys.modular.system.model.result.WarehouseInfoResult;
+import cn.stylefeng.guns.sys.modular.system.service.CodeService;
 import cn.stylefeng.guns.sys.modular.system.service.SaleOrderService;
 import cn.stylefeng.guns.sys.modular.system.service.WarehouseInfoService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -35,6 +48,10 @@ public class SaleOrderController extends BaseController {
 
     @Autowired
     private WarehouseInfoService warehouseInfoService;
+
+    @Autowired
+    private CodeService codeService;
+
 
     /**
      * 跳转到主页面
@@ -137,6 +154,75 @@ public class SaleOrderController extends BaseController {
     @RequestMapping("/list")
     public LayuiPageInfo list(SaleOrderParam saleOrderParam) {
         return this.saleOrderService.findPageBySpec(saleOrderParam);
+    }
+
+    @RequestMapping("/addOrderDetail")
+    @ResponseBody
+    public ResponseData addOrderDetail(
+                                    @RequestParam("receiverName") String receiverName,
+                                    @RequestParam("receiverPhone") String receiverPhone,
+                                    @RequestParam("address") String address,
+                                      @RequestParam("warehouseCode") String warehouseCode,
+                                      @RequestParam("warehouseName") String warehouseName,
+                                      @RequestParam("deliveryDate") Date deliveryDate,
+                                    @RequestParam("detailStr") String detailStr,
+                                      @RequestParam("remark") String remark
+
+
+
+
+    ) {
+
+        List<SaleOrderDetailParam>  saleOrderDetailParamList= JSONObject.parseArray(detailStr,SaleOrderDetailParam.class);
+
+        if (saleOrderDetailParamList==null||saleOrderDetailParamList.size()==0)
+        {
+            return ResponseData.error("请选择商品!");
+        }
+        Map<String, String> replaceMap = new HashMap<String, String>();
+        replaceMap.put("warehouseId", warehouseCode);
+        String orderNo = this.codeService.generateCode(CodeExpressEnum.billnoSaleOrder, replaceMap);
+
+        if (Strings.isNullOrEmpty(orderNo))
+        {
+            return ResponseData.error("单号为空");
+        }
+
+      //  BigDecimal totalAmount =saleOrderDetailParamList.stream().map(SaleOrderDetailParam::getTaxPrice).reduce(BigDecimal.ZERO,BigDecimal::add);
+
+        BigDecimal totalAmount = saleOrderDetailParamList.stream().reduce(BigDecimal.ZERO, (x, y) -> {
+return x.add(y.getPlanNum().multiply(y.getTaxPrice()));
+}, BigDecimal::add);
+
+
+        SaleOrderParam saleOrderParam=new SaleOrderParam();
+        saleOrderParam.setOrderNo(orderNo);
+        saleOrderParam.setWarehouseCode(warehouseCode);
+        saleOrderParam.setWarehouseName(warehouseName);
+        saleOrderParam.setOrderState(SaleOrderStatusEnum.NEW.getStatusValue());
+        saleOrderParam.setTotalAmount(totalAmount);
+        saleOrderParam.setReceiverName(receiverName);
+        saleOrderParam.setReceiverPhone(receiverPhone);
+        saleOrderParam.setAddress(address);
+        saleOrderParam.setDeliveryDate(deliveryDate);
+        saleOrderParam.setRemark(remark);
+        saleOrderParam.setCreateUser(LoginContextHolder.getContext().getUser().getUsername());
+        saleOrderParam.setCreateTime(new Date());
+        saleOrderParam.setUpdateTime(new Date());
+        saleOrderParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        saleOrderParam.setYn(1);
+        for (SaleOrderDetailParam saleOrderDetailParam:saleOrderDetailParamList)
+        {
+            saleOrderDetailParam.setOrderNo(orderNo);
+            saleOrderDetailParam.setCreateUser(LoginContextHolder.getContext().getUser().getUsername());
+            saleOrderDetailParam.setCreateTime(new Date());
+            saleOrderDetailParam.setUpdateTime(new Date());
+            saleOrderDetailParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+            saleOrderDetailParam.setYn(1);
+        }
+
+        saleOrderService.addOrder(saleOrderParam,saleOrderDetailParamList);
+        return  ResponseData.success();
     }
 
 }

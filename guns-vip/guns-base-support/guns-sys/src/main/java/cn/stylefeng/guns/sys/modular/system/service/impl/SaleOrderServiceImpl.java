@@ -3,14 +3,18 @@ package cn.stylefeng.guns.sys.modular.system.service.impl;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.SaleOrder;
+import cn.stylefeng.guns.sys.modular.system.mapper.SaleOrderDetailMapper;
 import cn.stylefeng.guns.sys.modular.system.mapper.SaleOrderMapper;
+import cn.stylefeng.guns.sys.modular.system.model.params.SaleOrderDetailParam;
 import cn.stylefeng.guns.sys.modular.system.model.params.SaleOrderParam;
 import cn.stylefeng.guns.sys.modular.system.model.result.SaleOrderResult;
+import cn.stylefeng.guns.sys.modular.system.service.SaleOrderDetailService;
 import  cn.stylefeng.guns.sys.modular.system.service.SaleOrderService;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -26,6 +30,12 @@ import java.util.List;
  */
 @Service
 public class SaleOrderServiceImpl extends ServiceImpl<SaleOrderMapper, SaleOrder> implements SaleOrderService {
+
+    @Autowired
+    private SaleOrderMapper saleOrderMapper;
+
+    @Autowired
+    private SaleOrderDetailService saleOrderDetailService;
 
     @Override
     public void add(SaleOrderParam param){
@@ -81,4 +91,15 @@ public class SaleOrderServiceImpl extends ServiceImpl<SaleOrderMapper, SaleOrder
         return entity;
     }
 
+    @Override
+    public boolean addOrder(SaleOrderParam saleOrderParam, List<SaleOrderDetailParam> saleOrderDetailParamList) {
+
+        add(saleOrderParam);
+        for (SaleOrderDetailParam saleOrderDetailParam:saleOrderDetailParamList)
+        {
+            saleOrderDetailService.add(saleOrderDetailParam);
+        }
+
+        return true;
+    }
 }

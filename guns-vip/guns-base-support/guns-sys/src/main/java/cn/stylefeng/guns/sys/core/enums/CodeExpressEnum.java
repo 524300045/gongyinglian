@@ -10,6 +10,7 @@ public enum CodeExpressEnum {
     wareCode("ware", "1,^3#", Boolean.FALSE ,"仓库编码"),
     billnoPurchase("billnoPurchase", "CG,^7#", Boolean.FALSE ,"采购单号"),
     billnoInbound("billnoInbound", "RK,^7#", Boolean.FALSE ,"入库单号"),
+    billnoSaleOrder("billnoSaleOrder", "S,^7#", Boolean.FALSE ,"销售单号"),
     ;
 
     /**
