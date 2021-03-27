@@ -81,8 +81,6 @@
         <if test="paramCondition.orderNo!= null">
             and  order_no = #{paramCondition.orderNo,jdbcType=VARCHAR}
         </if>
-
-
     </sql>
 
 
@@ -95,5 +93,14 @@ ON popd.order_no=p.order_no
 WHERE popd.yn=1 AND p.yn=1
 
     </select>
+
+    <update id="updateRealityNum" parameterType="cn.stylefeng.guns.sys.modular.system.entity.PmsOrderPurchaseDetail">
+    update pms_order_purchase_detail
+    set
+      reality_num=reality_num+#{realityNum,jdbcType=DECIMAL},
+     update_user = #{updateUser,jdbcType=VARCHAR},
+      update_time =now()
+    where id = #{id,jdbcType=BIGINT} AND YN=1
+  </update>
 
 </mapper>

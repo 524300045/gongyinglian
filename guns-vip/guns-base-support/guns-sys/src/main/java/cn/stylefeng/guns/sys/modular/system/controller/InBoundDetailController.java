@@ -1,15 +1,34 @@
 package cn.stylefeng.guns.sys.modular.system.controller;
 
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.sys.core.enums.CodeExpressEnum;
 import cn.stylefeng.guns.sys.modular.system.entity.InBoundDetail;
+import cn.stylefeng.guns.sys.modular.system.entity.PmsOrderPurchaseDetail;
+import cn.stylefeng.guns.sys.modular.system.enums.PmsPurchaseStatusEnum;
 import cn.stylefeng.guns.sys.modular.system.model.params.InBoundDetailParam;
+import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseDetailParam;
+import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseParam;
+import cn.stylefeng.guns.sys.modular.system.model.result.GoodsResult;
+import cn.stylefeng.guns.sys.modular.system.service.CodeService;
 import cn.stylefeng.guns.sys.modular.system.service.InBoundDetailService;
+import cn.stylefeng.guns.sys.modular.system.service.PmsOrderPurchaseDetailService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import oshi.jna.platform.mac.SystemB;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -26,6 +45,12 @@ public class InBoundDetailController extends BaseController {
 
     @Autowired
     private InBoundDetailService inBoundDetailService;
+
+    @Autowired
+    private PmsOrderPurchaseDetailService pmsOrderPurchaseDetailService;
+
+    @Autowired
+    private CodeService codeService;
 
     /**
      * 跳转到主页面
@@ -122,6 +147,37 @@ public class InBoundDetailController extends BaseController {
     @RequestMapping("/list")
     public LayuiPageInfo list(InBoundDetailParam inBoundDetailParam) {
         return this.inBoundDetailService.findPageBySpec(inBoundDetailParam);
+    }
+
+
+    @RequestMapping("/inbound")
+    @ResponseBody
+    public ResponseData inbound(@RequestParam("id") long id,
+                                      @RequestParam("num") BigDecimal num
+
+    ) {
+
+         PmsOrderPurchaseDetail pmsOrderPurchaseDetail=pmsOrderPurchaseDetailService.getById(id);
+         if (pmsOrderPurchaseDetail==null)
+         {
+             return ResponseData.error("查询不到明细");
+         }
+         if (num.compareTo(new BigDecimal(0))<=0)
+         {
+             return ResponseData.error("入库数量不能小于0");
+         }
+         BigDecimal curNum=pmsOrderPurchaseDetail.getRealityNum().add(num);
+         if (curNum.compareTo(pmsOrderPurchaseDetail.getPlanNum())==1)
+         {
+             return ResponseData.error("入库数量不能大于计划数量");
+         }
+
+        pmsOrderPurchaseDetail.setRealityNum(num);
+        pmsOrderPurchaseDetail.setUpdateTime(new Date());
+        pmsOrderPurchaseDetail.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        inBoundDetailService.updateInboundNum(pmsOrderPurchaseDetail);
+
+        return ResponseData.success();
     }
 
 }

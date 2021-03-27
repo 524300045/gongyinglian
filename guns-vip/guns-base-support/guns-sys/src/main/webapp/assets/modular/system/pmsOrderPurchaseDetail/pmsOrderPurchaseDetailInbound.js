@@ -4,7 +4,7 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
     var $ax = layui.ax;
     var admin = layui.admin;
     var func = layui.func;
-
+    var form = layui.form;
     /**
      * 采购订单明细表管理
      */
@@ -69,13 +69,38 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
 
         console.log(data);
         var value=data.num;
-        alert(value);
+
         if (value==""||isNaN(value))
         {
             layer.msg("入库数量只能输入数字!");
              return;
         }
-        table.reload(PmsOrderPurchaseDetail.tableId);
+
+        //表单提交事件
+
+            var ajax = new $ax(Feng.ctxPath + "/inBoundDetail/inbound", function (data) {
+                if (data.code!=200)
+                {
+                    Feng.success(data.message);
+                    return false;
+                }
+                else
+                {
+                    Feng.success("入库成功！");
+                    table.reload(PmsOrderPurchaseDetail.tableId);
+                }
+
+
+            }, function (data) {
+                Feng.error("更新失败！" + data.responseJSON.message)
+            });
+            ajax.set("id",data.id);
+            ajax.set("num",value);
+            ajax.start();
+
+
+
+
 
     };
 

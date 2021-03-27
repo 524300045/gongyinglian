@@ -54,4 +54,25 @@
         from ware_stock where 1 = 1
     </select>
 
+
+    <select id="selectListBySkuCode" resultType="cn.stylefeng.guns.sys.modular.system.model.result.WareStockResult"
+            parameterType="cn.stylefeng.guns.sys.modular.system.model.params.WareStockParam">
+        select
+        <include refid="Base_Column_List"/>
+        from ware_stock where yn = 1 and
+        warehouse_code = #{warehouseCode,jdbcType=VARCHAR} and
+        sku_code = #{skuCode,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateRealAndForOrderStock" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.WareStockParam">
+    update ware_stock
+    set
+        real_stock =real_stock+ #{realStock,jdbcType=DECIMAL},
+        for_order_stock =for_order_stock+ #{forOrderStock,jdbcType=DECIMAL},
+        update_time =NOW(),
+        update_user = #{updateUser,jdbcType=VARCHAR}
+    where warehouse_code = #{warehouseCode,jdbcType=VARCHAR} and
+      sku_code = #{skuCode,jdbcType=VARCHAR} and yn=1
+  </update>
+
 </mapper>

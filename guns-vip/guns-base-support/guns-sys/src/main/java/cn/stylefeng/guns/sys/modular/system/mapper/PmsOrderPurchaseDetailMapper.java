@@ -56,4 +56,6 @@ public interface PmsOrderPurchaseDetailMapper extends BaseMapper<PmsOrderPurchas
 
     Page<PmsOrderPurchaseDetailInboundResult> selectPageList(@Param("page") Page page, @Param("paramCondition") PmsOrderPurchaseDetailParam paramCondition);
 
+    int updateRealityNum(PmsOrderPurchaseDetail pmsOrderPurchaseDetail);
+
 }

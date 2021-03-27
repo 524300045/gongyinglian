@@ -53,4 +53,8 @@ public interface WareStockMapper extends BaseMapper<WareStock> {
      */
     Page<Map<String, Object>> customPageMapList(@Param("page") Page page, @Param("paramCondition") WareStockParam paramCondition);
 
+    List<WareStockResult> selectListBySkuCode(WareStockParam wareStockParam);
+
+    int updateRealAndForOrderStock(cn.stylefeng.guns.sys.modular.system.entity.WareStock wareStock);
+
 }

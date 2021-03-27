@@ -2,6 +2,9 @@ package cn.stylefeng.guns.sys.modular.system.service;
 
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.WareStock;
+import cn.stylefeng.guns.sys.modular.system.enums.LocationStockDirectionEnum;
+import cn.stylefeng.guns.sys.modular.system.enums.OperationTypeEnum;
+import cn.stylefeng.guns.sys.modular.system.model.params.LocationStockParam;
 import cn.stylefeng.guns.sys.modular.system.model.params.WareStockParam;
 import cn.stylefeng.guns.sys.modular.system.model.result.WareStockResult;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -65,5 +68,7 @@ public interface WareStockService extends IService<WareStock> {
      * @Date 2021-03-25
      */
      LayuiPageInfo findPageBySpec(WareStockParam param);
+
+    public boolean updateRealAndForOrderStock(LocationStockParam locationStockParam, OperationTypeEnum operationTypeEnum, LocationStockDirectionEnum directionEnum, String oper);
 
 }

@@ -54,4 +54,61 @@
         from ware_stock_waste where 1 = 1
     </select>
 
+    <insert id="insertRealStockWaste" parameterType="cn.stylefeng.guns.sys.modular.system.entity.WareStockWaste">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+        INSERT INTO ware_stock_waste (warehouse_code, warehouse_name,
+       sku_code, goods_name,
+        unit_name, goods_model, business_no,
+        direction, amount, balance_amount,
+        TYPE, business_type,operation_type, remark,
+        create_time, create_user, yn
+        )
+        SELECT
+        warehouse_code, warehouse_name,
+        g.sku_code,g.goods_name,
+        g.unit_name,g.goods_model,#{businessNo,jdbcType=VARCHAR},#{direction,jdbcType=TINYINT},
+        #{amount,jdbcType=DECIMAL},ws.real_stock,#{type,jdbcType=INTEGER},
+        #{businessType,jdbcType=INTEGER},#{operationType,jdbcType=INTEGER},
+        #{remark,jdbcType=VARCHAR},
+        NOW(),#{createUser,jdbcType=VARCHAR},1
+        FROM ware_stock ws INNER JOIN goods g ON ws.sku_code=g.sku_code
+        WHERE ws.yn=1 AND g.yn=1 AND
+        warehouse_code=#{warehouseCode,jdbcType=VARCHAR}
+
+        AND ws.sku_code=#{skuCode,jdbcType=VARCHAR}
+
+
+    </insert>
+
+    <insert id="insertForOrderWaste" parameterType="cn.stylefeng.guns.sys.modular.system.entity.WareStockWaste">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+        INSERT INTO ware_stock_waste (warehouse_code, warehouse_name,
+        sku_code, goods_name,
+        unit_name, goods_model, business_no,
+        direction, amount, balance_amount,
+        TYPE, business_type,operation_type, remark,
+        create_time, create_user, yn
+        )
+        SELECT
+        warehouse_code, warehouse_name,
+        g.sku_code,g.goods_name,
+        g.unit_name,g.goods_model,#{businessNo,jdbcType=VARCHAR},#{direction,jdbcType=TINYINT},
+        #{amount,jdbcType=DECIMAL},ws.for_order_stock,#{type,jdbcType=INTEGER},
+        #{businessType,jdbcType=INTEGER},#{operationType,jdbcType=INTEGER},
+        #{remark,jdbcType=VARCHAR},
+        NOW(),#{createUser,jdbcType=VARCHAR},1
+        FROM ware_stock ws INNER JOIN goods g ON ws.sku_code=g.sku_code
+        WHERE ws.yn=1 AND g.yn=1 AND
+        warehouse_code=#{warehouseCode,jdbcType=VARCHAR}
+
+        AND ws.sku_code=#{skuCode,jdbcType=VARCHAR}
+
+    </insert>
+
 </mapper>

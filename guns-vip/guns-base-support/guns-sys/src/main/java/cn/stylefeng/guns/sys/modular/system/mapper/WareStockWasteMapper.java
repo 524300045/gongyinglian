@@ -53,4 +53,8 @@ public interface WareStockWasteMapper extends BaseMapper<WareStockWaste> {
      */
     Page<Map<String, Object>> customPageMapList(@Param("page") Page page, @Param("paramCondition") WareStockWasteParam paramCondition);
 
+    int insertRealStockWaste(WareStockWaste wareStockWaste);
+
+    int insertForOrderWaste(WareStockWaste wareStockWaste);
+
 }

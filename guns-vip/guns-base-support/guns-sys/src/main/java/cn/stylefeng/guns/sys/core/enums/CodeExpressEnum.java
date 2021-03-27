@@ -9,6 +9,7 @@ public enum CodeExpressEnum {
     skuCode("sku", "1,^6#", Boolean.FALSE ,"sku编码"),
     wareCode("ware", "1,^3#", Boolean.FALSE ,"仓库编码"),
     billnoPurchase("billnoPurchase", "CG,^7#", Boolean.FALSE ,"采购单号"),
+    billnoInbound("billnoInbound", "RK,^7#", Boolean.FALSE ,"入库单号"),
     ;
 
     /**

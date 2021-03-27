@@ -57,4 +57,6 @@ public interface PmsOrderPurchaseMapper extends BaseMapper<PmsOrderPurchase> {
 
     int updateAudit(PmsOrderPurchaseParam pmsOrderPurchaseParam);
 
+    PmsOrderPurchaseResult selectByOrderNo(String orderNo);
+
 }

@@ -2,6 +2,7 @@ package cn.stylefeng.guns.sys.modular.system.service;
 
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.InBoundDetail;
+import cn.stylefeng.guns.sys.modular.system.entity.PmsOrderPurchaseDetail;
 import cn.stylefeng.guns.sys.modular.system.model.params.InBoundDetailParam;
 import cn.stylefeng.guns.sys.modular.system.model.result.InBoundDetailResult;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -65,5 +66,7 @@ public interface InBoundDetailService extends IService<InBoundDetail> {
      * @Date 2021-03-25
      */
      LayuiPageInfo findPageBySpec(InBoundDetailParam param);
+
+     String updateInboundNum(PmsOrderPurchaseDetail pmsOrderPurchaseDetail);
 
 }

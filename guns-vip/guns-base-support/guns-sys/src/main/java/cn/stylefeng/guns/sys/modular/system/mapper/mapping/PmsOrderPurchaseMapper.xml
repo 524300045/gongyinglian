@@ -72,4 +72,11 @@
     where order_no = #{orderNo,jdbcType=VARCHAR}
   </update>
 
+    <select id="selectByOrderNo" resultType="cn.stylefeng.guns.sys.modular.system.model.result.PmsOrderPurchaseResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseParam">
+        select
+        <include refid="Base_Column_List"/>
+        from pms_order_purchase where yn = 1
+        and order_no = #{orderNo,jdbcType=VARCHAR}
+    </select>
+
 </mapper>

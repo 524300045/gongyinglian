@@ -53,7 +53,7 @@ public class InBoundServiceImpl extends ServiceImpl<InBoundMapper, InBound> impl
 
     @Override
     public List<InBoundResult> findListBySpec(InBoundParam param){
-        return null;
+        return this.baseMapper.customList(param);
     }
 
     @Override
