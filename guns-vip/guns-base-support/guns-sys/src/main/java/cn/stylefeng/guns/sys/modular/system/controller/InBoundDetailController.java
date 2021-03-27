@@ -41,7 +41,7 @@ import java.util.Map;
 @RequestMapping("/inBoundDetail")
 public class InBoundDetailController extends BaseController {
 
-    private String PREFIX = "/inBoundDetail/inBoundDetail";
+    private String PREFIX = "/modular/system/inBoundDetail";
 
     @Autowired
     private InBoundDetailService inBoundDetailService;
@@ -146,7 +146,8 @@ public class InBoundDetailController extends BaseController {
     @ResponseBody
     @RequestMapping("/list")
     public LayuiPageInfo list(InBoundDetailParam inBoundDetailParam) {
-        return this.inBoundDetailService.findPageBySpec(inBoundDetailParam);
+        //return this.inBoundDetailService.findPageBySpec(inBoundDetailParam);
+        return this.inBoundDetailService.selectPage(inBoundDetailParam);
     }
 
 

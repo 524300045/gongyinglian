@@ -21,6 +21,29 @@
         <result column="yn" property="yn" />
     </resultMap>
 
+    <resultMap id="InBoundDetailResultResultMap" type="cn.stylefeng.guns.sys.modular.system.model.result.InBoundDetailResult">
+        <id column="id" property="id" />
+        <result column="inbound_task_code" property="inboundTaskCode" />
+        <result column="sku_code" property="skuCode" />
+        <result column="goods_name" property="goodsName" />
+        <result column="goods_model" property="goodsModel" />
+        <result column="unit_name" property="unitName" />
+        <result column="is_fresh" property="isFresh" />
+        <result column="reality_num" property="realityNum" />
+        <result column="tax_rate" property="taxRate" />
+        <result column="tax_price" property="taxPrice" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="yn" property="yn" />
+        <result column="warehouse_code" property="warehouseCode" />
+        <result column="warehouse_name" property="warehouseName" />
+        <result column="order_no" property="orderNo" />
+        <result column="partner_code" property="partnerCode" />
+        <result column="partner_name" property="partnerName" />
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id AS "id", inbound_task_code AS "inboundTaskCode", sku_code AS "skuCode", goods_name AS "goodsName", goods_model AS "goodsModel", unit_name AS "unitName", is_fresh AS "isFresh", reality_num AS "realityNum", tax_rate AS "taxRate", tax_price AS "taxPrice", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime", yn AS "yn"
@@ -49,6 +72,17 @@
         select
         <include refid="Base_Column_List"/>
         from in_bound_detail where 1 = 1
+    </select>
+
+    <select id="selectPageList" resultMap="InBoundDetailResultResultMap"
+            parameterType="cn.stylefeng.guns.sys.modular.system.model.params.InBoundDetailParam">
+    select
+ ibd.*,ib.partner_code,ib.partner_name,
+ ib.warehouse_code,ib.warehouse_name,
+ ib.order_no
+ from  in_bound_detail ibd inner join  in_bound ib
+on ibd.inbound_task_code=ib.inbound_task_code
+where ibd.yn=1 and ib.yn=1
     </select>
 
 </mapper>

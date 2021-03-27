@@ -88,4 +88,35 @@ public class InBoundDetailResult implements Serializable {
 
     private Integer yn;
 
+    /**
+     * 仓库编码
+     */
+    private String warehouseCode;
+
+    /**
+     * 仓库名称
+     */
+    private String warehouseName;
+
+    /**
+     * 入库单号
+     */
+
+
+    /**
+     * 采购订单编码
+     */
+    private String orderNo;
+
+    /**
+     * 供应商编码
+     */
+    private String partnerCode;
+
+    /**
+     * 供应商名称
+     */
+    private String partnerName;
+
+
 }

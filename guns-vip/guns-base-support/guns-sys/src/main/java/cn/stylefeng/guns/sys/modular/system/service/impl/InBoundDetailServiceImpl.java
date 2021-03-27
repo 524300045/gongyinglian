@@ -205,4 +205,11 @@ public class InBoundDetailServiceImpl extends ServiceImpl<InBoundDetailMapper, I
 
         return "";
     }
+
+    @Override
+    public LayuiPageInfo selectPage(InBoundDetailParam param) {
+        Page pageContext = getPageContext();
+        IPage page = this.baseMapper.selectPageList(pageContext, param);
+        return LayuiPageFactory.createPageInfo(page);
+    }
 }

@@ -69,4 +69,6 @@ public interface InBoundDetailService extends IService<InBoundDetail> {
 
      String updateInboundNum(PmsOrderPurchaseDetail pmsOrderPurchaseDetail);
 
+    LayuiPageInfo selectPage(InBoundDetailParam param);
+
 }

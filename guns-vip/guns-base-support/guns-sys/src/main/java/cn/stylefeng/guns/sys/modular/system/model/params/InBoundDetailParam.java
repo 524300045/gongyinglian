@@ -89,6 +89,34 @@ public class InBoundDetailParam implements Serializable, BaseValidatingParam {
 
     private Integer yn;
 
+    /**
+     * 仓库编码
+     */
+    private String warehouseCode;
+
+    /**
+     * 仓库名称
+     */
+    private String warehouseName;
+
+
+
+    /**
+     * 采购订单编码
+     */
+    private String orderNo;
+
+    /**
+     * 供应商编码
+     */
+    private String partnerCode;
+
+    /**
+     * 供应商名称
+     */
+    private String partnerName;
+
+
     @Override
     public String checkParam() {
         return null;

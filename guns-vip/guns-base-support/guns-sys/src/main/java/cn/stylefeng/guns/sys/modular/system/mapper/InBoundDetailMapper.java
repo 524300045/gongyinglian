@@ -53,4 +53,7 @@ public interface InBoundDetailMapper extends BaseMapper<InBoundDetail> {
      */
     Page<Map<String, Object>> customPageMapList(@Param("page") Page page, @Param("paramCondition") InBoundDetailParam paramCondition);
 
+
+    Page<InBoundDetailResult> selectPageList(@Param("page") Page page, @Param("paramCondition") InBoundDetailParam paramCondition);
+
 }

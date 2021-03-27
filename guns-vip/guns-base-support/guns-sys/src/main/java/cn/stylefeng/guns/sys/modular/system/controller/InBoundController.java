@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/inBound")
 public class InBoundController extends BaseController {
 
-    private String PREFIX = "/inBound/inBound";
+    private String PREFIX = "/modular/system/inBound";
 
     @Autowired
     private InBoundService inBoundService;
