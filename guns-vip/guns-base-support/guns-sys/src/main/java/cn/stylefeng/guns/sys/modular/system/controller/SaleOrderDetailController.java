@@ -1,11 +1,15 @@
 package cn.stylefeng.guns.sys.modular.system.controller;
 
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.SaleOrderDetail;
+import cn.stylefeng.guns.sys.modular.system.enums.SaleOrderStatusEnum;
 import cn.stylefeng.guns.sys.modular.system.model.params.GoodsParam;
 import cn.stylefeng.guns.sys.modular.system.model.params.SaleOrderDetailParam;
+import cn.stylefeng.guns.sys.modular.system.model.result.SaleOrderResult;
 import cn.stylefeng.guns.sys.modular.system.service.GoodsService;
 import cn.stylefeng.guns.sys.modular.system.service.SaleOrderDetailService;
+import cn.stylefeng.guns.sys.modular.system.service.SaleOrderService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.RequestEmptyException;
@@ -18,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLDecoder;
+import java.util.Date;
 
 
 /**
@@ -38,6 +44,9 @@ public class SaleOrderDetailController extends BaseController {
 
     @Autowired
     private GoodsService goodsService;
+
+    @Autowired
+    private SaleOrderService saleOrderService;
 
     /**
      * 跳转到主页面
@@ -159,6 +168,38 @@ public class SaleOrderDetailController extends BaseController {
     @RequestMapping("/viewDetail")
     public String viewDetail() {
         return PREFIX + "/viewDetail.html";
+    }
+
+
+    @RequestMapping("/editDetail")
+    public String editDetail() {
+        return PREFIX + "/editDetail.html";
+    }
+
+    @RequestMapping("/updateDeliveryNum")
+    @ResponseBody
+    public ResponseData updateDeliveryNum(SaleOrderDetailParam saleOrderDetailParam) {
+
+        SaleOrderDetail saleOrderDetail=saleOrderDetailService.getById(saleOrderDetailParam.getId());
+        if (saleOrderDetailParam.getDeliveryNum().compareTo(saleOrderDetail.getPlanNum())==1)
+        {
+            return ResponseData.error("发运数量不能大于计划量");
+        }
+
+        if (saleOrderDetailParam.getDeliveryNum().compareTo(new BigDecimal(0))<=0)
+        {
+            return ResponseData.error("发运数量必须大于0");
+        }
+
+        SaleOrderResult saleOrderResult=saleOrderService.getByOrderNo(saleOrderDetail.getOrderNo());
+        if (saleOrderResult.getOrderState().equals(SaleOrderStatusEnum.DELIVERY_FINISH.getStatusValue()))
+        {
+            return ResponseData.error("订单已发运，不能修改");
+        }
+        saleOrderDetailParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        saleOrderDetailParam.setUpdateTime(new Date());
+        this.saleOrderDetailService.updateDeliveryNum(saleOrderDetailParam);
+        return ResponseData.success();
     }
 
 }

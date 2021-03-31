@@ -23,10 +23,10 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
                 , templet: function (d)
                 {
                     if (d.orderState ===10) {
-                        return '<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">出库</a>'
+                        return '<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="outbound">出库</a>'
                             ;
                     }
-                    return "<a class=\"layui-btn layui-btn-warm layui-btn-xs\" lay-event=\"view\">查看</a> ";
+                    return "<a class=\"layui-btn layui-btn-warm layui-btn-xs\" lay-event=\"view\">修改</a> ";
                 }},
             {field: 'orderNo', sort: true, title: '订单'},
             {field: 'warehouseName', sort: true, title: '仓库名称'},
@@ -122,6 +122,22 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
         Feng.confirm("是否删除?", operation);
     };
 
+
+    SaleOrder.onOutItem = function (data) {
+        var operation = function () {
+            var ajax = new $ax(Feng.ctxPath + "/saleOrder/outBound?orderNo="+data.orderNo, function (data) {
+                Feng.success("出库成功!");
+                table.reload(SaleOrder.tableId);
+            }, function (data) {
+                Feng.error("出库失败!" + data.responseJSON.message + "!");
+            });
+            ajax.set("id", data.id);
+            ajax.start();
+        };
+        Feng.confirm("是否出库?", operation);
+    };
+
+
     // 渲染表格
     var tableResult = table.render({
         elem: '#' + SaleOrder.tableId,
@@ -137,12 +153,19 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
         SaleOrder.search();
     });
 
-    // 添加按钮点击事件
-    $('#btnAdd').click(function () {
+    SaleOrder.onEditDetail = function (data) {
+        layer.open({
+            type: 2,
+            title: '查看明细',
+            shadeClose: true,
+            area: ['1000px', '600px'],
+            content: Feng.ctxPath + '/saleOrderDetail/editDetail?orderNo='+data.orderNo,
+            end: function () {
 
-    SaleOrder.jumpAddPage();
+            }
 
-    });
+        });
+    };
 
     // 导出excel
     $('#btnExp').click(function () {
@@ -154,10 +177,10 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
         var data = obj.data;
         var layEvent = obj.event;
 
-        if (layEvent === 'edit') {
-            SaleOrder.jumpEditPage(data);
-        } else if (layEvent === 'delete') {
-            SaleOrder.onDeleteItem(data);
+        if (layEvent === 'outbound') {
+            SaleOrder.onOutItem(data);
+        } else if (layEvent === 'view') {
+            SaleOrder.onEditDetail(data);
         }
     });
 });

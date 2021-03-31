@@ -53,4 +53,6 @@ public interface SaleOrderMapper extends BaseMapper<SaleOrder> {
      */
     Page<Map<String, Object>> customPageMapList(@Param("page") Page page, @Param("paramCondition") SaleOrderParam paramCondition);
 
+    int updateOutBound(SaleOrderParam saleOrderParam);
+
 }

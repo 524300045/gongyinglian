@@ -71,4 +71,6 @@ public interface SaleOrderService extends IService<SaleOrder> {
 
     public SaleOrderResult getByOrderNo(String orderNo);
 
+    int updateOutBound(SaleOrderParam saleOrderParam);
+
 }

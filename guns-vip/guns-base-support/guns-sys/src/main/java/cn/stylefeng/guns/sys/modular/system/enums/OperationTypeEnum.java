@@ -6,7 +6,7 @@ import java.util.Map;
 public enum OperationTypeEnum {
 
     TYPE_PURCHASE_INSTORE(100, "采购入库"),
-
+    TYPE_SALE_OUTSTORE(120, "销售出库"),
     ;
 
     Integer code;

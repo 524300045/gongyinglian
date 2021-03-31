@@ -52,4 +52,13 @@
         from sale_order_detail where 1 = 1
     </select>
 
+    <update id="updateDeliveryNum" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.SaleOrderDetailParam">
+    update sale_order_detail
+    set
+       delivery_num=#{deliveryNum,jdbcType=DECIMAL},
+            update_user = #{updateUser,jdbcType=VARCHAR},
+      update_time =now()
+    where id=#{id}
+  </update>
+
 </mapper>

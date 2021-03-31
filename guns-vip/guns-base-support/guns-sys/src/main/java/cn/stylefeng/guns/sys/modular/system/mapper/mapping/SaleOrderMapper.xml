@@ -64,4 +64,15 @@
         from sale_order where 1 = 1
     </select>
 
+    <update id="updateOutBound" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.SaleOrderParam">
+    update sale_order
+    set
+      order_state=#{orderState,jdbcType=INTEGER},
+     delivery_time =now(),
+      delivery_user = #{deliveryUser,jdbcType=VARCHAR},
+            update_user = #{updateUser,jdbcType=VARCHAR},
+      update_time =now()
+    where order_no = #{orderNo,jdbcType=VARCHAR}
+  </update>
+
 </mapper>

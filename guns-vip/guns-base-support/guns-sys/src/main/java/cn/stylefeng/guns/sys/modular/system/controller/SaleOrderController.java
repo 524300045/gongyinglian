@@ -5,13 +5,12 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.core.enums.CodeExpressEnum;
 import cn.stylefeng.guns.sys.modular.system.entity.SaleOrder;
 import cn.stylefeng.guns.sys.modular.system.enums.SaleOrderStatusEnum;
-import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseDetailParam;
-import cn.stylefeng.guns.sys.modular.system.model.params.SaleOrderDetailParam;
-import cn.stylefeng.guns.sys.modular.system.model.params.SaleOrderParam;
-import cn.stylefeng.guns.sys.modular.system.model.params.WarehouseInfoParam;
+import cn.stylefeng.guns.sys.modular.system.model.params.*;
+import cn.stylefeng.guns.sys.modular.system.model.result.SaleOrderDetailResult;
 import cn.stylefeng.guns.sys.modular.system.model.result.SaleOrderResult;
 import cn.stylefeng.guns.sys.modular.system.model.result.WarehouseInfoResult;
 import cn.stylefeng.guns.sys.modular.system.service.CodeService;
+import cn.stylefeng.guns.sys.modular.system.service.SaleOrderDetailService;
 import cn.stylefeng.guns.sys.modular.system.service.SaleOrderService;
 import cn.stylefeng.guns.sys.modular.system.service.WarehouseInfoService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
@@ -30,6 +29,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -52,6 +52,9 @@ public class SaleOrderController extends BaseController {
 
     @Autowired
     private CodeService codeService;
+
+    @Autowired
+    private SaleOrderDetailService saleOrderDetailService;
 
 
     /**
@@ -287,10 +290,27 @@ return x.add(y.getPlanNum().multiply(y.getTaxPrice()));
         {
             return ResponseData.error("订单状态存在问题!");
         }
-
+        SaleOrderDetailParam saleOrderDetailParam=new SaleOrderDetailParam();
+        saleOrderDetailParam.setOrderNo(orderNo);
+        saleOrderDetailParam.setYn(1);
+        List<SaleOrderDetailResult> saleOrderDetailResultList=saleOrderDetailService.findListBySpec(saleOrderDetailParam);
+        if (saleOrderDetailResultList==null|| saleOrderDetailResultList.size()==0)
+        {
+            return ResponseData.error("查询不到商品明细!");
+        }
+        List<SaleOrderDetailResult> curList=saleOrderDetailResultList.stream().filter(p->p.getDeliveryNum().compareTo(new BigDecimal(0))==1).collect(Collectors.toList());
+        if (curList==null||curList.size()==0)
+        {
+            return ResponseData.error("发货数量不能为0!");
+        }
+        saleOrderResult.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+         saleOrderDetailService.outBound(saleOrderResult);
 
         return ResponseData.success();
     }
+
+
+
 
 }
 

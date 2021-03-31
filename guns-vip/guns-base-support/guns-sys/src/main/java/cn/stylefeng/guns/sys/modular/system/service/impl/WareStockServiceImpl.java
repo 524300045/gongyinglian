@@ -320,6 +320,11 @@ public class WareStockServiceImpl extends ServiceImpl<WareStockMapper, WareStock
             businessTypeEnum=BusinessTypeEnum.TYPE_PROCUREMENT_IN;
         }
 
+        if (operationTypeEnum.getCode().equals(OperationTypeEnum.TYPE_SALE_OUTSTORE.getCode()))
+        {
+            businessTypeEnum=BusinessTypeEnum.TYPE_SALEORDER_OUT;
+        }
+
         return businessTypeEnum;
     }
 

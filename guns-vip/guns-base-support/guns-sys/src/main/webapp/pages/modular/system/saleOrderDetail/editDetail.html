@@ -1,0 +1,30 @@
+@layout("/common/_container.html",{js:["/assets/modular/system/saleOrderDetail/editDetail.js"]}){
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">修改发运数量</span>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-form toolbar">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+
+                            </div>
+                        </div>
+                    </div>
+                    <table class="layui-table" id="detailTable" lay-filter="detailTable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="tableBar">
+    <a class="layui-btn layui-btn-warm  layui-btn-xs" lay-event="edit">保存</a>
+
+</script>
+
+@}

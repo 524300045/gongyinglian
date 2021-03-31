@@ -6,8 +6,8 @@ import java.util.Map;
 public enum BusinessTypeEnum {
 
 
-    TYPE_PROCUREMENT_IN(100, "采购订单")
-
+    TYPE_PROCUREMENT_IN(100, "采购订单"),
+    TYPE_SALEORDER_OUT(110, "销售订单")
     ;
 
     Integer code;

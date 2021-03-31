@@ -113,4 +113,9 @@ public class SaleOrderServiceImpl extends ServiceImpl<SaleOrderMapper, SaleOrder
         }
         return null;
     }
+
+    @Override
+    public int updateOutBound(SaleOrderParam saleOrderParam) {
+        return this.baseMapper.updateOutBound(saleOrderParam);
+    }
 }

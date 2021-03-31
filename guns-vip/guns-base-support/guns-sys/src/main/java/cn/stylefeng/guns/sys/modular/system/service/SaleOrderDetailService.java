@@ -4,6 +4,7 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.SaleOrderDetail;
 import cn.stylefeng.guns.sys.modular.system.model.params.SaleOrderDetailParam;
 import cn.stylefeng.guns.sys.modular.system.model.result.SaleOrderDetailResult;
+import cn.stylefeng.guns.sys.modular.system.model.result.SaleOrderResult;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -65,5 +66,10 @@ public interface SaleOrderDetailService extends IService<SaleOrderDetail> {
      * @Date 2021-03-27
      */
      LayuiPageInfo findPageBySpec(SaleOrderDetailParam param);
+
+     boolean outBound(SaleOrderResult saleOrderResult);
+
+
+    int updateDeliveryNum(SaleOrderDetailParam saleOrderDetailParam);
 
 }
