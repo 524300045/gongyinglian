@@ -69,4 +69,6 @@ public interface SaleOrderService extends IService<SaleOrder> {
 
      boolean addOrder(SaleOrderParam saleOrderParam, List<SaleOrderDetailParam> saleOrderDetailParamList);
 
+    public SaleOrderResult getByOrderNo(String orderNo);
+
 }

@@ -9,6 +9,7 @@ import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseDetailP
 import cn.stylefeng.guns.sys.modular.system.model.params.SaleOrderDetailParam;
 import cn.stylefeng.guns.sys.modular.system.model.params.SaleOrderParam;
 import cn.stylefeng.guns.sys.modular.system.model.params.WarehouseInfoParam;
+import cn.stylefeng.guns.sys.modular.system.model.result.SaleOrderResult;
 import cn.stylefeng.guns.sys.modular.system.model.result.WarehouseInfoResult;
 import cn.stylefeng.guns.sys.modular.system.service.CodeService;
 import cn.stylefeng.guns.sys.modular.system.service.SaleOrderService;
@@ -127,7 +128,31 @@ public class SaleOrderController extends BaseController {
     @RequestMapping("/delete")
     @ResponseBody
     public ResponseData delete(SaleOrderParam saleOrderParam) {
-        this.saleOrderService.delete(saleOrderParam);
+
+     //   saleOrderParam.setYn(0);
+        saleOrderParam.setCancelTime(new Date());
+        saleOrderParam.setCancelUser(LoginContextHolder.getContext().getUser().getUsername());
+        saleOrderParam.setOrderState(SaleOrderStatusEnum.CANCEL.getStatusValue());
+        saleOrderParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        saleOrderParam.setUpdateTime(new Date());
+        this.saleOrderService.update(saleOrderParam);
+
+
+        return ResponseData.success();
+    }
+
+    @RequestMapping("/audit")
+    @ResponseBody
+    public ResponseData audit(SaleOrderParam saleOrderParam) {
+
+        saleOrderParam.setAuditTime(new Date());
+        saleOrderParam.setAuditUser(LoginContextHolder.getContext().getUser().getUsername());
+        saleOrderParam.setOrderState(SaleOrderStatusEnum.AUDIT.getStatusValue());
+        saleOrderParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        saleOrderParam.setUpdateTime(new Date());
+        this.saleOrderService.update(saleOrderParam);
+
+
         return ResponseData.success();
     }
 
@@ -223,6 +248,48 @@ return x.add(y.getPlanNum().multiply(y.getTaxPrice()));
 
         saleOrderService.addOrder(saleOrderParam,saleOrderDetailParamList);
         return  ResponseData.success();
+    }
+
+
+    /**
+     * 查询列表
+     *
+     * @author zx
+     * @Date 2021-03-27
+     */
+    @ResponseBody
+    @RequestMapping("/outList")
+    public LayuiPageInfo outList(SaleOrderParam saleOrderParam) {
+        return this.saleOrderService.findPageBySpec(saleOrderParam);
+    }
+
+    @RequestMapping("saleOrderOutList")
+    public String saleOrderOutList() {
+        return PREFIX + "/saleOrderOutList.html";
+    }
+
+
+    /**
+     * 订单出库
+     * @param orderNo
+     * @return
+     */
+    @RequestMapping("/outBound")
+    @ResponseBody
+    public ResponseData outBound( @RequestParam("orderNo") String orderNo) {
+
+        SaleOrderResult saleOrderResult=saleOrderService.getByOrderNo(orderNo);
+        if (saleOrderResult==null)
+        {
+            return ResponseData.error("查询不到订单详细信息");
+        }
+        if (saleOrderResult.getOrderState()!=SaleOrderStatusEnum.AUDIT.getStatusValue())
+        {
+            return ResponseData.error("订单状态存在问题!");
+        }
+
+
+        return ResponseData.success();
     }
 
 }

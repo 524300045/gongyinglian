@@ -22,10 +22,8 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
             {align: 'center',width: 200,  title: '操作'
                 , templet: function (d)
                 {
-                    if (d.orderState ===0) {
-                        return '<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">审核</a>' +
-                            '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">取消</a>'+
-                            '<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="view">查看</a>'
+                    if (d.orderState ===10) {
+                        return '<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">出库</a>'
                             ;
                     }
                     return "<a class=\"layui-btn layui-btn-warm layui-btn-xs\" lay-event=\"view\">查看</a> ";
@@ -84,7 +82,14 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
 
 
 
-
+    /**
+    * 跳转到编辑页面
+    *
+    * @param data 点击按钮时候的行数据
+    */
+    SaleOrder.jumpEditPage = function (data) {
+        window.location.href = Feng.ctxPath + '/saleOrder/edit?id=' + data.id
+    };
 
     /**
      * 导出excel按钮
@@ -117,24 +122,10 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
         Feng.confirm("是否删除?", operation);
     };
 
-    SaleOrder.onAuditItem = function (data) {
-        var operation = function () {
-            var ajax = new $ax(Feng.ctxPath + "/saleOrder/audit", function (data) {
-                Feng.success("审核成功!");
-                table.reload(SaleOrder.tableId);
-            }, function (data) {
-                Feng.error("审核失败!" + data.responseJSON.message + "!");
-            });
-            ajax.set("id", data.id);
-            ajax.start();
-        };
-        Feng.confirm("是否审核?", operation);
-    };
-
     // 渲染表格
     var tableResult = table.render({
         elem: '#' + SaleOrder.tableId,
-        url: Feng.ctxPath + '/saleOrder/list',
+        url: Feng.ctxPath + '/saleOrder/outList',
         page: true,
         height: "full-158",
         cellMinWidth: 100,
@@ -146,22 +137,12 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
         SaleOrder.search();
     });
 
+    // 添加按钮点击事件
+    $('#btnAdd').click(function () {
 
-    SaleOrder.onViewDetail = function (data) {
-        layer.open({
-            type: 2,
-            title: '查看明细',
-            shadeClose: true,
-            area: ['1000px', '600px'],
-            content: Feng.ctxPath + '/saleOrderDetail/viewDetail?orderNo='+data.orderNo,
-            end: function () {
+    SaleOrder.jumpAddPage();
 
-            }
-
-
-        });
-    };
-
+    });
 
     // 导出excel
     $('#btnExp').click(function () {
@@ -174,12 +155,9 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
         var layEvent = obj.event;
 
         if (layEvent === 'edit') {
-            SaleOrder.onAuditItem(data);
+            SaleOrder.jumpEditPage(data);
         } else if (layEvent === 'delete') {
             SaleOrder.onDeleteItem(data);
-        }
-        else if (layEvent === 'view') {
-            SaleOrder.onViewDetail(data);
         }
     });
 });

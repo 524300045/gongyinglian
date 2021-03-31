@@ -102,4 +102,15 @@ public class SaleOrderServiceImpl extends ServiceImpl<SaleOrderMapper, SaleOrder
 
         return true;
     }
+
+    @Override
+    public SaleOrderResult getByOrderNo(String orderNo) {
+        SaleOrderParam saleOrderParam=new SaleOrderParam();
+        List<SaleOrderResult> saleOrderResultList=this.baseMapper.customList(saleOrderParam);
+        if (saleOrderResultList!=null&&saleOrderResultList.size()>0)
+        {
+            return  saleOrderResultList.get(0);
+        }
+        return null;
+    }
 }

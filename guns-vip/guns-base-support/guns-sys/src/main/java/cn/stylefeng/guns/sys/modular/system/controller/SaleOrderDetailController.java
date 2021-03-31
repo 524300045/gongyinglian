@@ -148,6 +148,19 @@ public class SaleOrderDetailController extends BaseController {
         return PREFIX + "/addGoods.html";
     }
 
+
+    @ResponseBody
+    @RequestMapping("/detailList")
+    public LayuiPageInfo detailList(SaleOrderDetailParam saleOrderDetailParam) {
+        saleOrderDetailParam.setYn(1);
+        return this.saleOrderDetailService.findPageBySpec(saleOrderDetailParam);
+    }
+
+    @RequestMapping("/viewDetail")
+    public String viewDetail() {
+        return PREFIX + "/viewDetail.html";
+    }
+
 }
 
 
