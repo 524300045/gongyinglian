@@ -93,4 +93,7 @@ public class SaleOrderDetailResult implements Serializable {
 
     private Integer yn;
 
+
+
+
 }

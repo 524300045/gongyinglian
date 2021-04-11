@@ -1,8 +1,7 @@
-@layout("/common/_form.html",{js:["/assets/modular/system/customerBackOrder/customerBackOrder_add.js"],css:["/assets/expand/module/formSelects/formSelects-v4.css"]}){
-
+@layout("/common/_container.html",{js:["/assets/modular/system/customerBackOrderDetail/saleOrderDetail.js"]}){
 
 <div class="layui-body-header">
-    <span class="layui-body-header-title">客退单创建</span>
+    <span class="layui-body-header-title">订单信息</span>
 </div>
 
 <div class="layui-fluid">
@@ -13,18 +12,16 @@
                     <div class="layui-form toolbar">
                         <div class="layui-form-item">
                             <div class="layui-inline">
-                                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
-
+                                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>创建</button>
                             </div>
                         </div>
                     </div>
-                    <table class="layui-table" id="customerBackOrderTable" lay-filter="customerBackOrderTable"></table>
+                    <table class="layui-table" id="detailTable" lay-filter="detailTable"></table>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 
 
 @}

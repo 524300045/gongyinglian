@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/customerBackOrderDetail")
 public class CustomerBackOrderDetailController extends BaseController {
 
-    private String PREFIX = "/customerBack/customerBackOrderDetail";
+    private String PREFIX = "/modular/system/customerBackOrderDetail";
 
     @Autowired
     private CustomerBackOrderDetailService customerBackOrderDetailService;
@@ -47,6 +47,11 @@ public class CustomerBackOrderDetailController extends BaseController {
     @RequestMapping("/add")
     public String add() {
         return PREFIX + "/customerBackOrderDetail_add.html";
+    }
+
+    @RequestMapping("/saleOrderDetail")
+    public String saleOrderDetail() {
+        return PREFIX + "/saleOrderDetail.html";
     }
 
     /**

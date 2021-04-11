@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/customerBackOrder")
 public class CustomerBackOrderController extends BaseController {
 
-    private String PREFIX = "/customerBack/customerBackOrder";
+    private String PREFIX = "/modular/system/customerBackOrder";
 
     @Autowired
     private CustomerBackOrderService customerBackOrderService;
