@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.sys.modular.system.mapper.BackPartnerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.sys.modular.system.entity.BackPartner">
+        <id column="id" property="id" />
+        <result column="back_order_no" property="backOrderNo" />
+        <result column="back_type" property="backType" />
+        <result column="warehouse_code" property="warehouseCode" />
+        <result column="warehouse_name" property="warehouseName" />
+        <result column="partner_code" property="partnerCode" />
+        <result column="partner_name" property="partnerName" />
+        <result column="order_state" property="orderState" />
+        <result column="remark" property="remark" />
+        <result column="audit_user" property="auditUser" />
+        <result column="audit_time" property="auditTime" />
+        <result column="cancel_user" property="cancelUser" />
+        <result column="cancel_time" property="cancelTime" />
+        <result column="out_user" property="outUser" />
+        <result column="out_time" property="outTime" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="yn" property="yn" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS "id", back_order_no AS "backOrderNo", back_type AS "backType", warehouse_code AS "warehouseCode", warehouse_name AS "warehouseName", partner_code AS "partnerCode", partner_name AS "partnerName", order_state AS "orderState", remark AS "remark", audit_user AS "auditUser", audit_time AS "auditTime", cancel_user AS "cancelUser", cancel_time AS "cancelTime", out_user AS "outUser", out_time AS "outTime", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime", yn AS "yn"
+    </sql>
+
+
+    <select id="customList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.BackPartnerResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.BackPartnerParam">
+        select
+        <include refid="Base_Column_List"/>
+        from back_partner where 1 = 1
+    </select>
+
+    <select id="customMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.BackPartnerParam">
+        select
+        <include refid="Base_Column_List"/>
+        from back_partner where 1 = 1
+    </select>
+
+    <select id="customPageList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.BackPartnerResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.BackPartnerParam">
+        select
+        <include refid="Base_Column_List"/>
+        from back_partner where 1 = 1
+    </select>
+
+    <select id="customPageMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.BackPartnerParam">
+        select
+        <include refid="Base_Column_List"/>
+        from back_partner where 1 = 1
+    </select>
+
+</mapper>
