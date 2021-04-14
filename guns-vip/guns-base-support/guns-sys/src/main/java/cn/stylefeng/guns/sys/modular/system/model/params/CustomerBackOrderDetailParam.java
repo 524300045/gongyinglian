@@ -89,6 +89,10 @@ public class CustomerBackOrderDetailParam implements Serializable, BaseValidatin
 
     private Integer yn;
 
+    private String remark;
+
+
+
     @Override
     public String checkParam() {
         return null;

@@ -11,6 +11,7 @@ public enum CodeExpressEnum {
     billnoPurchase("billnoPurchase", "CG,^7#", Boolean.FALSE ,"采购单号"),
     billnoInbound("billnoInbound", "RK,^7#", Boolean.FALSE ,"入库单号"),
     billnoSaleOrder("billnoSaleOrder", "S,^7#", Boolean.FALSE ,"销售单号"),
+    billnoCustomerBack("billnoCustomerBack", "KT,^7#", Boolean.FALSE ,"客退单号"),
     ;
 
     /**

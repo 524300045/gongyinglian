@@ -106,6 +106,8 @@ public class CustomerBackOrderDetail implements Serializable {
     @TableField("yn")
     private Integer yn;
 
+    @TableField(value = "remark")
+    private String remark;
 
     public Long getId() {
         return id;
@@ -225,6 +227,14 @@ public class CustomerBackOrderDetail implements Serializable {
 
     public void setYn(Integer yn) {
         this.yn = yn;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     @Override

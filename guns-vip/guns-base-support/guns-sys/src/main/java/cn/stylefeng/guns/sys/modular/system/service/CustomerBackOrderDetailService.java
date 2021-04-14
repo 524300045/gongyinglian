@@ -3,6 +3,7 @@ package cn.stylefeng.guns.sys.modular.system.service;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.CustomerBackOrderDetail;
 import cn.stylefeng.guns.sys.modular.system.model.params.CustomerBackOrderDetailParam;
+import cn.stylefeng.guns.sys.modular.system.model.params.CustomerBackOrderParam;
 import cn.stylefeng.guns.sys.modular.system.model.result.CustomerBackOrderDetailResult;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -65,5 +66,9 @@ public interface CustomerBackOrderDetailService extends IService<CustomerBackOrd
      * @Date 2021-04-11
      */
      LayuiPageInfo findPageBySpec(CustomerBackOrderDetailParam param);
+
+
+    public void createCustomerBackOrder(CustomerBackOrderParam customerBackOrderParam,
+                                        List<CustomerBackOrderDetailParam> paramList);
 
 }
