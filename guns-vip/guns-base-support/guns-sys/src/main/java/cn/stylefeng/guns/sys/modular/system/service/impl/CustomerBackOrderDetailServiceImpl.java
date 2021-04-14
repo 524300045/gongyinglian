@@ -6,6 +6,7 @@ import cn.stylefeng.guns.sys.modular.system.entity.CustomerBackOrderDetail;
 import cn.stylefeng.guns.sys.modular.system.mapper.CustomerBackOrderDetailMapper;
 import cn.stylefeng.guns.sys.modular.system.model.params.CustomerBackOrderDetailParam;
 import cn.stylefeng.guns.sys.modular.system.model.params.CustomerBackOrderParam;
+import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseDetailParam;
 import cn.stylefeng.guns.sys.modular.system.model.result.CustomerBackOrderDetailResult;
 import  cn.stylefeng.guns.sys.modular.system.service.CustomerBackOrderDetailService;
 import cn.stylefeng.guns.sys.modular.system.service.CustomerBackOrderService;
@@ -98,4 +99,15 @@ public class CustomerBackOrderDetailServiceImpl extends ServiceImpl<CustomerBack
         this.customerBackOrderService.add(customerBackOrderParam);
     }
 
+    @Override
+    public LayuiPageInfo selectPageInfo(CustomerBackOrderDetailParam param){
+        Page pageContext = getPageContext();
+        IPage page = this.baseMapper.selectPageList(pageContext, param);
+        return LayuiPageFactory.createPageInfo(page);
+    }
+
+    @Override
+    public int updateRealityNum(CustomerBackOrderDetail customerBackOrderDetail) {
+        return this.baseMapper.updateRealityNum(customerBackOrderDetail);
+    }
 }

@@ -17,13 +17,48 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
      */
     CustomerBackOrder.initColumn = function () {
         return [[
-            {type: 'checkbox'},
+
             {field: 'id', hide: true, title: ''},
+            {align: 'center',width: 200,  title: '操作'
+                , templet: function (d)
+                {
+                    if (d.orderState ===0) {
+                        return '<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">审核</a>' +
+                            '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">取消</a>'+
+                            '<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="view">查看</a>'
+                            ;
+                    }
+                    return "<a class=\"layui-btn layui-btn-warm layui-btn-xs\" lay-event=\"view\">查看</a> ";
+                }},
             {field: 'customerBackOrderNo', sort: true, title: '客退单号'},
-            {field: 'warehouseCode', sort: true, title: '仓库编码'},
             {field: 'warehouseName', sort: true, title: '仓库名称'},
             {field: 'orderNo', sort: true, title: '销售单号'},
-            {field: 'orderState', sort: true, title: '状态0:新建 10:已审核 20:入库中  30:完成'},
+            {field: 'orderState', sort: true, title: '状态', templet: function (d)
+                {
+                    if (d.orderState ===0) {
+                        return "新建";
+                    }
+                    else  if (d.orderState ===-10)
+                    {
+                        return "已取消";
+                    }
+                    else  if (d.orderState ===10)
+                    {
+                        return "已审核";
+                    }
+                    else  if (d.orderState ===20)
+                    {
+                        return "入库中";
+                    }
+                    else  if (d.orderState ===30)
+                    {
+                        return "已完成";
+                    }
+                    else
+                    {
+                        return  "";
+                    }
+                }},
             {field: 'receiverName', sort: true, title: '收货人姓名'},
             {field: 'receiverPhone', sort: true, title: '电话'},
             {field: 'address', sort: true, title: '地址'},
@@ -33,13 +68,10 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
             {field: 'cancelTime', sort: true, title: '取消时间'},
             {field: 'finishTime', sort: true, title: '完成时间'},
             {field: 'finishUser', sort: true, title: '完成人'},
-            {field: 'remark', sort: true, title: '备注'},
             {field: 'createUser', sort: true, title: '创建人'},
             {field: 'createTime', sort: true, title: '创建时间'},
             {field: 'updateUser', sort: true, title: '更新人'},
-            {field: 'updateTime', sort: true, title: '更新时间'},
-            {field: 'yn', sort: true, title: ''},
-            {align: 'center', toolbar: '#tableBar', title: '操作'}
+            {field: 'updateTime', sort: true, title: '更新时间'}
         ]];
     };
 
@@ -83,6 +115,8 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
         }
     };
 
+
+
     /**
      * 点击删除
      *
@@ -100,6 +134,20 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
             ajax.start();
         };
         Feng.confirm("是否删除?", operation);
+    };
+
+    CustomerBackOrder.onAuditItem = function (data) {
+        var operation = function () {
+            var ajax = new $ax(Feng.ctxPath + "/customerBackOrder/audit", function (data) {
+                Feng.success("审核成功!");
+                table.reload(CustomerBackOrder.tableId);
+            }, function (data) {
+                Feng.error("审核失败!" + data.responseJSON.message + "!");
+            });
+            ajax.set("id", data.id);
+            ajax.start();
+        };
+        Feng.confirm("是否审核?", operation);
     };
 
     // 渲染表格
@@ -129,15 +177,33 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
         CustomerBackOrder.exportExcel();
     });
 
+    CustomerBackOrder.onViewDetail = function (data) {
+        layer.open({
+            type: 2,
+            title: '查看客退明细',
+            shadeClose: true,
+            area: ['1000px', '600px'],
+            content: Feng.ctxPath + '/customerBackOrderDetail/viewDetail?orderNo='+data.orderNo,
+            end: function () {
+
+            }
+
+
+        });
+    };
+
     // 工具条点击事件
     table.on('tool(' + CustomerBackOrder.tableId + ')', function (obj) {
         var data = obj.data;
         var layEvent = obj.event;
 
         if (layEvent === 'edit') {
-            CustomerBackOrder.jumpEditPage(data);
+            CustomerBackOrder.onAuditItem(data);
         } else if (layEvent === 'delete') {
             CustomerBackOrder.onDeleteItem(data);
+        }
+        else if (layEvent === 'view') {
+            CustomerBackOrder.onViewDetail(data);
         }
     });
 });

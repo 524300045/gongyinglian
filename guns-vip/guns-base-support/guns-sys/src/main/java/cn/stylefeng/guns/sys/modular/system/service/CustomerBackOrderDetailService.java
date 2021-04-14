@@ -71,4 +71,8 @@ public interface CustomerBackOrderDetailService extends IService<CustomerBackOrd
     public void createCustomerBackOrder(CustomerBackOrderParam customerBackOrderParam,
                                         List<CustomerBackOrderDetailParam> paramList);
 
+    public LayuiPageInfo selectPageInfo(CustomerBackOrderDetailParam param);
+
+    int updateRealityNum(CustomerBackOrderDetail customerBackOrderDetail);
+
 }

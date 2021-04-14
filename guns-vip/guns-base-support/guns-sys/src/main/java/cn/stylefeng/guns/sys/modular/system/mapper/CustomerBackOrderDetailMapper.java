@@ -2,7 +2,9 @@ package cn.stylefeng.guns.sys.modular.system.mapper;
 
 import cn.stylefeng.guns.sys.modular.system.entity.CustomerBackOrderDetail;
 import cn.stylefeng.guns.sys.modular.system.model.params.CustomerBackOrderDetailParam;
+import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseDetailParam;
 import cn.stylefeng.guns.sys.modular.system.model.result.CustomerBackOrderDetailResult;
+import cn.stylefeng.guns.sys.modular.system.model.result.PmsOrderPurchaseDetailInboundResult;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -52,5 +54,10 @@ public interface CustomerBackOrderDetailMapper extends BaseMapper<CustomerBackOr
      * @Date 2021-04-11
      */
     Page<Map<String, Object>> customPageMapList(@Param("page") Page page, @Param("paramCondition") CustomerBackOrderDetailParam paramCondition);
+
+    Page<CustomerBackOrderDetailResult> selectPageList(@Param("page") Page page, @Param("paramCondition") CustomerBackOrderDetailParam paramCondition);
+
+    int updateRealityNum(CustomerBackOrderDetail customerBackOrderDetail);
+
 
 }

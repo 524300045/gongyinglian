@@ -88,4 +88,27 @@ public class CustomerBackOrderDetailResult implements Serializable {
 
     private Integer yn;
 
+    private String warehouseName;
+
+    /**
+     * 销售单号
+     */
+    private String orderNo;
+
+
+    /**
+     * 收货人姓名
+     */
+    private String receiverName;
+
+    /**
+     * 电话
+     */
+    private String receiverPhone;
+
+    /**
+     * 地址
+     */
+    private String address;
+
 }

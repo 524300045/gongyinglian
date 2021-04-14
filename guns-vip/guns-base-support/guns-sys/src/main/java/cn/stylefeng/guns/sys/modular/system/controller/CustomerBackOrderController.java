@@ -5,9 +5,11 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.core.enums.CodeExpressEnum;
 import cn.stylefeng.guns.sys.modular.system.entity.CustomerBackOrder;
 import cn.stylefeng.guns.sys.modular.system.enums.CustomerBackOrderStatusEnum;
+import cn.stylefeng.guns.sys.modular.system.enums.SaleOrderStatusEnum;
 import cn.stylefeng.guns.sys.modular.system.model.params.CustomerBackOrderDetailParam;
 import cn.stylefeng.guns.sys.modular.system.model.params.CustomerBackOrderParam;
 import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseDetailParam;
+import cn.stylefeng.guns.sys.modular.system.model.params.SaleOrderParam;
 import cn.stylefeng.guns.sys.modular.system.model.result.SaleOrderResult;
 import cn.stylefeng.guns.sys.modular.system.service.CodeService;
 import cn.stylefeng.guns.sys.modular.system.service.CustomerBackOrderDetailService;
@@ -119,13 +121,13 @@ public class CustomerBackOrderController extends BaseController {
      * @author zx
      * @Date 2021-04-11
      */
-    @RequestMapping("/delete")
+   /* @RequestMapping("/delete")
     @ResponseBody
     public ResponseData delete(CustomerBackOrderParam customerBackOrderParam) {
         this.customerBackOrderService.delete(customerBackOrderParam);
         return ResponseData.success();
     }
-
+*/
     /**
      * 查看详情接口
      *
@@ -149,6 +151,44 @@ public class CustomerBackOrderController extends BaseController {
     @RequestMapping("/list")
     public LayuiPageInfo list(CustomerBackOrderParam customerBackOrderParam) {
         return this.customerBackOrderService.findPageBySpec(customerBackOrderParam);
+    }
+
+
+    /**
+     * 删除接口
+     *
+     * @author zx
+     * @Date 2021-03-27
+     */
+    @RequestMapping("/delete")
+    @ResponseBody
+    public ResponseData delete(CustomerBackOrderParam customerBackOrderParam) {
+
+        //   saleOrderParam.setYn(0);
+        customerBackOrderParam.setCancelTime(new Date());
+        customerBackOrderParam.setCancelUser(LoginContextHolder.getContext().getUser().getUsername());
+        customerBackOrderParam.setOrderState(SaleOrderStatusEnum.CANCEL.getStatusValue());
+        customerBackOrderParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        customerBackOrderParam.setUpdateTime(new Date());
+        this.customerBackOrderService.update(customerBackOrderParam);
+
+
+        return ResponseData.success();
+    }
+
+    @RequestMapping("/audit")
+    @ResponseBody
+    public ResponseData audit(CustomerBackOrderParam customerBackOrderParam) {
+
+        customerBackOrderParam.setAuditTime(new Date());
+        customerBackOrderParam.setAuditUser(LoginContextHolder.getContext().getUser().getUsername());
+        customerBackOrderParam.setOrderState(SaleOrderStatusEnum.AUDIT.getStatusValue());
+        customerBackOrderParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        customerBackOrderParam.setUpdateTime(new Date());
+        this.customerBackOrderService.update(customerBackOrderParam);
+
+
+        return ResponseData.success();
     }
 
     @RequestMapping("/addItemDetail")

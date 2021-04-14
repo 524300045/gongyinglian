@@ -1,15 +1,23 @@
 package cn.stylefeng.guns.sys.modular.system.controller;
 
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.CustomerBackOrderDetail;
+import cn.stylefeng.guns.sys.modular.system.entity.PmsOrderPurchaseDetail;
 import cn.stylefeng.guns.sys.modular.system.model.params.CustomerBackOrderDetailParam;
+import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseDetailParam;
+import cn.stylefeng.guns.sys.modular.system.model.result.CustomerBackOrderDetailResult;
 import cn.stylefeng.guns.sys.modular.system.service.CustomerBackOrderDetailService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 
 /**
@@ -126,6 +134,67 @@ public class CustomerBackOrderDetailController extends BaseController {
     @ResponseBody
     @RequestMapping("/list")
     public LayuiPageInfo list(CustomerBackOrderDetailParam customerBackOrderDetailParam) {
+        return this.customerBackOrderDetailService.findPageBySpec(customerBackOrderDetailParam);
+    }
+
+
+    /**
+     * 采购单入库
+     * @return
+     */
+    @RequestMapping("/customerBackDetailInbound")
+    public String CustomerBackDetailInbound() {
+        return PREFIX + "/customerBackDetailInbound.html";
+    }
+
+
+
+
+    @ResponseBody
+    @RequestMapping("/detailInboundPageList")
+    public LayuiPageInfo DetailInboundPageList(CustomerBackOrderDetailParam customerBackOrderDetailParam) {
+        return this.customerBackOrderDetailService.selectPageInfo(customerBackOrderDetailParam);
+    }
+
+
+    @RequestMapping("/inbound")
+    @ResponseBody
+    public ResponseData inbound(@RequestParam("id") long id,
+                                @RequestParam("num") BigDecimal num
+
+    ) {
+
+        CustomerBackOrderDetail customerBackOrderDetail=customerBackOrderDetailService.getById(id);
+        if (customerBackOrderDetail==null)
+        {
+            return ResponseData.error("查询不到明细");
+        }
+        if (num.compareTo(new BigDecimal(0))<=0)
+        {
+            return ResponseData.error("入库数量不能小于0");
+        }
+        BigDecimal curNum=customerBackOrderDetail.getRealityNum().add(num);
+       /* if (curNum.compareTo(customerBackOrderDetail.getPlanNum())==1)
+        {
+            return ResponseData.error("入库数量不能大于计划数量");
+        }*/
+
+        customerBackOrderDetail.setRealityNum(num);
+        customerBackOrderDetail.setUpdateTime(new Date());
+        customerBackOrderDetail.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        customerBackOrderDetailService.updateRealityNum(customerBackOrderDetail);
+
+        return ResponseData.success();
+    }
+
+    @RequestMapping("/viewDetail")
+    public String viewDetail() {
+        return PREFIX + "/viewDetail.html";
+    }
+
+    @ResponseBody
+    @RequestMapping("/detailList")
+    public LayuiPageInfo detailList(CustomerBackOrderDetailParam customerBackOrderDetailParam) {
         return this.customerBackOrderDetailService.findPageBySpec(customerBackOrderDetailParam);
     }
 
