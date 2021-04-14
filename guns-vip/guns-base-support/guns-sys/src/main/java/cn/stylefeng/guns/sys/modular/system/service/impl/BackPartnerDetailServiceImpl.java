@@ -5,12 +5,15 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.BackPartnerDetail;
 import cn.stylefeng.guns.sys.modular.system.mapper.BackPartnerDetailMapper;
 import cn.stylefeng.guns.sys.modular.system.model.params.BackPartnerDetailParam;
+import cn.stylefeng.guns.sys.modular.system.model.params.BackPartnerParam;
 import cn.stylefeng.guns.sys.modular.system.model.result.BackPartnerDetailResult;
 import  cn.stylefeng.guns.sys.modular.system.service.BackPartnerDetailService;
+import cn.stylefeng.guns.sys.modular.system.service.BackPartnerService;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -26,6 +29,9 @@ import java.util.List;
  */
 @Service
 public class BackPartnerDetailServiceImpl extends ServiceImpl<BackPartnerDetailMapper, BackPartnerDetail> implements BackPartnerDetailService {
+
+    @Autowired
+    private BackPartnerService backPartnerService;
 
     @Override
     public void add(BackPartnerDetailParam param){
@@ -81,4 +87,12 @@ public class BackPartnerDetailServiceImpl extends ServiceImpl<BackPartnerDetailM
         return entity;
     }
 
+    @Override
+    public void saveBackPartner(BackPartnerParam backPartnerParam, List<BackPartnerDetailParam> backPartnerDetailParamList) {
+        backPartnerService.add(backPartnerParam);
+        for (BackPartnerDetailParam backPartnerDetailParam:backPartnerDetailParamList)
+        {
+            this.add(backPartnerDetailParam);
+        }
+    }
 }
