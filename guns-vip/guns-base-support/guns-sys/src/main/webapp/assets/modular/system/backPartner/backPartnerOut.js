@@ -21,9 +21,9 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
             {align: 'center',width: 200,  title: '操作'
                 , templet: function (d)
                 {
-                    if (d.orderState ===0) {
-                        return '<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">审核</a>' +
-                            '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">取消</a>'+
+                    if (d.orderState ===10) {
+                        return '<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">出库</a>' +
+
                             '<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="view">查看</a>'
                             ;
                     }
@@ -82,21 +82,7 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
         });
     };
 
-    /**
-     * 跳转到添加页面
-     */
-    BackPartner.jumpAddPage = function () {
-        window.location.href = Feng.ctxPath + '/backPartner/add'
-    };
 
-    /**
-    * 跳转到编辑页面
-    *
-    * @param data 点击按钮时候的行数据
-    */
-    BackPartner.jumpEditPage = function (data) {
-        window.location.href = Feng.ctxPath + '/backPartner/edit?id=' + data.id
-    };
 
     /**
      * 导出excel按钮
@@ -111,37 +97,26 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
     };
 
 
-    /**
-     * 点击删除
-     *
-     * @param data 点击按钮时候的行数据
-     */
-    BackPartner.onDeleteItem = function (data) {
-        var operation = function () {
-            var ajax = new $ax(Feng.ctxPath + "/backPartner/delete", function (data) {
-                Feng.success("删除成功!");
-                table.reload(BackPartner.tableId);
-            }, function (data) {
-                Feng.error("删除失败!" + data.responseJSON.message + "!");
-            });
-            ajax.set("id", data.id);
-            ajax.start();
-        };
-        Feng.confirm("是否删除?", operation);
-    };
 
     BackPartner.onAuditItem = function (data) {
         var operation = function () {
-            var ajax = new $ax(Feng.ctxPath + "/backPartner/audit", function (data) {
-                Feng.success("审核成功!");
-                table.reload(BackPartner.tableId);
+            var ajax = new $ax(Feng.ctxPath + "/backPartner/outBound", function (data) {
+                if (data.code==200)
+                {
+                    Feng.success("出库成功!");
+                    table.reload(BackPartner.tableId);
+                }
+                else
+                {
+                    Feng.error("出库失败!" + data.message + "!");
+                }
             }, function (data) {
-                Feng.error("审核失败!" + data.responseJSON.message + "!");
+                Feng.error("出库失败!" + data.responseJSON.message + "!");
             });
-            ajax.set("id", data.id);
+            ajax.set("orderNo", data.backOrderNo);
             ajax.start();
         };
-        Feng.confirm("是否审核?", operation);
+        Feng.confirm("是否出库?", operation);
     };
 
 
@@ -160,17 +135,9 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
         BackPartner.search();
     });
 
-    // 添加按钮点击事件
-    $('#btnAdd').click(function () {
 
-    BackPartner.jumpAddPage();
 
-    });
 
-    // 导出excel
-    $('#btnExp').click(function () {
-        BackPartner.exportExcel();
-    });
 
     // 工具条点击事件
     table.on('tool(' + BackPartner.tableId + ')', function (obj) {
@@ -179,8 +146,6 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
 
         if (layEvent === 'edit') {
             BackPartner.onAuditItem(data);
-        } else if (layEvent === 'delete') {
-            BackPartner.onDeleteItem(data);
         }
         else if (layEvent === 'view') {
             BackPartner.onViewDetail(data);

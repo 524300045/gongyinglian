@@ -53,4 +53,6 @@ public interface BackPartnerMapper extends BaseMapper<BackPartner> {
      */
     Page<Map<String, Object>> customPageMapList(@Param("page") Page page, @Param("paramCondition") BackPartnerParam paramCondition);
 
+    int updateOutBound(BackPartnerParam backPartnerParam);
+
 }

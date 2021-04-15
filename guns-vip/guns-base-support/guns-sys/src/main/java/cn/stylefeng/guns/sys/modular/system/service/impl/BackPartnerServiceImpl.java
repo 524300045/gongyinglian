@@ -48,7 +48,13 @@ public class BackPartnerServiceImpl extends ServiceImpl<BackPartnerMapper, BackP
 
     @Override
     public BackPartnerResult findBySpec(BackPartnerParam param){
-        return null;
+
+        List<BackPartnerResult> backPartnerResults=this.baseMapper.customList(param);
+        if (backPartnerResults!=null&&backPartnerResults.size()>0)
+        {
+            return backPartnerResults.get(0);
+        }
+        return  null;
     }
 
     @Override
@@ -81,4 +87,8 @@ public class BackPartnerServiceImpl extends ServiceImpl<BackPartnerMapper, BackP
         return entity;
     }
 
+    @Override
+    public int updateOutBound(BackPartnerParam backPartnerParam) {
+        return this.baseMapper.updateOutBound(backPartnerParam);
+    }
 }

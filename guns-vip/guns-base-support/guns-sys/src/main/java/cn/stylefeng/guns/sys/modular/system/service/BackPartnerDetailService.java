@@ -1,9 +1,11 @@
 package cn.stylefeng.guns.sys.modular.system.service;
 
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.sys.modular.system.entity.BackPartner;
 import cn.stylefeng.guns.sys.modular.system.entity.BackPartnerDetail;
 import cn.stylefeng.guns.sys.modular.system.model.params.BackPartnerDetailParam;
 import cn.stylefeng.guns.sys.modular.system.model.params.BackPartnerParam;
+import cn.stylefeng.guns.sys.modular.system.model.params.LocationStockParam;
 import cn.stylefeng.guns.sys.modular.system.model.result.BackPartnerDetailResult;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -69,4 +71,5 @@ public interface BackPartnerDetailService extends IService<BackPartnerDetail> {
 
      void saveBackPartner(BackPartnerParam backPartnerParam,List<BackPartnerDetailParam> backPartnerDetailParamList);
 
+     void saveOutBound(BackPartnerParam backPartnerParam, List<LocationStockParam> locationStockParams, String user);
 }

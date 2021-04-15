@@ -9,7 +9,7 @@ public enum BackPartnerStatusEnum {
     CANCEL(-10, "已取消"),
     NEW(0, "新建"),
     AUDIT(10, "已审核"),
-    RECIEVE_FINISH(30, "已完成"),
+    FINISH(30, "已完成"),
     CLOSE(40, "关闭");
 
     /**

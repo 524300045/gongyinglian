@@ -1,15 +1,32 @@
 package cn.stylefeng.guns.sys.modular.system.controller;
 
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.BackPartner;
-import cn.stylefeng.guns.sys.modular.system.model.params.BackPartnerParam;
+import cn.stylefeng.guns.sys.modular.system.enums.BackPartnerStatusEnum;
+import cn.stylefeng.guns.sys.modular.system.enums.LocationStockDirectionEnum;
+import cn.stylefeng.guns.sys.modular.system.enums.OperationTypeEnum;
+import cn.stylefeng.guns.sys.modular.system.enums.SaleOrderStatusEnum;
+import cn.stylefeng.guns.sys.modular.system.model.params.*;
+import cn.stylefeng.guns.sys.modular.system.model.result.BackPartnerDetailResult;
+import cn.stylefeng.guns.sys.modular.system.model.result.BackPartnerResult;
+import cn.stylefeng.guns.sys.modular.system.model.result.SaleOrderDetailResult;
+import cn.stylefeng.guns.sys.modular.system.model.result.SaleOrderResult;
+import cn.stylefeng.guns.sys.modular.system.service.BackPartnerDetailService;
 import cn.stylefeng.guns.sys.modular.system.service.BackPartnerService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -26,6 +43,9 @@ public class BackPartnerController extends BaseController {
 
     @Autowired
     private BackPartnerService backPartnerService;
+
+    @Autowired
+    private BackPartnerDetailService backPartnerDetailService;
 
     /**
      * 跳转到主页面
@@ -86,18 +106,7 @@ public class BackPartnerController extends BaseController {
         return ResponseData.success();
     }
 
-    /**
-     * 删除接口
-     *
-     * @author zx
-     * @Date 2021-04-14
-     */
-    @RequestMapping("/delete")
-    @ResponseBody
-    public ResponseData delete(BackPartnerParam backPartnerParam) {
-        this.backPartnerService.delete(backPartnerParam);
-        return ResponseData.success();
-    }
+
 
     /**
      * 查看详情接口
@@ -123,6 +132,118 @@ public class BackPartnerController extends BaseController {
     public LayuiPageInfo list(BackPartnerParam backPartnerParam) {
         return this.backPartnerService.findPageBySpec(backPartnerParam);
     }
+
+    /**
+     * 删除接口
+     *
+     * @author zx
+     * @Date 2021-03-27
+     */
+    @RequestMapping("/delete")
+    @ResponseBody
+    public ResponseData delete(BackPartnerParam backPartnerParam) {
+
+        //   saleOrderParam.setYn(0);
+        backPartnerParam.setCancelTime(new Date());
+        backPartnerParam.setCancelUser(LoginContextHolder.getContext().getUser().getUsername());
+        backPartnerParam.setOrderState(BackPartnerStatusEnum.CANCEL.getStatusValue());
+        backPartnerParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        backPartnerParam.setUpdateTime(new Date());
+        this.backPartnerService.update(backPartnerParam);
+
+
+        return ResponseData.success();
+    }
+
+    @RequestMapping("/audit")
+    @ResponseBody
+    public ResponseData audit(BackPartnerParam backPartnerParam) {
+
+        backPartnerParam.setAuditTime(new Date());
+        backPartnerParam.setAuditUser(LoginContextHolder.getContext().getUser().getUsername());
+        backPartnerParam.setOrderState(BackPartnerStatusEnum.AUDIT.getStatusValue());
+        backPartnerParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        backPartnerParam.setUpdateTime(new Date());
+        this.backPartnerService.update(backPartnerParam);
+
+
+        return ResponseData.success();
+    }
+
+
+    @RequestMapping("backPartnerOut")
+    public String backPartnerOut() {
+        return PREFIX + "/backPartnerOut.html";
+    }
+
+
+
+    /**
+     * 订单出库
+     * @param orderNo
+     * @return
+     */
+    @RequestMapping("/outBound")
+    @ResponseBody
+    public ResponseData outBound( @RequestParam("orderNo") String orderNo) {
+
+        BackPartnerParam backPartnerParam=new BackPartnerParam();
+        backPartnerParam.setBackOrderNo(orderNo);
+        BackPartnerResult backPartnerResult=backPartnerService.findBySpec(backPartnerParam);
+        if (backPartnerResult==null)
+        {
+            return ResponseData.error("查询不到退供单详细信息");
+        }
+        if (backPartnerResult.getOrderState()!=BackPartnerStatusEnum.AUDIT.getStatusValue())
+        {
+            return ResponseData.error("退供订单状态存在问题!");
+        }
+        BackPartnerDetailParam backPartnerDetailParam=new BackPartnerDetailParam();
+        backPartnerDetailParam.setBackOrderNo(orderNo);
+        backPartnerDetailParam.setYn(1);
+        List<BackPartnerDetailResult> backPartnerDetailResultList=backPartnerDetailService.findListBySpec(backPartnerDetailParam);
+        if (backPartnerDetailResultList==null|| backPartnerDetailResultList.size()==0)
+        {
+            return ResponseData.error("查询不到商品明细!");
+        }
+        List<BackPartnerDetailResult> curList=backPartnerDetailResultList.stream().filter(p->p.getRealityNum().compareTo(new BigDecimal(0))==1).collect(Collectors.toList());
+        if (curList==null||curList.size()==0)
+        {
+            return ResponseData.error("出库数量不能为0!");
+        }
+        backPartnerParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+
+        List<LocationStockParam> locationStockParams=new ArrayList<>();
+        for (BackPartnerDetailResult backPartnerDetailResult:backPartnerDetailResultList)
+        {
+            if (backPartnerDetailResult.getRealityNum().compareTo(new BigDecimal(0))<=0)
+            {
+                continue;
+            }
+            LocationStockParam locationStockParam=new LocationStockParam();
+            locationStockParam.setRelOrderNo(backPartnerResult.getBackOrderNo());
+            locationStockParam.setLocationCode("");
+            locationStockParam.setSkuCode(backPartnerDetailResult.getSkuCode());
+            locationStockParam.setWarehouseCode(backPartnerResult.getWarehouseCode());
+            locationStockParam.setWarehouseName(backPartnerResult.getWarehouseName());
+            locationStockParam.setQuantity(backPartnerDetailResult.getRealityNum());
+            locationStockParams.add(locationStockParam);
+
+        }
+
+        String user=LoginContextHolder.getContext().getUser().getUsername();
+        backPartnerParam.setOutTime(new Date());
+        backPartnerParam.setOutUser(user);
+        backPartnerParam.setUpdateUser(user);
+        backPartnerParam.setBackOrderNo(backPartnerResult.getBackOrderNo());
+        backPartnerParam.setOrderState(BackPartnerStatusEnum.FINISH.getStatusValue());
+
+        backPartnerDetailService.saveOutBound(backPartnerParam,locationStockParams,user);
+
+
+        return ResponseData.success();
+    }
+
 
 }
 

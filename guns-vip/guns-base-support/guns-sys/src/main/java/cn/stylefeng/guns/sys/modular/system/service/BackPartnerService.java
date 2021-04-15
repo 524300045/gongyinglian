@@ -66,4 +66,6 @@ public interface BackPartnerService extends IService<BackPartner> {
      */
      LayuiPageInfo findPageBySpec(BackPartnerParam param);
 
+    int updateOutBound(BackPartnerParam backPartnerParam);
+
 }

@@ -7,6 +7,7 @@ public enum OperationTypeEnum {
 
     TYPE_PURCHASE_INSTORE(100, "采购入库"),
     TYPE_SALE_OUTSTORE(120, "销售出库"),
+    TYPE_BACKPARTNER_OUTSTORE(130, "退供出库"),
     ;
 
     Integer code;

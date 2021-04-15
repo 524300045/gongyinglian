@@ -36,6 +36,8 @@
         select
         <include refid="Base_Column_List"/>
         from back_partner where 1 = 1
+        and  back_order_no=#{paramCondition.backOrderNo,jdbcType=VARCHAR}
+
     </select>
 
     <select id="customMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.BackPartnerParam">
@@ -55,5 +57,18 @@
         <include refid="Base_Column_List"/>
         from back_partner where 1 = 1
     </select>
+
+    <update id="updateOutBound" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.BackPartnerParam">
+
+UPDATE back_partner SET
+ order_state=#{orderState,jdbcType=INTEGER},
+ out_time=NOW(),
+out_user=#{outUser,jdbcType=VARCHAR},
+update_user=#{updateUser,jdbcType=VARCHAR},
+update_time=NOW()
+WHERE back_order_no=#{backOrderNo,jdbcType=VARCHAR}
+
+
+  </update>
 
 </mapper>
