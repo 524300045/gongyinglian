@@ -167,6 +167,20 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
 
     });
 
+    BackPartner.onViewDetail = function (data) {
+        layer.open({
+            type: 2,
+            title: '查看明细',
+            shadeClose: true,
+            area: ['1000px', '600px'],
+            content: Feng.ctxPath + '/backPartnerDetail/viewDetail?orderNo='+data.backOrderNo,
+            end: function () {
+
+            }
+
+        });
+    };
+
     // 导出excel
     $('#btnExp').click(function () {
         BackPartner.exportExcel();

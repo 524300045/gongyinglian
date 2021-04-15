@@ -72,4 +72,6 @@ public interface BackPartnerDetailService extends IService<BackPartnerDetail> {
      void saveBackPartner(BackPartnerParam backPartnerParam,List<BackPartnerDetailParam> backPartnerDetailParamList);
 
      void saveOutBound(BackPartnerParam backPartnerParam, List<LocationStockParam> locationStockParams, String user);
+
+    int updateRealityNum(BackPartnerDetail backPartnerDetail);
 }

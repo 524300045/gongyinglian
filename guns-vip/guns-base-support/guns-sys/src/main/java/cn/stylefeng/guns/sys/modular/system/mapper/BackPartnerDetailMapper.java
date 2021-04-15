@@ -53,4 +53,6 @@ public interface BackPartnerDetailMapper extends BaseMapper<BackPartnerDetail> {
      */
     Page<Map<String, Object>> customPageMapList(@Param("page") Page page, @Param("paramCondition") BackPartnerDetailParam paramCondition);
 
+    int updateRealityNum(BackPartnerDetail backPartnerDetail);
+
 }

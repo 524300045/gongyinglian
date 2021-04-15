@@ -7,7 +7,8 @@ public enum BusinessTypeEnum {
 
 
     TYPE_PROCUREMENT_IN(100, "采购订单"),
-    TYPE_SALEORDER_OUT(110, "销售订单")
+    TYPE_SALEORDER_OUT(110, "销售订单"),
+    TYPE_BACK_PARTNER(120, "退供订单")
     ;
 
     Integer code;

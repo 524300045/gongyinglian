@@ -42,7 +42,7 @@
     <select id="customPageList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.BackPartnerDetailResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.BackPartnerDetailParam">
         select
         <include refid="Base_Column_List"/>
-        from back_partner_detail where 1 = 1
+        from back_partner_detail where 1 = 1 and back_order_no=#{paramCondition.backOrderNo,jdbcType=VARCHAR}
     </select>
 
     <select id="customPageMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.BackPartnerDetailParam">
@@ -50,5 +50,16 @@
         <include refid="Base_Column_List"/>
         from back_partner_detail where 1 = 1
     </select>
+
+    <update id="updateRealityNum" parameterType="cn.stylefeng.guns.sys.modular.system.entity.BackPartnerDetail">
+
+UPDATE back_partner_detail SET
+ reality_num=#{realityNum,jdbcType=DECIMAL},
+update_user=#{updateUser,jdbcType=VARCHAR},
+update_time=NOW()
+WHERE id=#{id}
+
+
+  </update>
 
 </mapper>

@@ -5,12 +5,12 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.core.enums.CodeExpressEnum;
 import cn.stylefeng.guns.sys.modular.system.entity.BackPartnerDetail;
+import cn.stylefeng.guns.sys.modular.system.entity.SaleOrderDetail;
 import cn.stylefeng.guns.sys.modular.system.enums.BackPartnerStatusEnum;
 import cn.stylefeng.guns.sys.modular.system.enums.PmsPurchaseStatusEnum;
+import cn.stylefeng.guns.sys.modular.system.enums.SaleOrderStatusEnum;
 import cn.stylefeng.guns.sys.modular.system.model.params.*;
-import cn.stylefeng.guns.sys.modular.system.model.result.GoodsResult;
-import cn.stylefeng.guns.sys.modular.system.model.result.PartnerResult;
-import cn.stylefeng.guns.sys.modular.system.model.result.WarehouseInfoResult;
+import cn.stylefeng.guns.sys.modular.system.model.result.*;
 import cn.stylefeng.guns.sys.modular.system.service.*;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
@@ -44,6 +44,9 @@ public class BackPartnerDetailController extends BaseController {
 
     @Autowired
     private BackPartnerDetailService backPartnerDetailService;
+
+    @Autowired
+    private BackPartnerService backPartnerService;
 
 
     @Autowired
@@ -166,7 +169,9 @@ public class BackPartnerDetailController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/list")
-    public LayuiPageInfo list(BackPartnerDetailParam backPartnerDetailParam) {
+    public LayuiPageInfo list(@RequestParam("orderNo") String orderNo) {
+        BackPartnerDetailParam backPartnerDetailParam=new BackPartnerDetailParam();
+        backPartnerDetailParam.setBackOrderNo(orderNo);
         return this.backPartnerDetailService.findPageBySpec(backPartnerDetailParam);
     }
 
@@ -246,6 +251,46 @@ public class BackPartnerDetailController extends BaseController {
     }
 
 
+    @RequestMapping("/editOutDetail")
+    public String editOutDetail() {
+        return PREFIX + "/editOutDetail.html";
+    }
+
+
+    @RequestMapping("/updateOutNum")
+    @ResponseBody
+    public ResponseData updateOutNum(BackPartnerDetailParam backPartnerDetailParam) {
+
+
+        BackPartnerDetail backPartnerDetail=backPartnerDetailService.getById(backPartnerDetailParam.getId());
+        if (backPartnerDetail.getRealityNum().compareTo(backPartnerDetail.getPlanNum())==1)
+        {
+            return ResponseData.error("出库数量不能大于计划量");
+        }
+
+        if (backPartnerDetail.getRealityNum().compareTo(new BigDecimal(0))<=0)
+        {
+            return ResponseData.error("出库数量必须大于0");
+        }
+
+        BackPartnerParam backPartnerParam=new BackPartnerParam();
+        backPartnerParam.setBackOrderNo(backPartnerDetail.getBackOrderNo());
+        BackPartnerResult backPartnerResult=backPartnerService.findBySpec(backPartnerParam);
+        if (backPartnerResult.getOrderState().equals(BackPartnerStatusEnum.FINISH.getStatusValue()))
+        {
+            return ResponseData.error("退供单已完成，不能修改");
+        }
+        backPartnerDetail.setRealityNum(backPartnerDetailParam.getRealityNum());
+        backPartnerDetail.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        backPartnerDetail.setUpdateTime(new Date());
+        this.backPartnerDetailService.updateRealityNum(backPartnerDetail);
+        return ResponseData.success();
+    }
+
+    @RequestMapping("/viewDetail")
+    public String viewDetail() {
+        return PREFIX + "/viewDetail.html";
+    }
 }
 
 

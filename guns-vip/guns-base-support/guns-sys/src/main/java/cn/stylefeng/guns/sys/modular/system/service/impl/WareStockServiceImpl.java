@@ -325,6 +325,11 @@ public class WareStockServiceImpl extends ServiceImpl<WareStockMapper, WareStock
             businessTypeEnum=BusinessTypeEnum.TYPE_SALEORDER_OUT;
         }
 
+        if (operationTypeEnum.getCode().equals(OperationTypeEnum.TYPE_BACKPARTNER_OUTSTORE.getCode()))
+        {
+            businessTypeEnum=BusinessTypeEnum.TYPE_BACK_PARTNER;
+        }
+
         return businessTypeEnum;
     }
 

@@ -111,4 +111,9 @@ public class BackPartnerDetailServiceImpl extends ServiceImpl<BackPartnerDetailM
             wareStockService.updateRealAndForOrderStock(locationStockParam, OperationTypeEnum.TYPE_BACKPARTNER_OUTSTORE, LocationStockDirectionEnum.REDUCE,user);
         }
     }
+
+    @Override
+    public int updateRealityNum(BackPartnerDetail backPartnerDetail) {
+        return this.baseMapper.updateRealityNum(backPartnerDetail);
+    }
 }
