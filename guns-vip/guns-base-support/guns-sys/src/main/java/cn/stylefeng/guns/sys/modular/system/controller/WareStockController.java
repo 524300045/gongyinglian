@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.sys.modular.system.controller;
 
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.WareStock;
 import cn.stylefeng.guns.sys.modular.system.model.params.WareStockParam;
@@ -10,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 
 /**
@@ -124,6 +128,32 @@ public class WareStockController extends BaseController {
         return this.wareStockService.findPageBySpec(wareStockParam);
     }
 
+
+    @RequestMapping("wareStockInventory")
+    public String wareStockInventory() {
+        return PREFIX + "/wareStockInventory.html";
+    }
+
+
+    /**
+     * 更新库存
+     *
+     * @author zx
+     * @Date 2021-03-25
+     */
+    @RequestMapping("/updateStock")
+    @ResponseBody
+    public ResponseData updateStock(WareStockParam wareStockParam) {
+        if (wareStockParam.getRealStock().compareTo(new BigDecimal(0))<=0)
+        {
+            return ResponseData.error("库存数量必须大于0");
+        }
+        wareStockParam.setForOrderStock(wareStockParam.getRealStock());
+        wareStockParam.setUpdateTime(new Date());
+        wareStockParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        this.wareStockService.update(wareStockParam);
+        return ResponseData.success();
+    }
 }
 
 
