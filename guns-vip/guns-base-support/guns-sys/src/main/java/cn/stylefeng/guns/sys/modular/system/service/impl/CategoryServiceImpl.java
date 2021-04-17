@@ -55,7 +55,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
     @Override
     public List<CategoryResult> findListBySpec(CategoryParam param){
-        return null;
+        return this.baseMapper.customList(param);
     }
 
     @Override

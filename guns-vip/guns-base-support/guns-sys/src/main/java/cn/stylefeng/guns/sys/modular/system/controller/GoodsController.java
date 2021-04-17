@@ -7,7 +7,9 @@ import cn.stylefeng.guns.sys.modular.system.entity.Category;
 import cn.stylefeng.guns.sys.modular.system.entity.Goods;
 import cn.stylefeng.guns.sys.modular.system.model.params.CategoryParam;
 import cn.stylefeng.guns.sys.modular.system.model.params.GoodsParam;
+import cn.stylefeng.guns.sys.modular.system.model.params.WarehouseInfoParam;
 import cn.stylefeng.guns.sys.modular.system.model.result.CategoryResult;
+import cn.stylefeng.guns.sys.modular.system.model.result.WarehouseInfoResult;
 import cn.stylefeng.guns.sys.modular.system.service.CategoryService;
 import cn.stylefeng.guns.sys.modular.system.service.CodeService;
 import cn.stylefeng.guns.sys.modular.system.service.GoodsService;
@@ -16,10 +18,13 @@ import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -50,7 +55,15 @@ public class GoodsController extends BaseController {
      * @Date 2021-03-15
      */
     @RequestMapping("")
-    public String index() {
+    public String index(Model model) {
+
+        CategoryParam categoryParam=new CategoryParam();
+        categoryParam.setYn(1);
+        List<CategoryResult> categoryResultList=categoryService.findListBySpec(categoryParam);
+        categoryResultList=categoryResultList.stream().filter(p->p.getLevel().equals(1)).collect(Collectors.toList());
+        model.addAttribute("categoryList", categoryResultList);
+
+
         return PREFIX + "/goods.html";
     }
 

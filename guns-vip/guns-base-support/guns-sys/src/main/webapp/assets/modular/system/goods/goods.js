@@ -1,10 +1,10 @@
-layui.use(['table', 'admin', 'ax', 'func'], function () {
+layui.use(['table', 'admin', 'ax', 'func', 'form'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
     var admin = layui.admin;
     var func = layui.func;
-
+    var form = layui.form;
     /**
      * 商品表管理
      */
@@ -85,7 +85,9 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
      */
     Goods.search = function () {
         var queryData = {};
-
+        queryData['goodsName'] =$("#goodsName").val();
+        queryData['categoryCode'] = $("#categoryCode").val();
+        queryData['twoCategoryCode'] = $("#twoCategoryCode").val();
 
         table.reload(Goods.tableId, {
             where: queryData, page: {curr: 1}
@@ -136,6 +138,40 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
             table.exportFile(tableResult.config.id, checkRows.data, 'xls');
         }
     };
+
+    form.on('select(categoryCode)', function (data) {
+        var categoryCode = data.value;
+        console.log(categoryCode);
+        $("#twoCategoryCode").empty();
+        if (categoryCode=="")
+        {
+            $('#twoCategoryCode').append(new Option("请选择二级分类",""));
+            form.render("select");
+        }
+        else
+        {
+            var ajax = new $ax(Feng.ctxPath + "/category/getListByParentCode", function (data) {
+
+                for (var i = 0; i < data.data.length; i++) {
+                    var name = data.data[i].categoryName;
+                    var code = data.data[i].categoryCode;
+                    console.log(name+"--"+code)
+                }
+                $('#twoCategoryCode').append(new Option("请选择二级分类",""));
+                $.each(data.data, function (index, value) {
+                     console.log(value.categoryName);
+                    $('#twoCategoryCode').append(new Option(value.categoryName,value.categoryCode));// 下拉菜单里添加元素
+                });
+               // form.render("select","twoCategoryCode");
+                form.render("select");
+            }, function (data) {
+            });
+            ajax.set("parentCode", categoryCode);
+            ajax.start();
+
+        }
+
+    });
 
     /**
      * 点击删除

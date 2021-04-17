@@ -6,6 +6,7 @@ import cn.stylefeng.guns.base.pojo.node.ZTreeNode;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.core.enums.CodeExpressEnum;
 import cn.stylefeng.guns.sys.modular.system.entity.Category;
+import cn.stylefeng.guns.sys.modular.system.entity.Dict;
 import cn.stylefeng.guns.sys.modular.system.factory.LayuiTreeFactory;
 import cn.stylefeng.guns.sys.modular.system.model.params.CategoryParam;
 import cn.stylefeng.guns.sys.modular.system.model.result.CategoryResult;
@@ -14,10 +15,12 @@ import cn.stylefeng.guns.sys.modular.system.service.CodeService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.treebuild.DefaultTreeBuildFactory;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
+import cn.stylefeng.roses.kernel.model.response.SuccessResponseData;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
@@ -91,12 +94,17 @@ public class CategoryController extends BaseController {
         categoryParam.setUpdateTime(new Date());
         categoryParam.setLevel(1);
         categoryParam.setYn(1);
-        CategoryParam singeleCategoryParam=new CategoryParam();
-        singeleCategoryParam.setCategoryCode(categoryParam.getParentCode());
-        Category categoryResult=categoryService.selectCategoryByCode(singeleCategoryParam);
+
+        CategoryParam parentCategoryParam=new CategoryParam();
+        parentCategoryParam.setCategoryCode(categoryParam.getParentCode());
+        Category categoryResult=categoryService.selectCategoryByCode(parentCategoryParam);
         if (categoryResult!=null)
         {
             Integer level=categoryResult.getLevel();
+            if(level.equals(2))
+            {
+                return ResponseData.error("分类只支持两级，上架分类不能选择末级!");
+            }
             level=level+1;
             categoryParam.setLevel(level);
         }
@@ -186,6 +194,18 @@ public class CategoryController extends BaseController {
         DefaultTreeBuildFactory<LayuiTreeNode> treeBuildFactory = new DefaultTreeBuildFactory<>();
         treeBuildFactory.setRootParentId("-1");
         return treeBuildFactory.doTreeBuild(list);
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/getListByParentCode")
+    public ResponseData getListByParentCode(@RequestParam("parentCode") String parentCode) {
+
+        CategoryParam parentCategoryParam=new CategoryParam();
+        parentCategoryParam.setParentCode(parentCode);
+        List<CategoryResult> categoryResultList=this.categoryService.findListBySpec(parentCategoryParam);
+
+        return new SuccessResponseData(categoryResultList);
     }
 
 
