@@ -131,12 +131,37 @@ layui.use(['table', 'admin', 'ax', 'func', 'form'], function () {
      * 导出excel按钮
      */
     Goods.exportExcel = function () {
-        var checkRows = table.checkStatus(Goods.tableId);
-        if (checkRows.data.length === 0) {
-            Feng.error("请选择要导出的数据");
-        } else {
-            table.exportFile(tableResult.config.id, checkRows.data, 'xls');
-        }
+
+      var   goodsName=$("#goodsName").val();
+        var categoryCode= $("#categoryCode").val();
+        var  twoCategoryCode= $("#twoCategoryCode").val();
+
+
+        window.location.href="goods/export?goodsName="+goodsName+"&categoryCode="+categoryCode+"&twoCategoryCode="+twoCategoryCode;
+
+        //通过ajax查询所有数据
+       /* $.ajax({
+
+            type : "POST",//方法类型
+            async : false,
+            dataType : "json",//预期服务器返回的数据类型
+            url : "/goods/export",//url
+            success : function(result) {
+                if (result.code == 200) {
+                    //回调成功
+
+
+                }
+                return true;
+            },
+            error : function(data, XMLHttpRequest, textStatus,
+                             errorThrown) {
+                alert('异常！');
+                return false;
+            }
+        });*/
+
+
     };
 
     form.on('select(categoryCode)', function (data) {
@@ -210,7 +235,7 @@ layui.use(['table', 'admin', 'ax', 'func', 'form'], function () {
     // 添加按钮点击事件
     $('#btnAdd').click(function () {
 
-   // Goods.jumpAddPage();
+
         Goods.openAddGoods();
 
     });

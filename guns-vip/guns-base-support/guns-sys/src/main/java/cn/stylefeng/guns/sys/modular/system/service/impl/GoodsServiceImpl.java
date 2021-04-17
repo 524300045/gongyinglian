@@ -53,7 +53,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     @Override
     public List<GoodsResult> findListBySpec(GoodsParam param){
-        return null;
+        return this.baseMapper.customList(param);
     }
 
     @Override

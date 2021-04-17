@@ -39,6 +39,19 @@
         select
         <include refid="Base_Column_List"/>
         from goods where  yn= 1
+
+        <if test="paramCondition.goodsName!= null">
+            and
+            ( sku_code = #{paramCondition.goodsName,jdbcType=VARCHAR} or goods_name like concat(concat('%',#{paramCondition.goodsName}),'%') )
+        </if>
+
+        <if test="paramCondition.categoryCode!= null and paramCondition.categoryCode!=''">
+            and  category_code = #{paramCondition.categoryCode,jdbcType=VARCHAR}
+        </if>
+
+        <if test="paramCondition.twoCategoryCode!= null and paramCondition.twoCategoryCode!=''">
+            and  two_category_code = #{paramCondition.twoCategoryCode,jdbcType=VARCHAR}
+        </if>
     </select>
 
     <select id="customMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.GoodsParam">
