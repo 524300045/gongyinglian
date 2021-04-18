@@ -2,16 +2,21 @@ package cn.stylefeng.guns.sys.modular.system.controller;
 
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.sys.modular.system.entity.Partner;
 import cn.stylefeng.guns.sys.modular.system.entity.PmsOrderPurchase;
 import cn.stylefeng.guns.sys.modular.system.enums.PmsPurchaseStatusEnum;
 import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseParam;
+import cn.stylefeng.guns.sys.modular.system.service.PartnerService;
 import cn.stylefeng.guns.sys.modular.system.service.PmsOrderPurchaseService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 
 /**
@@ -29,6 +34,9 @@ public class PmsOrderPurchaseController extends BaseController {
     @Autowired
     private PmsOrderPurchaseService pmsOrderPurchaseService;
 
+    @Autowired
+    private PartnerService partnerService;
+
     /**
      * 跳转到主页面
      *
@@ -36,7 +44,11 @@ public class PmsOrderPurchaseController extends BaseController {
      * @Date 2021-03-22
      */
     @RequestMapping("")
-    public String index() {
+    public String index(Model model) {
+
+        List<Partner> partnerList=partnerService.list();
+
+        model.addAttribute("partners", partnerList);
         return PREFIX + "/pmsOrderPurchase.html";
     }
 

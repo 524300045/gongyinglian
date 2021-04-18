@@ -37,8 +37,9 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
      */
     PmsOrderPurchaseDetail.search = function () {
         var queryData = {};
-
-
+        queryData['orderNo'] =$("#orderNo").val();
+        queryData['partnerCode'] = $("#partnerCode").val();
+        queryData['goodsName'] =$("#goodsName").val();
         table.reload(PmsOrderPurchaseDetail.tableId, {
             where: queryData, page: {curr: 1}
         });

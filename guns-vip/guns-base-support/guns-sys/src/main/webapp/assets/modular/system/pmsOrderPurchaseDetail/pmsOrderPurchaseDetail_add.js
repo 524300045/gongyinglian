@@ -382,4 +382,24 @@ layui.use(['form', 'admin','table','ax','laydate','upload','formSelects'], funct
     })
 
 
+
+    form.on('select(partnerCode)', function (data) {
+        var partnerCode = data.value;
+        console.log(partnerCode);
+        rowData=[];
+
+        var queryData = {};
+        queryData['partnerCode'] = $("#partnerCode").val();
+        queryData['goodsName'] = $("#goodsName").val();
+        table.reload(GoodsTable.tableId, {
+            where: queryData, page: {curr: 1},
+            url: Feng.ctxPath + '/pmsOrderPurchaseDetail/partnergoodslist'
+        });
+
+        table.reload("detailTable", {
+            data : [],
+        })
+
+
+    });
 });

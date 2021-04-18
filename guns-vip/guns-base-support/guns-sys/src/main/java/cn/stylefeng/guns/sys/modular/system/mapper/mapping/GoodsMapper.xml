@@ -65,7 +65,7 @@
         <include refid="Base_Column_List"/>
         from goods where yn= 1
 
-        <if test="paramCondition.goodsName!= null">
+        <if test="paramCondition.goodsName!= null and paramCondition.goodsName!=''">
             and
             ( sku_code = #{paramCondition.goodsName,jdbcType=VARCHAR} or goods_name like concat(concat('%',#{paramCondition.goodsName}),'%') )
         </if>

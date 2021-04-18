@@ -4,6 +4,7 @@ import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.core.enums.CodeExpressEnum;
+import cn.stylefeng.guns.sys.modular.system.entity.Partner;
 import cn.stylefeng.guns.sys.modular.system.entity.PmsOrderPurchaseDetail;
 import cn.stylefeng.guns.sys.modular.system.enums.PmsPurchaseStatusEnum;
 import cn.stylefeng.guns.sys.modular.system.model.params.*;
@@ -300,7 +301,9 @@ public class PmsOrderPurchaseDetailController extends BaseController {
      * @return
      */
     @RequestMapping("/detailInbound")
-    public String detailInbound() {
+    public String detailInbound(Model model) {
+        List<Partner> partnerList=partnerService.list();
+        model.addAttribute("partners", partnerList);
         return PREFIX + "/pmsOrderPurchaseDetailInbound.html";
     }
 

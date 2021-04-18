@@ -42,9 +42,13 @@ g.goods_model,g.unit_name
 ON pg.partner_code=p.partner_code
 INNER JOIN  goods g ON g.sku_code=pg.sku_code
 WHERE pg.yn=1 AND p.yn=1 AND  g.yn=1
-        <if test="paramCondition.goodsName!= null">
+        <if test="paramCondition.goodsName!= null and paramCondition.goodsName!=''">
             and
             ( g.sku_code = #{paramCondition.goodsName,jdbcType=VARCHAR} or g.goods_name like concat(concat('%',#{paramCondition.goodsName}),'%') )
+        </if>
+        <if test="paramCondition.partnerCode!= null and paramCondition.partnerCode!=''" >
+            and
+            ( p.partner_code = #{paramCondition.partnerCode,jdbcType=VARCHAR}  )
         </if>
     </select>
 

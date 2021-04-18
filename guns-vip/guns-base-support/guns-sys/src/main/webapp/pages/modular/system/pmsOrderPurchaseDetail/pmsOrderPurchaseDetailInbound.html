@@ -11,6 +11,36 @@
                 <div class="layui-card-body">
                     <div class="layui-form toolbar">
                         <div class="layui-form-item">
+
+                            <div class="layui-inline">
+                                <label class="layui-form-label">供应商</label>
+
+                                <div class="layui-input-inline">
+                                    <select id="partnerCode" name="partnerCode" lay-filter="partnerCode">
+                                        <option value="">请选择供应商</option>
+                                        @for(item in partners!){
+                                        <option value="${item.partnerCode}">${item.partnerName}</option>
+                                        @}
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="layui-inline">
+                                <label class="layui-form-label">采购单号</label>
+                                <div class="layui-input-inline">
+                                    <input id="orderNo" name="orderNo" class="layui-input" type="text" placeholder="采购单号"/>
+                                </div>
+
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">商品名称</label>
+                                <div class="layui-input-inline">
+                                    <input id="goodsName" name="goodsName" class="layui-input" type="text" placeholder="商品编码或名称"/>
+                                </div>
+
+                            </div>
+
                             <div class="layui-inline">
                                 <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
 

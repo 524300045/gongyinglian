@@ -78,7 +78,7 @@
 
     <sql id="sqlWhere">
         yn=1
-        <if test="paramCondition.orderNo!= null">
+        <if test="paramCondition.orderNo!= null  and paramCondition.orderNo!=''">
             and  order_no = #{paramCondition.orderNo,jdbcType=VARCHAR}
         </if>
     </sql>
@@ -92,6 +92,18 @@
 ON popd.order_no=p.order_no
 WHERE popd.yn=1 AND p.yn=1
 
+        <if test="paramCondition.orderNo!= null and paramCondition.orderNo!=''">
+            and
+            p.order_no = #{paramCondition.orderNo,jdbcType=VARCHAR}
+        </if>
+
+        <if test="paramCondition.partnerCode!= null and paramCondition.partnerCode!=''">
+            and  p.partner_code = #{paramCondition.partnerCode,jdbcType=VARCHAR}
+        </if>
+        <if test="paramCondition.goodsName!= null and paramCondition.goodsName!=''">
+            and
+            ( popd.sku_code = #{paramCondition.goodsName,jdbcType=VARCHAR} or popd.goods_name like concat(concat('%',#{paramCondition.goodsName}),'%') )
+        </if>
     </select>
 
     <update id="updateRealityNum" parameterType="cn.stylefeng.guns.sys.modular.system.entity.PmsOrderPurchaseDetail">
