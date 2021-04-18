@@ -54,24 +54,8 @@ layui.use(['form', 'admin', 'ax','laydate','table','upload','formSelects'], func
             {field: 'goodsBrand', sort: true, title: '品牌'},
             {field: 'weight', sort: true, title: '重量'},
             {field: 'unitName', sort: true, title: '单位名称'},
-            {
-                field: 'isFresh', align: "center", title: '是否生鲜', templet: function (d) {
-                    if (d.isFresh ===1) {
-                        return "是";
-                    } else {
-                        return "否";
-                    }
-                }
-            },
-            {
-                field: 'weighed', align: "center", title: '是否称重', templet: function (d) {
-                    if (d.weighed ===1) {
-                        return "是";
-                    } else {
-                        return "否";
-                    }
-                }
-            },
+
+
             {
                 field: 'productType', align: "center", title: '商品类型', templet: function (d) {
                     if (d.productType ===0) {
@@ -91,17 +75,7 @@ layui.use(['form', 'admin', 'ax','laydate','table','upload','formSelects'], func
         ]];
     };
 
-    /**
-     * 点击查询按钮
-     */
-    Goods.search = function () {
-        var queryData = {};
 
-
-        table.reload(Goods.tableId, {
-            where: queryData, page: {curr: 1}
-        });
-    };
 
 
     // 渲染表格
@@ -125,7 +99,9 @@ layui.use(['form', 'admin', 'ax','laydate','table','upload','formSelects'], func
     Goods.search = function () {
         var queryData = {};
 
+        console.log($("#goodsName").val());
 
+        queryData['goodsName'] =$("#goodsName").val();
         table.reload(Goods.tableId, {
             where: queryData, page: {curr: 1}
         });

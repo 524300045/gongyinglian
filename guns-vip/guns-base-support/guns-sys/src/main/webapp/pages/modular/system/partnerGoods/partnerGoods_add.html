@@ -12,13 +12,13 @@
                     <div class="layui-form toolbar">
                         <div class="layui-form-item">
                             <div class="layui-inline">
-                                <input id="roleName" class="layui-input" type="text" placeholder="商品名称"/>
+                                <input id="goodsName" name="goodsName" class="layui-input" type="text" placeholder="商品名称"/>
                             </div>
                             <div class="layui-inline">
                                 <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
                                 <button id="cancel" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>返回</button>
 
-                                <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;保存&emsp;</button>
+
 
                             </div>
 
@@ -30,6 +30,14 @@
                                     <option value="${item.partnerCode}">${item.partnerName}</option>
                                     @}
                                 </select>
+
+
+                            </div>
+
+                            <div class="layui-inline">
+
+
+                                <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;保存&emsp;</button>
                             </div>
                         </div>
                     </div>
