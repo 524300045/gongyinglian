@@ -3,6 +3,7 @@ package cn.stylefeng.guns.sys.modular.system.controller;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.BackPartner;
+import cn.stylefeng.guns.sys.modular.system.entity.Partner;
 import cn.stylefeng.guns.sys.modular.system.enums.BackPartnerStatusEnum;
 import cn.stylefeng.guns.sys.modular.system.enums.LocationStockDirectionEnum;
 import cn.stylefeng.guns.sys.modular.system.enums.OperationTypeEnum;
@@ -14,10 +15,12 @@ import cn.stylefeng.guns.sys.modular.system.model.result.SaleOrderDetailResult;
 import cn.stylefeng.guns.sys.modular.system.model.result.SaleOrderResult;
 import cn.stylefeng.guns.sys.modular.system.service.BackPartnerDetailService;
 import cn.stylefeng.guns.sys.modular.system.service.BackPartnerService;
+import cn.stylefeng.guns.sys.modular.system.service.PartnerService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,6 +50,9 @@ public class BackPartnerController extends BaseController {
     @Autowired
     private BackPartnerDetailService backPartnerDetailService;
 
+    @Autowired
+    private PartnerService partnerService;
+
     /**
      * 跳转到主页面
      *
@@ -54,7 +60,11 @@ public class BackPartnerController extends BaseController {
      * @Date 2021-04-14
      */
     @RequestMapping("")
-    public String index() {
+    public String index(Model model)
+    {
+        List<Partner> partnerList=partnerService.list();
+
+        model.addAttribute("partners", partnerList);
         return PREFIX + "/backPartner.html";
     }
 

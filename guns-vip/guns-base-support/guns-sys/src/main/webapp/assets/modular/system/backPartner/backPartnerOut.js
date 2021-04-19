@@ -75,8 +75,8 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
      */
     BackPartner.search = function () {
         var queryData = {};
-
-
+        queryData['backOrderNo'] = $("#backOrderNo").val();
+        queryData['partnerCode'] =$("#partnerCode").val();
         table.reload(BackPartner.tableId, {
             where: queryData, page: {curr: 1}
         });

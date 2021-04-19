@@ -84,6 +84,14 @@ SELECT cbdd.*,cbd.warehouse_name,cbd.order_no,cbd.address,cbd.receiver_name FROM
 ON cbdd.customer_back_order_no=cbd.customer_back_order_no
 WHERE cbdd.yn=1 AND cbd.yn=1
 
+        <if test="paramCondition.customerBackOrderNo!= null and paramCondition.customerBackOrderNo!=''">
+            and  cbd.customer_back_order_no = #{paramCondition.customerBackOrderNo,jdbcType=VARCHAR}
+        </if>
+        <if test="paramCondition.goodsName!= null and paramCondition.goodsName!=''">
+            and
+            ( cbdd.sku_code = #{paramCondition.goodsName,jdbcType=VARCHAR} or cbdd.goods_name like concat(concat('%',#{paramCondition.goodsName}),'%') )
+        </if>
+
     </select>
 
 

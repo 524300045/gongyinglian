@@ -49,6 +49,17 @@
         select
         <include refid="Base_Column_List"/>
         from customer_back_order where 1 = 1
+
+        <if test="paramCondition.customerBackOrderNo!= null and paramCondition.customerBackOrderNo!=''">
+            and
+            customer_back_order_no = #{paramCondition.customerBackOrderNo,jdbcType=VARCHAR}
+        </if>
+
+
+        <if test="paramCondition.receiverName!= null and paramCondition.receiverName!=''">
+            and
+            (  receiver_name like concat(concat('%',#{paramCondition.receiverName}),'%') )
+        </if>
     </select>
 
     <select id="customPageMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.CustomerBackOrderParam">

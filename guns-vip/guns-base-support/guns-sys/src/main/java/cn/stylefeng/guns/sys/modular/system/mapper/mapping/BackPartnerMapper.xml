@@ -46,10 +46,23 @@
         from back_partner where 1 = 1
     </select>
 
-    <select id="customPageList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.BackPartnerResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.BackPartnerParam">
+    <select id="customPageList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.BackPartnerResult"
+            parameterType="cn.stylefeng.guns.sys.modular.system.model.params.BackPartnerParam">
         select
         <include refid="Base_Column_List"/>
         from back_partner where 1 = 1
+
+        <if test="paramCondition.backOrderNo!= null and paramCondition.backOrderNo!=''">
+            and
+            back_order_no = #{paramCondition.backOrderNo,jdbcType=VARCHAR}
+        </if>
+
+
+        <if test="paramCondition.partnerCode!= null and paramCondition.partnerCode!=''">
+            and
+            (  partner_code like concat(concat('%',#{paramCondition.partnerCode}),'%') )
+        </if>
+
     </select>
 
     <select id="customPageMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.BackPartnerParam">

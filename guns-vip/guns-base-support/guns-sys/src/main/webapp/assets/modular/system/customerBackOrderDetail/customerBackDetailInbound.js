@@ -37,7 +37,8 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
      */
     CustomerBackDetailTable.search = function () {
         var queryData = {};
-
+        queryData['customerBackOrderNo'] = $("#customerBackOrderNo").val();
+        queryData['goodsName'] =$("#goodsName").val();
 
         table.reload(CustomerBackDetailTable.tableId, {
             where: queryData, page: {curr: 1}
