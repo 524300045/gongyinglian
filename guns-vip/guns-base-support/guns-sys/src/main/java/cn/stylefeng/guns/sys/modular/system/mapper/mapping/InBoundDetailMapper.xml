@@ -83,6 +83,19 @@
  from  in_bound_detail ibd inner join  in_bound ib
 on ibd.inbound_task_code=ib.inbound_task_code
 where ibd.yn=1 and ib.yn=1
+        <if test="paramCondition.orderNo!= null and paramCondition.orderNo!=''">
+            and
+            ib.order_no = #{paramCondition.orderNo,jdbcType=VARCHAR}
+        </if>
+
+        <if test="paramCondition.partnerCode!= null and paramCondition.partnerCode!=''">
+            and  ib.partner_code = #{paramCondition.partnerCode,jdbcType=VARCHAR}
+        </if>
+        <if test="paramCondition.goodsName!= null and paramCondition.goodsName!=''">
+            and
+            ( ibd.sku_code = #{paramCondition.goodsName,jdbcType=VARCHAR} or ibd.goods_name like concat(concat('%',#{paramCondition.goodsName}),'%') )
+        </if>
+
     </select>
 
 </mapper>

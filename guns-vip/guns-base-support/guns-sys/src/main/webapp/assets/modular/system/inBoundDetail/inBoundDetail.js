@@ -40,7 +40,9 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
      */
     InBoundDetail.search = function () {
         var queryData = {};
-
+        queryData['orderNo'] =$("#orderNo").val();
+        queryData['partnerCode'] = $("#partnerCode").val();
+        queryData['goodsName'] =$("#goodsName").val();
 
         table.reload(InBoundDetail.tableId, {
             where: queryData, page: {curr: 1}

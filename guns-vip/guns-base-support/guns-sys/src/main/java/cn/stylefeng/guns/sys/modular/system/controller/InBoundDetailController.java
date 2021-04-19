@@ -4,6 +4,7 @@ import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.core.enums.CodeExpressEnum;
 import cn.stylefeng.guns.sys.modular.system.entity.InBoundDetail;
+import cn.stylefeng.guns.sys.modular.system.entity.Partner;
 import cn.stylefeng.guns.sys.modular.system.entity.PmsOrderPurchaseDetail;
 import cn.stylefeng.guns.sys.modular.system.enums.PmsPurchaseStatusEnum;
 import cn.stylefeng.guns.sys.modular.system.model.params.InBoundDetailParam;
@@ -12,6 +13,7 @@ import cn.stylefeng.guns.sys.modular.system.model.params.PmsOrderPurchaseParam;
 import cn.stylefeng.guns.sys.modular.system.model.result.GoodsResult;
 import cn.stylefeng.guns.sys.modular.system.service.CodeService;
 import cn.stylefeng.guns.sys.modular.system.service.InBoundDetailService;
+import cn.stylefeng.guns.sys.modular.system.service.PartnerService;
 import cn.stylefeng.guns.sys.modular.system.service.PmsOrderPurchaseDetailService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
@@ -19,6 +21,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -52,6 +55,9 @@ public class InBoundDetailController extends BaseController {
     @Autowired
     private CodeService codeService;
 
+    @Autowired
+    private PartnerService partnerService;
+
     /**
      * 跳转到主页面
      *
@@ -59,7 +65,10 @@ public class InBoundDetailController extends BaseController {
      * @Date 2021-03-25
      */
     @RequestMapping("")
-    public String index() {
+    public String index(Model model)
+    {
+        List<Partner> partnerList=partnerService.list();
+        model.addAttribute("partners", partnerList);
         return PREFIX + "/inBoundDetail.html";
     }
 

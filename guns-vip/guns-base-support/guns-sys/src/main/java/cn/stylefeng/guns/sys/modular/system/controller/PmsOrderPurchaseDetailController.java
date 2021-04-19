@@ -64,6 +64,7 @@ public class PmsOrderPurchaseDetailController extends BaseController {
     @Autowired
     private CodeService codeService;
 
+
     /**
      * 跳转到主页面
      *
@@ -71,7 +72,11 @@ public class PmsOrderPurchaseDetailController extends BaseController {
      * @Date 2021-03-22
      */
     @RequestMapping("")
-    public String index() {
+    public String index(Model model)
+
+    {
+        List<Partner> partnerList=partnerService.list();
+        model.addAttribute("partners", partnerList);
         return PREFIX + "/pmsOrderPurchaseDetail.html";
     }
 
