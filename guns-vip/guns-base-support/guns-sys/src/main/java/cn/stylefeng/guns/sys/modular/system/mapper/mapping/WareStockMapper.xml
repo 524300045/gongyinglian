@@ -42,10 +42,19 @@
         from ware_stock where 1 = 1
     </select>
 
-    <select id="customPageList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.WareStockResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.WareStockParam">
+    <select id="customPageList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.WareStockResult"
+            parameterType="cn.stylefeng.guns.sys.modular.system.model.params.WareStockParam">
         select
         <include refid="Base_Column_List"/>
         from ware_stock where 1 = 1
+        <if test="paramCondition.warehouseCode!= null and paramCondition.warehouseCode!=''">
+            and warehouse_code = #{paramCondition.warehouseCode,jdbcType=VARCHAR}
+        </if>
+        <if test="paramCondition.goodsName!= null and paramCondition.goodsName!=''">
+            and
+            ( sku_code = #{paramCondition.goodsName,jdbcType=VARCHAR} or goods_name like concat(concat('%',#{paramCondition.goodsName}),'%') )
+        </if>
+
     </select>
 
     <select id="customPageMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.WareStockParam">

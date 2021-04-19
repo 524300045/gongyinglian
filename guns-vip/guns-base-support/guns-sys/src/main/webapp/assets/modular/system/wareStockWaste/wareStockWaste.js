@@ -79,7 +79,8 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
      */
     WareStockWaste.search = function () {
         var queryData = {};
-
+        queryData['warehouseCode'] =$("#warehouseCode").val();
+        queryData['goodsName'] = $("#goodsName").val();
 
         table.reload(WareStockWaste.tableId, {
             where: queryData, page: {curr: 1}

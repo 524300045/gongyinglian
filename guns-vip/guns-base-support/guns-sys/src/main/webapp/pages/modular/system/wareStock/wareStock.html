@@ -11,10 +11,33 @@
                 <div class="layui-card-body">
                     <div class="layui-form toolbar">
                         <div class="layui-form-item">
+
+                            <div class="layui-inline">
+                                <label class="layui-form-label">仓库</label>
+                                <div class="layui-input-inline">
+                                <select id="warehouseCode" name="warehouseCode" lay-filter="warehouseCode">
+                                    <option value="">仓库</option>
+                                    @for(item in warelist!){
+                                    <option value="${item.warehouseCode}">${item.warehouseName}</option>
+                                    @}
+                                </select>
+                                </div>
+                            </div>
+
+
+                            <div class="layui-inline">
+                                <label class="layui-form-label">商品名称</label>
+                                <div class="layui-input-inline">
+                                    <input id="goodsName" name="goodsName" class="layui-input" type="text" placeholder="名称或编码"/>
+                                </div>
+
+                            </div>
+
+
                             <div class="layui-inline">
                                 <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
 
-                                <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出</button>
+
                             </div>
                         </div>
                     </div>

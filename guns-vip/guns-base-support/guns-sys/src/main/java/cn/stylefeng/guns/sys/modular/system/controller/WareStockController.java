@@ -4,16 +4,21 @@ import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.WareStock;
 import cn.stylefeng.guns.sys.modular.system.model.params.WareStockParam;
+import cn.stylefeng.guns.sys.modular.system.model.params.WarehouseInfoParam;
+import cn.stylefeng.guns.sys.modular.system.model.result.WarehouseInfoResult;
 import cn.stylefeng.guns.sys.modular.system.service.WareStockService;
+import cn.stylefeng.guns.sys.modular.system.service.WarehouseInfoService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -31,6 +36,9 @@ public class WareStockController extends BaseController {
     @Autowired
     private WareStockService wareStockService;
 
+    @Autowired
+    private WarehouseInfoService warehouseInfoService;
+
     /**
      * 跳转到主页面
      *
@@ -38,7 +46,12 @@ public class WareStockController extends BaseController {
      * @Date 2021-03-25
      */
     @RequestMapping("")
-    public String index() {
+    public String index(Model model) {
+        WarehouseInfoParam warehouseInfoParam=new WarehouseInfoParam();
+        warehouseInfoParam.setYn(1);
+        List<WarehouseInfoResult> warehouseInfoList=warehouseInfoService.findListBySpec(warehouseInfoParam);
+        model.addAttribute("warelist", warehouseInfoList);
+
         return PREFIX + "/wareStock.html";
     }
 
@@ -130,7 +143,12 @@ public class WareStockController extends BaseController {
 
 
     @RequestMapping("wareStockInventory")
-    public String wareStockInventory() {
+    public String wareStockInventory(Model model) {
+
+        WarehouseInfoParam warehouseInfoParam=new WarehouseInfoParam();
+        warehouseInfoParam.setYn(1);
+        List<WarehouseInfoResult> warehouseInfoList=warehouseInfoService.findListBySpec(warehouseInfoParam);
+        model.addAttribute("warelist", warehouseInfoList);
         return PREFIX + "/wareStockInventory.html";
     }
 
