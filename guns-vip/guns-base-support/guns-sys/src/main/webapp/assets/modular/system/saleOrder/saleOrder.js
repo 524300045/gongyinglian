@@ -75,7 +75,8 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
      */
     SaleOrder.search = function () {
         var queryData = {};
-
+        queryData['orderNo'] = $("#orderNo").val();
+        queryData['receiverName'] =$("#receiverName").val();
 
         table.reload(SaleOrder.tableId, {
             where: queryData, page: {curr: 1}

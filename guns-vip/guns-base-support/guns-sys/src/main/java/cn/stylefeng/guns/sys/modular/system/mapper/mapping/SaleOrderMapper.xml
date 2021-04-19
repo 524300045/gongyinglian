@@ -56,6 +56,17 @@
         select
         <include refid="Base_Column_List"/>
         from sale_order where 1 = 1
+        <if test="paramCondition.orderNo!= null and paramCondition.orderNo!=''">
+            and
+            order_no = #{paramCondition.orderNo,jdbcType=VARCHAR}
+        </if>
+
+
+        <if test="paramCondition.receiverName!= null and paramCondition.receiverName!=''">
+            and
+            (  receiver_name like concat(concat('%',#{paramCondition.receiverName}),'%') )
+        </if>
+
     </select>
 
     <select id="customPageMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.SaleOrderParam">
