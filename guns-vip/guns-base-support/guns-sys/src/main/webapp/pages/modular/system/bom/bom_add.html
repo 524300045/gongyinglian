@@ -1,58 +1,91 @@
 @layout("/common/_form.html",{js:["/assets/modular/system/bom/bom_add.js"],css:["/assets/expand/module/formSelects/formSelects-v4.css"]}){
 
-<form class="layui-form" id="bomForm" lay-filter="bomForm">
-    <div class="layui-fluid" style="padding-bottom: 75px;">
-        <div class="layui-card">
-            <div class="layui-card-header">基本信息</div>
-            <div class="layui-card-body">
-                <div class="layui-form-item layui-row">
-                    <input name="id" type="hidden"/>
+<div class="layui-body-header">
+    <span class="layui-body-header-title">BOM关系设置</span>
+</div>
 
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label">编码<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="skuCode" name="skuCode" placeholder="请输入编码" type="text" class="layui-input" lay-verify="required" required/>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-form toolbar">
+
+
+
+
+                        <div class="layui-form-item">
+
+
+                            <div class="layui-inline">
+                                <input id="goodsName" class="layui-input" type="text" placeholder="请输入商品名称" />
+                            </div>
+                            <div class="layui-inline">
+                                <button id="btnQuery" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>查找</button>
+                            </div>
+
+
+
                         </div>
                     </div>
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label">商品名称<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="goodsName" name="goodsName" placeholder="请输入商品名称" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label">组件SKU<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="childSkuCode" name="childSkuCode" placeholder="请输入组件SKU" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label">组件商品名称<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="childGoodsName" name="childGoodsName" placeholder="请输入组件商品名称" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label">数量<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="proportion" name="proportion" placeholder="请输入数量" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label"><span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="yn" name="yn" placeholder="请输入" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-    <div class="form-group-bottom text-center">
-        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
-        <button type="reset" class="layui-btn layui-btn-primary" id="cancel">&emsp;取消&emsp;</button>
-    </div>
 
-</form>
+
+
+    <div class="layui-row layui-col-space15">
+
+        <div class="layui-col-sm6 layui-col-md6 layui-col-lg6">
+
+
+
+            <div class="layui-card">
+                <div class="layui-card-header">
+
+
+                </div>
+
+                <div class="layui-card-body">
+
+                    <table class="layui-table" id="goodsTable" lay-filter="goodsTable"></table>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="layui-col-sm6 layui-col-md6 layui-col-lg6">
+            <div class="layui-card">
+                <div class="layui-card-header" >
+                    组装SKU
+                </div>
+
+                <div class="layui-card-body">
+                    <table class="layui-table" id="detailTable" lay-filter="detailTable"></table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="goodsTableBar">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">添加</a>
+
+</script>
+
+<script type="text/html" id="detailTableBar">
+
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">保存</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+
+</script>
+
+
+
 
 @}

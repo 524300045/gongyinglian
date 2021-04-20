@@ -31,6 +31,10 @@ public class BomResult implements Serializable {
      */
     private String goodsName;
 
+    private String unitName;
+
+
+
     /**
      * 组件SKU
      */
@@ -40,6 +44,8 @@ public class BomResult implements Serializable {
      * 组件商品名称
      */
     private String childGoodsName;
+
+    private String childUnitName;
 
     /**
      * 数量

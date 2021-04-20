@@ -1,15 +1,21 @@
 package cn.stylefeng.guns.sys.modular.system.controller;
 
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.Bom;
 import cn.stylefeng.guns.sys.modular.system.model.params.BomParam;
+import cn.stylefeng.guns.sys.modular.system.model.result.BomResult;
 import cn.stylefeng.guns.sys.modular.system.service.BomService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -69,6 +75,22 @@ public class BomController extends BaseController {
     @RequestMapping("/addItem")
     @ResponseBody
     public ResponseData addItem(BomParam bomParam) {
+
+        if(bomParam.getSkuCode().equals(bomParam.getChildSkuCode()))
+        {
+            return ResponseData.error("成品SKU和组装SKU不能一样");
+        }
+        List<BomResult> bomResultList=bomService.findListBySpec(bomParam);
+        if (bomResultList!=null&&bomResultList.size()>0)
+        {
+            return ResponseData.error("关系已经存在");
+        }
+
+        bomParam.setCreateTime(new Date());
+        bomParam.setCreateUser(LoginContextHolder.getContext().getUser().getUsername());
+        bomParam.setUpdateTime(new Date());
+        bomParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        bomParam.setYn(1);
         this.bomService.add(bomParam);
         return ResponseData.success();
     }
@@ -82,6 +104,9 @@ public class BomController extends BaseController {
     @RequestMapping("/editItem")
     @ResponseBody
     public ResponseData editItem(BomParam bomParam) {
+        bomParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        bomParam.setUpdateTime(new Date());
+
         this.bomService.update(bomParam);
         return ResponseData.success();
     }
@@ -95,9 +120,14 @@ public class BomController extends BaseController {
     @RequestMapping("/delete")
     @ResponseBody
     public ResponseData delete(BomParam bomParam) {
-        this.bomService.delete(bomParam);
+        bomParam.setUpdateUser(LoginContextHolder.getContext().getUser().getUsername());
+        bomParam.setUpdateTime(new Date());
+        bomParam.setYn(0);
+        this.bomService.update(bomParam);
         return ResponseData.success();
     }
+
+
 
     /**
      * 查看详情接口
@@ -124,6 +154,19 @@ public class BomController extends BaseController {
         return this.bomService.findPageBySpec(bomParam);
     }
 
+
+
+    @RequestMapping("addGoods")
+    public String addGoods(Model model) {
+
+        return PREFIX + "/addGoods.html";
+    }
+
+    @ResponseBody
+    @RequestMapping("/childBomList")
+    public LayuiPageInfo childBomList(BomParam bomParam) {
+        return this.bomService.findChildPageBySpec(bomParam);
+    }
 }
 
 

@@ -5,6 +5,7 @@ import cn.stylefeng.guns.sys.modular.system.entity.Bom;
 import cn.stylefeng.guns.sys.modular.system.model.params.BomParam;
 import cn.stylefeng.guns.sys.modular.system.model.result.BomResult;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -65,5 +66,9 @@ public interface BomService extends IService<Bom> {
      * @Date 2021-04-16
      */
      LayuiPageInfo findPageBySpec(BomParam param);
+
+
+
+    public LayuiPageInfo findChildPageBySpec(BomParam param);
 
 }

@@ -53,7 +53,7 @@ public class BomServiceImpl extends ServiceImpl<BomMapper, Bom> implements BomSe
 
     @Override
     public List<BomResult> findListBySpec(BomParam param){
-        return null;
+        return this.baseMapper.customList(param);
     }
 
     @Override
@@ -81,4 +81,12 @@ public class BomServiceImpl extends ServiceImpl<BomMapper, Bom> implements BomSe
         return entity;
     }
 
+
+
+    @Override
+    public LayuiPageInfo findChildPageBySpec(BomParam param){
+        Page pageContext = getPageContext();
+        IPage page = this.baseMapper.selectList(pageContext,param);
+        return LayuiPageFactory.createPageInfo(page);
+    }
 }

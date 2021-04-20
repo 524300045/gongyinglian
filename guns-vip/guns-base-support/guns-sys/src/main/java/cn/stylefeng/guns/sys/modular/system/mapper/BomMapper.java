@@ -53,4 +53,6 @@ public interface BomMapper extends BaseMapper<Bom> {
      */
     Page<Map<String, Object>> customPageMapList(@Param("page") Page page, @Param("paramCondition") BomParam paramCondition);
 
+     Page<BomResult> selectList(@Param("page") Page page,@Param("paramCondition") BomParam paramCondition);
+
 }

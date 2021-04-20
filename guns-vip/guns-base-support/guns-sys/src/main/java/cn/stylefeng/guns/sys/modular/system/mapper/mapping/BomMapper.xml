@@ -17,16 +17,35 @@
         <result column="yn" property="yn" />
     </resultMap>
 
+    <resultMap id="BomResultMap" type="cn.stylefeng.guns.sys.modular.system.model.result.BomResult">
+        <id column="id" property="id" />
+        <result column="sku_code" property="skuCode" />
+        <result column="goods_name" property="goodsName" />
+        <result column="unit_name" property="unitName" />
+        <result column="child_sku_code" property="childSkuCode" />
+        <result column="child_goods_name" property="childGoodsName" />
+        <result column="child_unit_name" property="childUnitName" />
+        <result column="proportion" property="proportion" />
+
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id AS "id", sku_code AS "skuCode", goods_name AS "goodsName", child_sku_code AS "childSkuCode", child_goods_name AS "childGoodsName", proportion AS "proportion", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime", yn AS "yn"
     </sql>
 
 
-    <select id="customList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.BomResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.BomParam">
+    <select id="customList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.BomResult"
+            parameterType="cn.stylefeng.guns.sys.modular.system.model.params.BomParam">
         select
         <include refid="Base_Column_List"/>
-        from bom where 1 = 1
+        from bom where yn = 1
+        <if test="paramCondition.skuCode!= null and paramCondition.skuCode!=''">
+            and  sku_code = #{paramCondition.skuCode,jdbcType=VARCHAR}
+        </if>
+        <if test="paramCondition.childSkuCode!= null and paramCondition.childSkuCode!=''">
+            and  child_sku_code = #{paramCondition.childSkuCode,jdbcType=VARCHAR}
+        </if>
     </select>
 
     <select id="customMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.BomParam">
@@ -38,13 +57,43 @@
     <select id="customPageList" resultType="cn.stylefeng.guns.sys.modular.system.model.result.BomResult" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.BomParam">
         select
         <include refid="Base_Column_List"/>
-        from bom where 1 = 1
+        from bom where yn = 1
+        <if test="paramCondition.skuCode!= null and paramCondition.skuCode!=''">
+            and  sku_code = #{paramCondition.skuCode,jdbcType=VARCHAR}
+        </if>
+        <if test="paramCondition.childSkuCode!= null and paramCondition.childSkuCode!=''">
+            and  child_sku_code = #{paramCondition.childSkuCode,jdbcType=VARCHAR}
+        </if>
     </select>
 
     <select id="customPageMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.BomParam">
         select
         <include refid="Base_Column_List"/>
         from bom where 1 = 1
+    </select>
+
+
+    <select id="selectList" resultMap="BomResultMap"
+            parameterType="cn.stylefeng.guns.sys.modular.system.model.params.BomParam">
+        SELECT
+        b.id,
+        g.sku_code,
+        g.goods_name,
+        g.unit_name,
+        g1.sku_code AS child_sku_code,
+        g1.goods_name AS child_goods_name,
+        g1.unit_name AS child_unit_name,
+        b.proportion
+        FROM bom b INNER JOIN goods g ON b.sku_code=g.sku_code
+        INNER JOIN goods g1 ON g1.sku_code=b.child_sku_code
+        WHERE b.yn=1 AND g.yn=1 AND g1.yn=1
+
+        <if test="paramCondition.skuCode!= null and paramCondition.skuCode!=''">
+            and  g.sku_code = #{paramCondition.skuCode,jdbcType=VARCHAR}
+        </if>
+        <if test="paramCondition.childSkuCode!= null and paramCondition.childSkuCode!=''">
+            and  g1.child_sku_code = #{paramCondition.childSkuCode,jdbcType=VARCHAR}
+        </if>
     </select>
 
 </mapper>
