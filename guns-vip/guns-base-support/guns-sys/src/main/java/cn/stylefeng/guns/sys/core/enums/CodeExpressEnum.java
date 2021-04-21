@@ -13,6 +13,7 @@ public enum CodeExpressEnum {
     billnoSaleOrder("billnoSaleOrder", "S,^7#", Boolean.FALSE ,"销售单号"),
     billnoCustomerBack("billnoCustomerBack", "KT,^7#", Boolean.FALSE ,"客退单号"),
     billnoBackPartner("billnoBackPartner", "TG,^7#", Boolean.FALSE ,"退供单号"),
+    shopCode("shop", "1,^3#", Boolean.FALSE ,"车间编码"),
     ;
 
     /**
