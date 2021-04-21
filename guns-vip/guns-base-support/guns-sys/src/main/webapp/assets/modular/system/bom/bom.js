@@ -17,19 +17,12 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
      */
     Bom.initColumn = function () {
         return [[
-            {type: 'checkbox'},
             {field: 'id', hide: true, title: ''},
             {field: 'skuCode', sort: true, title: '编码'},
             {field: 'goodsName', sort: true, title: '商品名称'},
             {field: 'childSkuCode', sort: true, title: '组件SKU'},
             {field: 'childGoodsName', sort: true, title: '组件商品名称'},
-            {field: 'proportion', sort: true, title: '数量'},
-            {field: 'createUser', sort: true, title: '创建人'},
-            {field: 'createTime', sort: true, title: '创建时间'},
-            {field: 'updateUser', sort: true, title: '更新人'},
-            {field: 'updateTime', sort: true, title: '更新时间'},
-            {field: 'yn', sort: true, title: ''},
-            {align: 'center', toolbar: '#tableBar', title: '操作'}
+            {field: 'proportion', sort: true, title: '数量'}
         ]];
     };
 
@@ -39,7 +32,7 @@ layui.use(['table', 'admin', 'ax', 'func'], function () {
     Bom.search = function () {
         var queryData = {};
 
-
+        queryData['goodsName'] =$("#goodsName").val();
         table.reload(Bom.tableId, {
             where: queryData, page: {curr: 1}
         });

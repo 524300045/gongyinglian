@@ -64,6 +64,12 @@
         <if test="paramCondition.childSkuCode!= null and paramCondition.childSkuCode!=''">
             and  child_sku_code = #{paramCondition.childSkuCode,jdbcType=VARCHAR}
         </if>
+
+        <if test="paramCondition.goodsName!= null">
+            and
+            ( sku_code = #{paramCondition.goodsName,jdbcType=VARCHAR} or goods_name like concat(concat('%',#{paramCondition.goodsName}),'%') )
+        </if>
+
     </select>
 
     <select id="customPageMapList" resultType="map" parameterType="cn.stylefeng.guns.sys.modular.system.model.params.BomParam">
